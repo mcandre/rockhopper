@@ -223,6 +223,6 @@ abuild -F -r
 cd /src
 
 mkdir -p "$ARTIFACT_DIR"
-cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ARTIFACT_DIR"
+cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ARTIFACT_DIR/$NAME-$VERSION-r$RELEASE.$ARCH.apk"
 
 clean

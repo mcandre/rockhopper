@@ -16,7 +16,7 @@ usage() {
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
     printf -- "--changelog-file <path>\tChangelog location (Required, nonblank).\n"
-    printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
+    printf -- "--url <homepage>\t\tPackage homepage (Optional).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
@@ -151,12 +151,6 @@ if [ "${CHANGELOG_PATH:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${URL:-}" = '' ]; then
-    echo "error: blank/missing --url <homepage>"
-    usage
-    exit 1
-fi
-
 cd /src
 
 CHANGELOG="$(cat "$CHANGELOG_PATH")"
@@ -185,13 +179,19 @@ tar czf "$BANNER.tar.gz" "$BANNER"
 cd /src
 mkdir -p "$INTERNAL_DIR/SOURCES"
 mv "$INTERNAL_DIR/$BANNER.tar.gz" "$INTERNAL_DIR/SOURCES"
-rm -rf "$INTERNAL_DIR/$BANNER"
+rm -rf "${INTERNAL_DIR:?}/${BANNER:?}"
 
 SPEC="Name: $NAME
 Version: $VERSION
 Release: $RELEASE%%{?dist}
-Summary: $SUMMARY
-URL: $URL
+Summary: $SUMMARY"
+
+if [ "${URL:-}" != '' ]; then
+    SPEC="$SPEC
+URL: $URL"
+fi
+
+SPEC="$SPEC
 BuildArch: $ARCH
 License: $LICENSE"
 
@@ -251,8 +251,6 @@ $CHANGELOG"
 mkdir -p "$INTERNAL_DIR/SPECS"
 SPEC_PATH="$INTERNAL_DIR/SPECS/$NAME.spec"
 printf "$SPEC\n" >"$SPEC_PATH"
-
-set -x
 
 rpmlint "$SPEC_PATH"
 

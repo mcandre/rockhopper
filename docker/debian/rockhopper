@@ -16,7 +16,7 @@ usage() {
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
     printf -- "--changelog-file <path>\tChangelog location (Ignored).\n"
-    printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
+    printf -- "--url <homepage>\t\tPackage homepage (Optional).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
@@ -140,12 +140,6 @@ if [ "${LICENSE:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${URL:-}" = '' ]; then
-    echo "error: blank/missing --url <homepage>"
-    usage
-    exit 1
-fi
-
 cd /src
 
 clean
@@ -156,8 +150,14 @@ CONTROL="Package: $NAME
 Version: $VERSION
 Maintainer: $MAINTAINER
 Architecture: $ARCH
-Priority: optional
-Homepage: $URL
+Priority: optional"
+
+if [ "${URL:-}" != '' ]; then
+    CONTROL="$CONTROL
+Homepage: $URL"
+fi
+
+CONTROL="$CONTROL
 Description: $DESCRIPTION"
 
 if [ "${DEPENDENCIES:-}" != '' ]; then

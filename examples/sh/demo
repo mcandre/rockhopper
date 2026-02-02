@@ -11,7 +11,7 @@ docker run --rm \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
-    --license BSD-3 \
+    --license 0BSD \
     --release 1 \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
@@ -25,7 +25,7 @@ docker run --rm \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
-    --license BSD-3 \
+    --license 0BSD \
     --release 1 \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
@@ -39,7 +39,7 @@ docker run --rm \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
-    --license BSD-3 \
+    --license 0BSD \
     --release 1 \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
@@ -53,7 +53,7 @@ docker run --rm \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
-    --license BSD-3 \
+    --license 0BSD \
     --release 1 \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
@@ -67,7 +67,7 @@ docker run --rm \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
-    --license BSD-3 \
+    --license 0BSD \
     --release 1 \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
