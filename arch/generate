@@ -1,0 +1,224 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+usage() {
+    printf "Usage: %s <OPTIONS>\n" "$0"
+    printf "\n"
+    printf -- "--name <name>\t\t\tPackage name (Required, nonblank).\n"
+    printf -- "--version <version>\t\tPackage version (Required, nonblank).\n"
+    printf -- "--release <release>\t\tPackage release version (Required, nonblank).\n"
+    printf -- "--arch <architecture>\t\tPackage architecture (Required, nonblank).\n"
+    printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
+    printf -- "--summary <summary>\t\tPackage summary (Required, nonblank, ignored).\n"
+    printf -- "--description <description>\tPackage description (Required, nonblank).\n"
+    printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
+    printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
+    printf -- "--changelog-file <path>\tChangelog location (Required, nonblank, ignored).\n"
+    printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
+    printf -- "--help\t\t\t\tShow usage menu.\n"
+}
+
+INTERNAL_DIR='archlinux'
+ARTIFACT_DIR='.rockhopper/arch'
+
+clean() {
+    rm -rf "$INTERNAL_DIR"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--help')
+        usage
+        exit
+        ;;
+    '--name')
+        shift
+        export NAME="$1"
+        shift
+        ;;
+    '--version')
+        shift
+        export VERSION="$1"
+        shift
+        ;;
+    '--release')
+        shift
+        export RELEASE="$1"
+        shift
+        ;;
+    '--arch')
+        shift
+        export ARCH="$1"
+        shift
+        ;;
+    '--maintainer')
+        shift
+        export MAINTAINER="$1"
+        shift
+        ;;
+    '--summary')
+        shift
+        export SUMMARY="$1"
+        shift
+        ;;
+    '--description')
+        shift
+        export DESCRIPTION="$1"
+        shift
+        ;;
+    '--license')
+        shift
+        export LICENSE="$1"
+        shift
+        ;;
+    '--dependencies')
+        shift
+        export DEPENDENCIES="$1"
+        shift
+        ;;
+    '--changelog-file')
+        shift
+        export CHANGELOG_PATH="$1"
+        shift
+        ;;
+    '--url')
+        shift
+        export URL="$1"
+        shift
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "${NAME:-}" = '' ]; then
+    echo "error: blank/missing --name <name>"
+    usage
+    exit 1
+fi
+
+if [ "${VERSION:-}" = '' ]; then
+    echo "error: blank/missing --version <version>"
+    usage
+    exit 1
+fi
+
+if [ "${RELEASE:-}" = '' ]; then
+    echo "error: blank/missing --release <release>"
+    usage
+    exit 1
+fi
+
+if [ "${ARCH:-}" = '' ]; then
+    echo "error: blank/missing --arch <architecture>"
+    usage
+    exit 1
+fi
+
+if [ "${MAINTAINER:-}" = '' ]; then
+    echo "error: blank/missing --maintainer <maintainer>"
+    usage
+    exit 1
+fi
+
+if [ "${SUMMARY:-}" = '' ]; then
+    echo "error: blank/missing --summary <summary>"
+    usage
+    exit 1
+fi
+
+if [ "${DESCRIPTION:-}" = '' ]; then
+    echo "error: blank/missing --description <description>"
+    usage
+    exit 1
+fi
+
+if [ "${LICENSE:-}" = '' ]; then
+    echo "error: blank/missing --license <license>"
+    usage
+    exit 1
+fi
+
+if [ "${CHANGELOG_PATH:-}" = '' ]; then
+    echo "error: blank/missing --changelog-file <path>"
+    usage
+    exit 1
+fi
+
+if [ "${URL:-}" = '' ]; then
+    echo "error: blank/missing --url <homepage>"
+    usage
+    exit 1
+fi
+
+cd /src
+
+clean
+
+PKGBUILD="# Maintainer: $MAINTAINER
+pkgname=$NAME
+pkgver=$VERSION
+pkgrel=$RELEASE
+pkgdesc=\"$DESCRIPTION\"
+arch=($ARCH)
+url=\"$URL\"
+license=('$LICENSE')
+depends=(${DEPENDENCIES:-})
+source=("
+
+cd data
+for f in $(find -type f -print); do
+    f="${f#./}"
+    b="$(basename "$f")"
+
+    PKGBUILD="$PKGBUILD\n    \"$b\""
+done
+cd /src
+
+PKGBUILD="$PKGBUILD
+)
+sha256sums=('...')
+
+package() {"
+
+cd data
+for f in $(find . -print); do
+    f="${f#./}"
+
+    if [ "$f" = '.' ]; then
+        continue
+    fi
+
+    if [ -d "$f" ]; then
+        PKGBUILD="$PKGBUILD\n    install -d \"\${pkgdir}/$f\""
+    elif [ -f "$f" ]; then
+        b="$(basename "$f")"
+        PKGBUILD="$PKGBUILD\n    install \"\${srcdir}/$b\" \"\${pkgdir}/$f\""
+    else
+        echo "error: unsupported file system file type for path: $f"
+    fi
+done
+cd /src
+
+PKGBUILD="$PKGBUILD\n}"
+
+mkdir -p "$INTERNAL_DIR"
+printf "$PKGBUILD\n" >"$INTERNAL_DIR/PKGBUILD"
+
+find data -type f -exec cp "{}" "${INTERNAL_DIR}" \;
+
+cd "$INTERNAL_DIR"
+
+# Update sha256sums
+makepkg -g >> PKGBUILD
+
+makepkg
+
+cd /src
+mkdir "$ARTIFACT_DIR"
+cp "${INTERNAL_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ARTIFACT_DIR"
+
+clean
