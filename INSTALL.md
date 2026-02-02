@@ -23,4 +23,4 @@ docker pull n4jm4/rockhopper:rhel
 docker pull n4jm4/rockhopper:slack
 ```
 
-For more information on developing buttery itself, see [DEVELOPMENT.md](DEVELOPMENT.md).
+For more information on developing rockhopper itself, see [DEVELOPMENT.md](DEVELOPMENT.md).
