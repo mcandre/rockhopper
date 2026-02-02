@@ -1,5 +1,11 @@
 # rockhopper: Linux package generator
 
+```text
+  o<  gak! gak!
+-/)
+ ^^
+```
+
 # ABOUT
 
 rockhopper automates the process of generating installers, for a wide variety of Linux distributions.
