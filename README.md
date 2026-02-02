@@ -8,7 +8,7 @@
 
 # ABOUT
 
-rockhopper automates install media generation for a wide variety of Linux distributions.
+rockhopper builds custom application packages for a wide variety of Linux distributions.
 
 # DEMO
 
