@@ -1,4 +1,4 @@
-# rockhopper: Linux package generator
+# rockhoppers: Linux package generators
 
 ```text
   o<  gak! gak!
@@ -8,7 +8,7 @@
 
 # ABOUT
 
-rockhopper automates the process of generating installers, for a wide variety of Linux distributions.
+rockhopper automates install media generation for a wide variety of Linux distributions.
 
 # EXAMPLE
 

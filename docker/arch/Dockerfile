@@ -1,7 +1,7 @@
 FROM library/archlinux:base-devel
 RUN useradd -m builder && \
     passwd -d builder
-COPY generate /usr/local/bin
+COPY rockhopper /usr/local/bin
 USER builder
 WORKDIR /home/builder
-ENTRYPOINT ["/usr/local/bin/generate"]
+ENTRYPOINT ["/usr/local/bin/rockhopper"]

@@ -23,7 +23,7 @@ usage() {
 ARTIFACT_DIR='.rockhopper/alpine'
 
 clean() {
-    rm -rf "$INTERNAL_DIR"
+    rm -rf alpinelinux
 }
 
 while [ "$#" -ge 1 ]; do

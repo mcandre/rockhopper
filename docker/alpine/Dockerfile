@@ -4,5 +4,5 @@ RUN apk add -U \
     atools \
     sudo && \
     abuild-keygen -n -a -i
-COPY generate /usr/local/bin
-ENTRYPOINT ["/usr/local/bin/generate"]
+COPY rockhopper /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/rockhopper"]
