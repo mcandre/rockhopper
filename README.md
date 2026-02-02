@@ -48,7 +48,7 @@ $ docker run --rm \
     n4jm4/rockhopper:debian \
     --name hello \
     --version 1.0.0 \
-    --arch noarch \
+    --arch all \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \
@@ -71,12 +71,12 @@ $ docker run --rm \
     --changelog-file changelog.txt \
     --url https://bobsautoparts.test/
 
-$ docker run --rm \                                     andrew@najma:sh
+$ docker run --rm \
     -v "$(pwd):/src" \
     n4jm4/rockhopper:slack \
     --name hello \
     --version 1.0.0 \
-    --arch any \
+    --arch noarch \
     --maintainer "Bob <bob@bobsautoparts.test>" \
     --description "greeter" \
     --summary "greeter" \

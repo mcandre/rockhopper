@@ -10,11 +10,12 @@ usage() {
     printf -- "--release <release>\t\tPackage release version (Required, nonblank).\n"
     printf -- "--arch <architecture>\t\tPackage architecture (Required, nonblank).\n"
     printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
-    printf -- "--summary <summary>\t\tPackage summary (Required, nonblank, ignored).\n"
+    printf -- "--summary <summary>\t\tPackage summary (Ignored).\n"
     printf -- "--description <description>\tPackage description (Required, nonblank).\n"
+    printf -- "--copyright <copyright>\tPackage copyright (Optional).\n"
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
-    printf -- "--changelog-file <path>\tChangelog location (Required, nonblank, ignored).\n"
+    printf -- "--changelog-file <path>\tChangelog location (Ignored).\n"
     printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
@@ -58,12 +59,16 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--summary')
         shift
-        export SUMMARY="$1"
         shift
         ;;
     '--description')
         shift
         export DESCRIPTION="$1"
+        shift
+        ;;
+    '--copyright')
+        shift
+        export COPYRIGHT="$1"
         shift
         ;;
     '--license')
@@ -78,7 +83,6 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--changelog-file')
         shift
-        export CHANGELOG_PATH="$1"
         shift
         ;;
     '--url')
@@ -123,12 +127,6 @@ if [ "${MAINTAINER:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${SUMMARY:-}" = '' ]; then
-    echo "error: blank/missing --summary <summary>"
-    usage
-    exit 1
-fi
-
 if [ "${DESCRIPTION:-}" = '' ]; then
     echo "error: blank/missing --description <description>"
     usage
@@ -141,12 +139,6 @@ if [ "${LICENSE:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${CHANGELOG_PATH:-}" = '' ]; then
-    echo "error: blank/missing --changelog-file <path>"
-    usage
-    exit 1
-fi
-
 if [ "${URL:-}" = '' ]; then
     echo "error: blank/missing --url <homepage>"
     usage
@@ -155,7 +147,17 @@ fi
 
 cd /src
 
-INTERNAL_DIR="$NAME"
+INTERNAL_DIR="alpinelinux/$NAME"
+
+LIC=""
+
+if [ "${COPYRIGHT:-}" != '' ]; then
+    LIC="$COPYRIGHT"
+fi
+
+LIC="$LIC
+$LICENSE"
+printf "$LIC\n" >/tmp/LICENSE
 
 clean
 mkdir -p "$INTERNAL_DIR"
@@ -180,9 +182,14 @@ options=\"!check\"
 prepare() {
     default_prepare
     cp -r /src/data/* \"\$builddir\"
+    mkdir -p \"\$builddir/usr/share/licenses/$NAME\"
+    cp /tmp/LICENSE \"\$builddir/usr/share/licenses/$NAME\"
 }
 
-package() {"
+package() {
+    mkdir -p \"\$pkgdir/usr/share/licenses/$NAME\"
+    cp \"\$srcdir/usr/share/licenses/$NAME/LICENSE\" \"\$pkgdir/usr/share/licenses/$NAME/LICENSE\"
+"
 
 cd data
 for f in $(find . -print); do
@@ -193,9 +200,9 @@ for f in $(find . -print); do
     fi
 
     if [ -d "$f" ]; then
-        APKBUILD="$APKBUILD\n\tmkdir -p \"\$pkgdir/$f\""
+        APKBUILD="$APKBUILD\n    mkdir -p \"\$pkgdir/$f\""
     elif [ -f "$f" ]; then
-        APKBUILD="$APKBUILD\n\tcp \"\$srcdir/$f\" \"\$pkgdir/$f\""
+        APKBUILD="$APKBUILD\n    cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
         echo "error: unsupported file system file type for path: data/$f"
         exit 1
@@ -216,6 +223,6 @@ abuild -F -r
 cd /src
 
 mkdir -p "$ARTIFACT_DIR"
-cp "/root/packages/src/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ARTIFACT_DIR"
+cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ARTIFACT_DIR"
 
 clean

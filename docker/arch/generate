@@ -10,25 +10,29 @@ usage() {
     printf -- "--release <release>\t\tPackage release version (Required, nonblank).\n"
     printf -- "--arch <architecture>\t\tPackage architecture (Required, nonblank).\n"
     printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
-    printf -- "--summmary <summary>\t\tPackage summary (Required, nonblank).\n"
+    printf -- "--summary <summary>\t\tPackage summary (Ignored).\n"
     printf -- "--description <description>\tPackage description (Required, nonblank).\n"
+    printf -- "--copyright <copyright>\tPackage copyright (Optional).\n"
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
-    printf -- "--changelog-file <path>\tChangelog location (Required, nonblank).\n"
+    printf -- "--changelog-file <path>\tChangelog location (Ignored).\n"
     printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
-INTERNAL_DIR='/root/rpmbuild'
-ARTIFACT_DIR='/src/.rockhopper/rhel'
+INTERNAL_DIR='archlinux'
+ARTIFACT_DIR='.rockhopper/arch'
 
 clean() {
-    rm -rf rpmbuild
     rm -rf "$INTERNAL_DIR"
 }
 
 while [ "$#" -ge 1 ]; do
     case "$1" in
+    '--help')
+        usage
+        exit
+        ;;
     '--name')
         shift
         export NAME="$1"
@@ -56,12 +60,16 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--summary')
         shift
-        export SUMMARY="$1"
         shift
         ;;
     '--description')
         shift
         export DESCRIPTION="$1"
+        shift
+        ;;
+    '--copyright')
+        shift
+        export COPYRIGHT="$1"
         shift
         ;;
     '--license')
@@ -76,7 +84,6 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--changelog-file')
         shift
-        export CHANGELOG_PATH="$1"
         shift
         ;;
     '--url')
@@ -121,12 +128,6 @@ if [ "${MAINTAINER:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${SUMMARY:-}" = '' ]; then
-    echo "error: blank/missing --summary <summary>"
-    usage
-    exit 1
-fi
-
 if [ "${DESCRIPTION:-}" = '' ]; then
     echo "error: blank/missing --description <description>"
     usage
@@ -139,12 +140,6 @@ if [ "${LICENSE:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${CHANGELOG_PATH:-}" = '' ]; then
-    echo "error: blank/missing --changelog-file <path>"
-    usage
-    exit 1
-fi
-
 if [ "${URL:-}" = '' ]; then
     echo "error: blank/missing --url <homepage>"
     usage
@@ -153,48 +148,38 @@ fi
 
 cd /src
 
-CHANGELOG="$(cat "$CHANGELOG_PATH")"
-
 clean
 
-mkdir -p "$INTERNAL_DIR/RHEL"
-BANNER="${NAME}-${VERSION}"
-mkdir -p "$INTERNAL_DIR/$BANNER"
-cp -r data "$INTERNAL_DIR/$BANNER"
-cd "$INTERNAL_DIR"
-tar czf "$BANNER.tar.gz" "$BANNER"
+PKGBUILD="# Maintainer: $MAINTAINER
+pkgname=$NAME
+pkgver=$VERSION
+pkgrel=$RELEASE
+pkgdesc=\"$DESCRIPTION\"
+arch=($ARCH)
+url=\"$URL\"
+license=('$LICENSE')
+depends=(${DEPENDENCIES:-})
+source=("
+
+cd data
+for f in $(find -type f -print); do
+    f="${f#./}"
+    b="$(basename "$f")"
+
+    PKGBUILD="$PKGBUILD\n    \"$b\""
+done
 cd /src
-mkdir -p "$INTERNAL_DIR/SOURCES"
-mv "$INTERNAL_DIR/$BANNER.tar.gz" "$INTERNAL_DIR/SOURCES"
-rm -rf "$INTERNAL_DIR/$BANNER"
 
-SPEC="Name: $NAME
-Version: $VERSION
-Release: $RELEASE%%{?dist}
-Summary: $SUMMARY
-URL: $URL
-BuildArch: $ARCH
-License: $LICENSE"
+PKGBUILD="$PKGBUILD
+)
+sha256sums=('...')
 
-if [ "${DEPENDENCIES:-}" != '' ]; then
-    SPEC="$SPEC\nRequires: $DEPENDENCIES"
-fi
+package() {
+    install -d \"\${pkgdir}/usr/share/licenses/$NAME\"
+    install \"\${srcdir}/LICENSE\" \"\${pkgdir}/usr/share/licenses/$NAME/LICENSE\"
+"
 
-SPEC="$SPEC
-Source0: $BANNER.tar.gz
-
-%%description
-$DESCRIPTION
-
-%%prep
-%%setup -q
-
-%%build
-# All assets prebuilt
-
-%%install"
-
-cd /src/data
+cd data
 for f in $(find . -print); do
     f="${f#./}"
 
@@ -203,37 +188,43 @@ for f in $(find . -print); do
     fi
 
     if [ -d "$f" ]; then
-        SPEC="$SPEC\nmkdir -p %%{buildroot}/$f"
+        PKGBUILD="$PKGBUILD\n    install -d \"\${pkgdir}/$f\""
     elif [ -f "$f" ]; then
-        SPEC="$SPEC\ncp "/src/data/$f" %%{buildroot}/$f"
+        b="$(basename "$f")"
+        PKGBUILD="$PKGBUILD\n    install \"\${srcdir}/$b\" \"\${pkgdir}/$f\""
     else
-        echo "error: unsupported file system file type for path: data/$f"
-        exit 1
+        echo "error: unsupported file system file type for path: $f"
     fi
 done
+cd /src
 
-SPEC="$SPEC\n%%files"
+PKGBUILD="$PKGBUILD\n}"
 
-for f in $(find . -type f -print); do
-    f="${f#./}"
-    SPEC="$SPEC\n/$f"
-done
+mkdir -p "$INTERNAL_DIR"
+printf "$PKGBUILD\n" >"$INTERNAL_DIR/PKGBUILD"
+
+LIC=""
+
+if [ "${COPYRIGHT:-}" != '' ]; then
+    LIC="$COPYRIGHT"
+fi
+
+LIC="$LIC
+$LICENSE"
+mkdir -p "$INTERNAL_DIR/src"
+printf "$LIC\n" >"$INTERNAL_DIR/src/LICENSE"
+
+find data -type f -exec cp "{}" "$INTERNAL_DIR" \;
+
 cd "$INTERNAL_DIR"
 
-SPEC="$SPEC
-%%changelog
-$CHANGELOG"
+# Update sha256sums
+makepkg -g >>PKGBUILD
 
-mkdir -p "$INTERNAL_DIR/SPECS"
-SPEC_PATH="$INTERNAL_DIR/SPECS/$NAME.spec"
-printf "$SPEC\n" >"$SPEC_PATH"
+makepkg
 
-rpmlint "$SPEC_PATH"
-
+cd /src
 mkdir -p "$ARTIFACT_DIR"
-
-rpmbuild -bb "$SPEC_PATH"
-
-cp "$INTERNAL_DIR/RPMS/$ARCH/$BANNER-$RELEASE."*".$ARCH.rpm" "$ARTIFACT_DIR"
+cp "${INTERNAL_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ARTIFACT_DIR"
 
 clean

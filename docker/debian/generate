@@ -10,11 +10,12 @@ usage() {
     printf -- "--release <release>\t\tPackage release version (Required, nonblank).\n"
     printf -- "--arch <architecture>\t\tPackage architecture (Required, nonblank).\n"
     printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
-    printf -- "--summary <summary>\t\tPackage summary (Required, nonblank, ignored).\n"
+    printf -- "--summary <summary>\t\tPackage summary (Ignored).\n"
     printf -- "--description <description>\tPackage description (Required, nonblank).\n"
-    printf -- "--license <license>\t\tPackage license (Required, nonblank, ignored).\n"
+    printf -- "--copyright <copyright>\tPackage copyright (Optional).\n"
+    printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
-    printf -- "--changelog-file <path>\tChangelog location (Required, nonblank, ignored).\n"
+    printf -- "--changelog-file <path>\tChangelog location (Ignored).\n"
     printf -- "--url <homepage>\t\tPackage homepage (Required, nonblank).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
@@ -59,12 +60,16 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--summary')
         shift
-        export SUMMARY="$1"
         shift
         ;;
     '--description')
         shift
         export DESCRIPTION="$1"
+        shift
+        ;;
+    '--copyright')
+        shift
+        export COPYRIGHT="$1"
         shift
         ;;
     '--license')
@@ -79,7 +84,6 @@ while [ "$#" -ge 1 ]; do
         ;;
     '--changelog-file')
         shift
-        export CHANGELOG_PATH="$1"
         shift
         ;;
     '--url')
@@ -124,12 +128,6 @@ if [ "${MAINTAINER:-}" = '' ]; then
     exit 1
 fi
 
-if [ "${SUMMARY:-}" = '' ]; then
-    echo "error: blank/missing --summary <summary>"
-    usage
-    exit 1
-fi
-
 if [ "${DESCRIPTION:-}" = '' ]; then
     echo "error: blank/missing --description <description>"
     usage
@@ -138,12 +136,6 @@ fi
 
 if [ "${LICENSE:-}" = '' ]; then
     echo "error: blank/missing --license <license>"
-    usage
-    exit 1
-fi
-
-if [ "${CHANGELOG_PATH:-}" = '' ]; then
-    echo "error: blank/missing --changelog-file <path>"
     usage
     exit 1
 fi
@@ -174,10 +166,20 @@ fi
 
 printf "$CONTROL\n" >"$INTERNAL_DIR/DEBIAN/control"
 
-mkdir -p "$ARTIFACT_DIR"
+LIC="Files: *"
+
+if [ "${COPYRIGHT:-}" != '' ]; then
+    LIC="$LIC
+Copyright: $COPYRIGHT"
+fi
+
+LIC="$LIC
+License: $LICENSE"
+printf "$LIC\n" >"$INTERNAL_DIR/DEBIAN/copyright"
 
 cp -r data/* "$INTERNAL_DIR"
 
+mkdir -p "$ARTIFACT_DIR"
 ARTIFACT="$ARTIFACT_DIR/${NAME}_${VERSION}-${RELEASE}_${ARCH}.deb"
 
 dpkg-deb --build "$INTERNAL_DIR" "$ARTIFACT"
