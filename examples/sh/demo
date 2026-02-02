@@ -1,0 +1,73 @@
+#!/bin/sh
+unset IFS
+set euf
+
+docker run --rm \
+    -v "$(pwd):/src" \
+    n4jm4/rockhopper:alpine \
+    --name hello \
+    --version 1.0.0 \
+    --arch noarch \
+    --maintainer "Bob <bob@bobsautoparts.test>" \
+    --description "greeter" \
+    --summary "greeter" \
+    --license BSD-3 \
+    --release 1 \
+    --changelog-file changelog.txt \
+    --url https://bobsautoparts.test/
+
+docker run --rm \
+    -v "$(pwd):/src" \
+    n4jm4/rockhopper:arch \
+    --name hello \
+    --version 1.0.0 \
+    --arch any \
+    --maintainer "Bob <bob@bobsautoparts.test>" \
+    --description "greeter" \
+    --summary "greeter" \
+    --license BSD-3 \
+    --release 1 \
+    --changelog-file changelog.txt \
+    --url https://bobsautoparts.test/
+
+docker run --rm \
+    -v "$(pwd):/src" \
+    n4jm4/rockhopper:debian \
+    --name hello \
+    --version 1.0.0 \
+    --arch all \
+    --maintainer "Bob <bob@bobsautoparts.test>" \
+    --description "greeter" \
+    --summary "greeter" \
+    --license BSD-3 \
+    --release 1 \
+    --changelog-file changelog.txt \
+    --url https://bobsautoparts.test/
+
+docker run --rm \
+    -v "$(pwd):/src" \
+    n4jm4/rockhopper:rhel \
+    --name hello \
+    --version 1.0.0 \
+    --arch noarch \
+    --maintainer "Bob <bob@bobsautoparts.test>" \
+    --description "greeter" \
+    --summary "greeter" \
+    --license BSD-3 \
+    --release 1 \
+    --changelog-file changelog.txt \
+    --url https://bobsautoparts.test/
+
+docker run --rm \
+    -v "$(pwd):/src" \
+    n4jm4/rockhopper:slack \
+    --name hello \
+    --version 1.0.0 \
+    --arch noarch \
+    --maintainer "Bob <bob@bobsautoparts.test>" \
+    --description "greeter" \
+    --summary "greeter" \
+    --license BSD-3 \
+    --release 1 \
+    --changelog-file changelog.txt \
+    --url https://bobsautoparts.test/

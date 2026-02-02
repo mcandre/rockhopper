@@ -15,75 +15,7 @@ rockhopper automates install media generation for a wide variety of Linux distri
 ```console
 $ cd examples/sh
 
-$ docker run --rm \
-    -v "$(pwd):/src" \
-    n4jm4/rockhopper:alpine \
-    --name hello \
-    --version 1.0.0 \
-    --arch noarch \
-    --maintainer "Bob <bob@bobsautoparts.test>" \
-    --description "greeter" \
-    --summary "greeter" \
-    --license BSD-3 \
-    --release 1 \
-    --changelog-file changelog.txt \
-    --url https://bobsautoparts.test/
-
-$ docker run --rm \
-    -v "$(pwd):/src" \
-    n4jm4/rockhopper:arch \
-    --name hello \
-    --version 1.0.0 \
-    --arch any \
-    --maintainer "Bob <bob@bobsautoparts.test>" \
-    --description "greeter" \
-    --summary "greeter" \
-    --license BSD-3 \
-    --release 1 \
-    --changelog-file changelog.txt \
-    --url https://bobsautoparts.test/
-
-$ docker run --rm \
-    -v "$(pwd):/src" \
-    n4jm4/rockhopper:debian \
-    --name hello \
-    --version 1.0.0 \
-    --arch all \
-    --maintainer "Bob <bob@bobsautoparts.test>" \
-    --description "greeter" \
-    --summary "greeter" \
-    --license BSD-3 \
-    --release 1 \
-    --changelog-file changelog.txt \
-    --url https://bobsautoparts.test/
-
-$ docker run --rm \
-    -v "$(pwd):/src" \
-    n4jm4/rockhopper:rhel \
-    --name hello \
-    --version 1.0.0 \
-    --arch noarch \
-    --maintainer "Bob <bob@bobsautoparts.test>" \
-    --description "greeter" \
-    --summary "greeter" \
-    --license BSD-3 \
-    --release 1 \
-    --changelog-file changelog.txt \
-    --url https://bobsautoparts.test/
-
-$ docker run --rm \
-    -v "$(pwd):/src" \
-    n4jm4/rockhopper:slack \
-    --name hello \
-    --version 1.0.0 \
-    --arch noarch \
-    --maintainer "Bob <bob@bobsautoparts.test>" \
-    --description "greeter" \
-    --summary "greeter" \
-    --license BSD-3 \
-    --release 1 \
-    --changelog-file changelog.txt \
-    --url https://bobsautoparts.test/
+$ ./demo
 
 $ tree .rockhopper
 .rockhopper
@@ -98,5 +30,12 @@ $ tree .rockhopper
 └── slack
     └── hello-1.0.0-1-any-build.tgz
 ```
+
+# SEE ALSO
+
+* [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
+* [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
+* [fpm](https://github.com/jordansissel/fpm), an older, host native package generator
+* [tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
 
 🐧
