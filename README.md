@@ -43,11 +43,11 @@ See [INSTALL.md](INSTALL.md).
 
 rockhopper works by managing a collection of Docker images.
 
-Base image name: `n4jm4/rockhopper`
+Base image name: [n4jm4/rockhopper](https://hub.docker.com/r/n4jm4/rockhopper)
 
 The base image name combines with tags to form specific images.
 
-Example: `n4jm4/rockhopper:debian`
+Example: [n4jm4/rockhopper:debian](https://hub.docker.com/layers/n4jm4/rockhopper/debian/images/sha256-04cdd9d33b9c1ce0e9582b089209ff4fd22cda0c8ad5c1b2d94d44f7c4b15a56)
 
 Each image can potentially build packages for an entire family of operating systems.
 
