@@ -43,17 +43,23 @@ See [INSTALL.md](INSTALL.md).
 
 rockhopper works by managing a collection of Docker images.
 
+Base image name: `n4jm4/rockhopper`
+
+The base image name combines with tags to form specific images.
+
+Example: `n4jm4/rockhopper:debian`
+
 Each image can potentially build packages for an entire family of operating systems.
 
-## Package Generators
+## Packages
 
-| Glob            | Manager          | Image                     | Family                                                            |
-| --------------- | ---------------- | ------------------------- | ----------------------------------------------------------------- |
-| `*.apk`         | apk              | `n4jm4/rockhopper:alpine` | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
-| `*.pkg.tar.zst` | pacman           | `n4jm4/rockhopper:arch`   | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
-| `*.deb`         | apt, dpkg        | `n4jm4/rockhopper:debian` | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
-| `*.rpm`         | dnf, rpm, Zypper | `n4jm4/rockhopper:rhel`   | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
-| `*-build.tgz`   | installpkg       | `n4jm4/rockhopper:slack`  | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
+| Tag      | Glob            | Managers         | Family                                                            |
+| -------- | --------------- | ---------------- | ----------------------------------------------------------------- |
+| `alpine` | `*.apk`         | apk              | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
+| `arch`   | `*.pkg.tar.zst` | pacman           | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
+| `debian` | `*.deb`         | apt, dpkg        | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
+| `rhel`   | `*.rpm`         | dnf, rpm, zypper | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
+| `slack`  | `*-build.tgz`   | installpkg       | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
 
 # USAGE
 
