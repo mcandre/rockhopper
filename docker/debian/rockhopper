@@ -20,6 +20,7 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
+ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='debian'
 ARTIFACT_DIR='.rockhopper/debian'
 
@@ -98,47 +99,51 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "${NAME:-}" = '' ]; then
-    echo "error: blank/missing --name <name>"
-    usage
-    exit 1
-fi
+validate() {
+    if [ "${NAME:-}" = '' ]; then
+        echo "error: blank/missing --name <name>"
+        usage
+        exit 1
+    fi
 
-if [ "${VERSION:-}" = '' ]; then
-    echo "error: blank/missing --version <version>"
-    usage
-    exit 1
-fi
+    if [ "${VERSION:-}" = '' ]; then
+        echo "error: blank/missing --version <version>"
+        usage
+        exit 1
+    fi
 
-if [ "${RELEASE:-}" = '' ]; then
-    echo "error: blank/missing --release <release>"
-    usage
-    exit 1
-fi
+    if [ "${RELEASE:-}" = '' ]; then
+        echo "error: blank/missing --release <release>"
+        usage
+        exit 1
+    fi
 
-if [ "${ARCH:-}" = '' ]; then
-    echo "error: blank/missing --arch <architecture>"
-    usage
-    exit 1
-fi
+    if [ "${ARCH:-}" = '' ]; then
+        echo "error: blank/missing --arch <architecture>"
+        usage
+        exit 1
+    fi
 
-if [ "${MAINTAINER:-}" = '' ]; then
-    echo "error: blank/missing --maintainer <maintainer>"
-    usage
-    exit 1
-fi
+    if [ "${MAINTAINER:-}" = '' ]; then
+        echo "error: blank/missing --maintainer <maintainer>"
+        usage
+        exit 1
+    fi
 
-if [ "${DESCRIPTION:-}" = '' ]; then
-    echo "error: blank/missing --description <description>"
-    usage
-    exit 1
-fi
+    if [ "${DESCRIPTION:-}" = '' ]; then
+        echo "error: blank/missing --description <description>"
+        usage
+        exit 1
+    fi
 
-if [ "${LICENSE:-}" = '' ]; then
-    echo "error: blank/missing --license <license>"
-    usage
-    exit 1
-fi
+    if [ "${LICENSE:-}" = '' ]; then
+        echo "error: blank/missing --license <license>"
+        usage
+        exit 1
+    fi
+}
+
+validate
 
 cd /src
 
@@ -177,7 +182,7 @@ LIC="$LIC
 License: $LICENSE"
 printf "$LIC\n" >"$INTERNAL_DIR/DEBIAN/copyright"
 
-cp -r data/* "$INTERNAL_DIR"
+cp -r "$ROCKHOPPER_DATA_DIR/"* "$INTERNAL_DIR"
 
 mkdir -p "$ARTIFACT_DIR"
 ARTIFACT="$ARTIFACT_DIR/${NAME}_${VERSION}-${RELEASE}_${ARCH}.deb"

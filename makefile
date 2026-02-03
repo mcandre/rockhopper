@@ -67,5 +67,5 @@ docker-push-rhel:
 docker-push-slack:
 	docker push n4jm4/rockhopper:slack
 
-test: clean
+test:
 	sh -c "cd examples/sh && ./demo"

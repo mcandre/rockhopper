@@ -20,6 +20,7 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
+ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='archlinux'
 ARTIFACT_DIR='.rockhopper/arch'
 
@@ -98,53 +99,57 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "${NAME:-}" = '' ]; then
-    echo "error: blank/missing --name <name>"
-    usage
-    exit 1
-fi
+validate() {
+    if [ "${NAME:-}" = '' ]; then
+        echo "error: blank/missing --name <name>"
+        usage
+        exit 1
+    fi
 
-if [ "${VERSION:-}" = '' ]; then
-    echo "error: blank/missing --version <version>"
-    usage
-    exit 1
-fi
+    if [ "${VERSION:-}" = '' ]; then
+        echo "error: blank/missing --version <version>"
+        usage
+        exit 1
+    fi
 
-if [ "${RELEASE:-}" = '' ]; then
-    echo "error: blank/missing --release <release>"
-    usage
-    exit 1
-fi
+    if [ "${RELEASE:-}" = '' ]; then
+        echo "error: blank/missing --release <release>"
+        usage
+        exit 1
+    fi
 
-if [ "${ARCH:-}" = '' ]; then
-    echo "error: blank/missing --arch <architecture>"
-    usage
-    exit 1
-fi
+    if [ "${ARCH:-}" = '' ]; then
+        echo "error: blank/missing --arch <architecture>"
+        usage
+        exit 1
+    fi
 
-if [ "${MAINTAINER:-}" = '' ]; then
-    echo "error: blank/missing --maintainer <maintainer>"
-    usage
-    exit 1
-fi
+    if [ "${MAINTAINER:-}" = '' ]; then
+        echo "error: blank/missing --maintainer <maintainer>"
+        usage
+        exit 1
+    fi
 
-if [ "${DESCRIPTION:-}" = '' ]; then
-    echo "error: blank/missing --description <description>"
-    usage
-    exit 1
-fi
+    if [ "${DESCRIPTION:-}" = '' ]; then
+        echo "error: blank/missing --description <description>"
+        usage
+        exit 1
+    fi
 
-if [ "${LICENSE:-}" = '' ]; then
-    echo "error: blank/missing --license <license>"
-    usage
-    exit 1
-fi
+    if [ "${LICENSE:-}" = '' ]; then
+        echo "error: blank/missing --license <license>"
+        usage
+        exit 1
+    fi
 
-if [ "${URL:-}" = '' ]; then
-    echo "error: blank/missing --url <homepage>"
-    usage
-    exit 1
-fi
+    if [ "${URL:-}" = '' ]; then
+        echo "error: blank/missing --url <homepage>"
+        usage
+        exit 1
+    fi
+}
+
+validate
 
 cd /src
 
@@ -161,7 +166,7 @@ license=('$LICENSE')
 depends=(${DEPENDENCIES:-})
 source=("
 
-cd data
+cd "$ROCKHOPPER_DATA_DIR"
 for f in $(find -type f -print); do
     f="${f#./}"
     b="$(basename "$f")"
@@ -179,7 +184,7 @@ package() {
     install \"\${srcdir}/LICENSE\" \"\${pkgdir}/usr/share/licenses/$NAME/LICENSE\"
 "
 
-cd data
+cd "$ROCKHOPPER_DATA_DIR"
 for f in $(find . -print); do
     f="${f#./}"
 
@@ -214,7 +219,7 @@ $LICENSE"
 mkdir -p "$INTERNAL_DIR/src"
 printf "$LIC\n" >"$INTERNAL_DIR/src/LICENSE"
 
-find data -type f -exec cp "{}" "$INTERNAL_DIR" \;
+find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$INTERNAL_DIR" \;
 
 cd "$INTERNAL_DIR"
 

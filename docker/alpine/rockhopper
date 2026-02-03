@@ -20,6 +20,7 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
+ROCKHOPPER_DATA_DIR='rockhopper-data'
 ARTIFACT_DIR='.rockhopper/alpine'
 
 clean() {
@@ -97,53 +98,57 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "${NAME:-}" = '' ]; then
-    echo "error: blank/missing --name <name>"
-    usage
-    exit 1
-fi
+validate() {
+    if [ "${NAME:-}" = '' ]; then
+        echo "error: blank/missing --name <name>"
+        usage
+        exit 1
+    fi
 
-if [ "${VERSION:-}" = '' ]; then
-    echo "error: blank/missing --version <version>"
-    usage
-    exit 1
-fi
+    if [ "${VERSION:-}" = '' ]; then
+        echo "error: blank/missing --version <version>"
+        usage
+        exit 1
+    fi
 
-if [ "${RELEASE:-}" = '' ]; then
-    echo "error: blank/missing --release <release>"
-    usage
-    exit 1
-fi
+    if [ "${RELEASE:-}" = '' ]; then
+        echo "error: blank/missing --release <release>"
+        usage
+        exit 1
+    fi
 
-if [ "${ARCH:-}" = '' ]; then
-    echo "error: blank/missing --arch <architecture>"
-    usage
-    exit 1
-fi
+    if [ "${ARCH:-}" = '' ]; then
+        echo "error: blank/missing --arch <architecture>"
+        usage
+        exit 1
+    fi
 
-if [ "${MAINTAINER:-}" = '' ]; then
-    echo "error: blank/missing --maintainer <maintainer>"
-    usage
-    exit 1
-fi
+    if [ "${MAINTAINER:-}" = '' ]; then
+        echo "error: blank/missing --maintainer <maintainer>"
+        usage
+        exit 1
+    fi
 
-if [ "${DESCRIPTION:-}" = '' ]; then
-    echo "error: blank/missing --description <description>"
-    usage
-    exit 1
-fi
+    if [ "${DESCRIPTION:-}" = '' ]; then
+        echo "error: blank/missing --description <description>"
+        usage
+        exit 1
+    fi
 
-if [ "${LICENSE:-}" = '' ]; then
-    echo "error: blank/missing --license <license>"
-    usage
-    exit 1
-fi
+    if [ "${LICENSE:-}" = '' ]; then
+        echo "error: blank/missing --license <license>"
+        usage
+        exit 1
+    fi
 
-if [ "${URL:-}" = '' ]; then
-    echo "error: blank/missing --url <homepage>"
-    usage
-    exit 1
-fi
+    if [ "${URL:-}" = '' ]; then
+        echo "error: blank/missing --url <homepage>"
+        usage
+        exit 1
+    fi
+}
+
+validate
 
 cd /src
 
@@ -181,7 +186,7 @@ options=\"!check\"
 
 prepare() {
     default_prepare
-    cp -r /src/data/* \"\$builddir\"
+    cp -r /src/$ROCKHOPPER_DATA_DIR/* \"\$builddir\"
     mkdir -p \"\$builddir/usr/share/licenses/$NAME\"
     cp /tmp/LICENSE \"\$builddir/usr/share/licenses/$NAME\"
 }
@@ -191,7 +196,7 @@ package() {
     cp \"\$srcdir/usr/share/licenses/$NAME/LICENSE\" \"\$pkgdir/usr/share/licenses/$NAME/LICENSE\"
 "
 
-cd data
+cd "$ROCKHOPPER_DATA_DIR"
 for f in $(find . -print); do
     f="${f#./}"
 
@@ -204,7 +209,7 @@ for f in $(find . -print); do
     elif [ -f "$f" ]; then
         APKBUILD="$APKBUILD\n    cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
-        echo "error: unsupported file system file type for path: data/$f"
+        echo "error: unsupported file system file type for path: $ROCKHOPPER_DATA_DIR/$f"
         exit 1
     fi
 done

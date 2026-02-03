@@ -77,7 +77,7 @@ Examples:
 
 Pro tip: Target the standard library moreso than third party libraries. Dependency optimization dovetails nicely with portability. Double points for targeting portable build system configurations.
 
-2. Create a `data` directory. Within `data`, layout all of your application's assets as they should appear on the end user's machine after installation.
+2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
 Linux, UNIX, and many other operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
 
@@ -86,7 +86,7 @@ Example:
 ```console
 $ tree
 .
-└── data
+└── rockhopper-data
     └── usr
         └── bin
             └── hello
@@ -222,7 +222,7 @@ Examples:
 * `"BSD-3-Clause"`
 * `"GPL-3.0-or-later"`
 
-rockhopper combines copyright and license into a terse `LICENSE` file in each package artifact. To customize the contents, layout a `LICENSE` file within your `data` tree, relative to your operating systems' specific filesystem hierarchy.
+rockhopper combines copyright and license into a terse `LICENSE` file in each package artifact. To customize the contents, layout a `LICENSE` file within your `rockhopper-data` tree, relative to your operating systems' specific filesystem hierarchy.
 
 ### `--dependencies <dependencies>`
 

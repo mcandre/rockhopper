@@ -20,6 +20,7 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
+ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='/root/rpmbuild'
 ARTIFACT_DIR='/src/.rockhopper/rhel'
 
@@ -97,59 +98,63 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "${NAME:-}" = '' ]; then
-    echo "error: blank/missing --name <name>"
-    usage
-    exit 1
-fi
+validate() {
+    if [ "${NAME:-}" = '' ]; then
+        echo "error: blank/missing --name <name>"
+        usage
+        exit 1
+    fi
 
-if [ "${VERSION:-}" = '' ]; then
-    echo "error: blank/missing --version <version>"
-    usage
-    exit 1
-fi
+    if [ "${VERSION:-}" = '' ]; then
+        echo "error: blank/missing --version <version>"
+        usage
+        exit 1
+    fi
 
-if [ "${RELEASE:-}" = '' ]; then
-    echo "error: blank/missing --release <release>"
-    usage
-    exit 1
-fi
+    if [ "${RELEASE:-}" = '' ]; then
+        echo "error: blank/missing --release <release>"
+        usage
+        exit 1
+    fi
 
-if [ "${ARCH:-}" = '' ]; then
-    echo "error: blank/missing --arch <architecture>"
-    usage
-    exit 1
-fi
+    if [ "${ARCH:-}" = '' ]; then
+        echo "error: blank/missing --arch <architecture>"
+        usage
+        exit 1
+    fi
 
-if [ "${MAINTAINER:-}" = '' ]; then
-    echo "error: blank/missing --maintainer <maintainer>"
-    usage
-    exit 1
-fi
+    if [ "${MAINTAINER:-}" = '' ]; then
+        echo "error: blank/missing --maintainer <maintainer>"
+        usage
+        exit 1
+    fi
 
-if [ "${SUMMARY:-}" = '' ]; then
-    echo "error: blank/missing --summary <summary>"
-    usage
-    exit 1
-fi
+    if [ "${SUMMARY:-}" = '' ]; then
+        echo "error: blank/missing --summary <summary>"
+        usage
+        exit 1
+    fi
 
-if [ "${DESCRIPTION:-}" = '' ]; then
-    echo "error: blank/missing --description <description>"
-    usage
-    exit 1
-fi
+    if [ "${DESCRIPTION:-}" = '' ]; then
+        echo "error: blank/missing --description <description>"
+        usage
+        exit 1
+    fi
 
-if [ "${LICENSE:-}" = '' ]; then
-    echo "error: blank/missing --license <license>"
-    usage
-    exit 1
-fi
+    if [ "${LICENSE:-}" = '' ]; then
+        echo "error: blank/missing --license <license>"
+        usage
+        exit 1
+    fi
 
-if [ "${CHANGELOG_PATH:-}" = '' ]; then
-    echo "error: blank/missing --changelog-file <path>"
-    usage
-    exit 1
-fi
+    if [ "${CHANGELOG_PATH:-}" = '' ]; then
+        echo "error: blank/missing --changelog-file <path>"
+        usage
+        exit 1
+    fi
+}
+
+validate
 
 cd /src
 
@@ -170,10 +175,10 @@ fi
 LIC="$LIC
 $LICENSE"
 printf "$LIC\n" >/tmp/LICENSE
-mkdir -p "$INTERNAL_DIR/$BANNER/data/usr/share/licenses/$NAME"
-cp /tmp/LICENSE "$INTERNAL_DIR/$BANNER/data/usr/share/licenses/$NAME/LICENSE"
+mkdir -p "$INTERNAL_DIR/$BANNER/$ROCKHOPPER_DATA_DIR/usr/share/licenses/$NAME"
+cp /tmp/LICENSE "$INTERNAL_DIR/$BANNER/$ROCKHOPPER_DATA_DIR/usr/share/licenses/$NAME/LICENSE"
 
-cp -r data "$INTERNAL_DIR/$BANNER"
+cp -r "$ROCKHOPPER_DATA_DIR" "$INTERNAL_DIR/$BANNER"
 cd "$INTERNAL_DIR"
 tar czf "$BANNER.tar.gz" "$BANNER"
 cd /src
@@ -216,7 +221,7 @@ mkdir -p \"%%{buildroot}/usr/share/licenses/$NAME\"
 cp /tmp/LICENSE \"%%{buildroot}/usr/share/licenses/$NAME/LICENSE\"
 "
 
-cd /src/data
+cd "/src/$ROCKHOPPER_DATA_DIR"
 for f in $(find . -print); do
     f="${f#./}"
 
@@ -227,9 +232,9 @@ for f in $(find . -print); do
     if [ -d "$f" ]; then
         SPEC="$SPEC\nmkdir -p \"%%{buildroot}/$f\""
     elif [ -f "$f" ]; then
-        SPEC="$SPEC\ncp "/src/data/$f" %%{buildroot}/$f"
+        SPEC="$SPEC\ncp \"/src/$ROCKHOPPER_DATA_DIR/$f\" \"%%{buildroot}/$f\""
     else
-        echo "error: unsupported file system file type for path: data/$f"
+        echo "error: unsupported file system file type for path: $ROCKHOPPER_DATA_DIR/$f"
         exit 1
     fi
 done
