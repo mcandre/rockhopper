@@ -29,7 +29,7 @@ $ tree .rockhopper
 │   └── hello-1.0.0-1-any.pkg.tar.zst
 ├── debian
 │   └── hello_1.0.0-1_all.deb
-├── rhel
+├── fedora
 │   └── hello-1.0.0-1.fc43.noarch.rpm
 └── slack
     └── hello-1.0.0-1-noarch-build.tgz
@@ -53,13 +53,15 @@ Each image tag can potentially build packages for an entire family of operating 
 
 ## Rockhopper Images
 
-| Tag      | Package Glob    | Package Managers | Family                                                            |
-| -------- | --------------- | ---------------- | ----------------------------------------------------------------- |
-| `alpine` | `*.apk`         | apk              | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
-| `arch`   | `*.pkg.tar.zst` | pacman           | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
-| `debian` | `*.deb`         | apt, dpkg        | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
-| `rhel`   | `*.rpm`         | dnf, rpm, zypper | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
-| `slack`  | `*-build.tgz`   | installpkg       | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
+| Tag        | Glob            | Manager    | Distro Family                                                     |
+| ---------- | --------------- | ---------- | ----------------------------------------------------------------- |
+| `alpine`   | `*.apk`         | apk        | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
+| `arch`     | `*.pkg.tar.zst` | pacman     | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
+| `debian`   | `*.deb`         | apt        | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
+| `fedora`   | `*.rpm`         | dnf        | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
+| `slack`    | `*-build.tgz`   | installpkg | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
+
+Version pinning is also supported, with [tag aliases](https://hub.docker.com/r/n4jm4/rockhopper/tags).
 
 # USAGE
 
@@ -130,7 +132,7 @@ Example:
     └── hello_1.0.0-1_all.deb
 ```
 
-Packages write to `.rockhopper/<os-family>/<package-file>`.
+Packages write to `.rockhopper/<distro>/<package-file>`.
 
 ```text
   o<  wowowweewow!!!
@@ -261,7 +263,7 @@ Image design:
 * standard operating system package building tools
 * a `rockhopper` shell script that receives all the configurable [CLI flags](#flags) and writes a basic, functioning, package file. (Stubs welcome!)
 * Read application assets from `/src` (e.g. `docker run -v "$(pwd):/src" <image> --name hello --version hello ...`).
-* Write package files to `/src/.rockhopper/<os-family>/<basename>`.
+* Write package files to `/src/.rockhopper/<distro>/<basename>`.
 
 This adaptable structure, empowers users to essentially copy and paste build configurations for many combinations of operating systems and architectures.
 

@@ -22,7 +22,7 @@ usage() {
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='/root/rpmbuild'
-ARTIFACT_DIR='/src/.rockhopper/rhel'
+ARTIFACT_DIR='/src/.rockhopper/fedora'
 
 clean() {
     rm -rf rpmbuild
