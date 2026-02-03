@@ -53,13 +53,13 @@ Each image tag can potentially build packages for an entire family of operating 
 
 ## Rockhopper Images
 
-| Tag        | File Glob       | Package Manager | Distro Family                                                     |
-| ---------- | --------------- | --------------- | ----------------------------------------------------------------- |
-| `alpine`   | `*.apk`         | apk             | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
-| `arch`     | `*.pkg.tar.zst` | pacman          | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
-| `debian`   | `*.deb`         | apt             | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
-| `fedora`   | `*.rpm`         | dnf             | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
-| `slack`    | `*-build.tgz`   | installpkg      | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
+| Distro       | Tag      |
+| ------------ | -------- |
+| Alpine Linux | `alpine` |
+| Arch Linux   | `arch`   |
+| Debian       | `debian` |
+| Fedora       | `fedora` |
+| Slackware    | `slack`  |
 
 Version pinning is available with [tag aliases](https://hub.docker.com/r/n4jm4/rockhopper/tags).
 
