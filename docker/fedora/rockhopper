@@ -10,14 +10,19 @@ usage() {
     printf -- "--release <release>\t\tPackage release version (Required, nonblank).\n"
     printf -- "--arch <architecture>\t\tPackage architecture (Required, nonblank).\n"
     printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
-    printf -- "--summmary <summary>\t\tPackage summary (Required, nonblank).\n"
+    printf -- "--summary <summary>\t\tPackage summary (Required, nonblank).\n"
     printf -- "--description <description>\tPackage description (Required, nonblank).\n"
-    printf -- "--copyright <copyright>\tPackage copyright (Optional).\n"
+    printf -- "--copyright <copyright>\t\tPackage copyright (Optional).\n"
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
-    printf -- "--changelog-file <path>\tChangelog location (Required, nonblank).\n"
+    printf -- "--changelog-file <path>\t\tChangelog location (Required, nonblank).\n"
     printf -- "--url <homepage>\t\tPackage homepage (Optional).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
+    printf -- "-V\t\t\t\tShow version banner.\n"
+}
+
+banner() {
+    echo 'rockhopper 0.0.1'
 }
 
 ROCKHOPPER_MOUNT='/mnt/rockhopper'
@@ -31,6 +36,14 @@ clean() {
 
 while [ "$#" -ge 1 ]; do
     case "$1" in
+    '--help')
+        usage
+        exit
+        ;;
+    '-V')
+        banner
+        exit
+        ;;
     '--name')
         shift
         export NAME="$1"

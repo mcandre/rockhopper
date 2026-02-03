@@ -148,6 +148,14 @@ Remember to test your shiny new packages. Install them into a fresh environment.
 
 ## CLI Flags
 
+### `--help`
+
+Show usage menu.
+
+### `-V`
+
+Show version banner.
+
 ### `--name <name>`
 
 Required, nonblank.

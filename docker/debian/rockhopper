@@ -12,12 +12,17 @@ usage() {
     printf -- "--maintainer <maintainer>\tPackage maintainer of the form \"<name> <email>\" (Required, RFC822 format).\n"
     printf -- "--summary <summary>\t\tPackage summary (Ignored).\n"
     printf -- "--description <description>\tPackage description (Required, nonblank).\n"
-    printf -- "--copyright <copyright>\tPackage copyright (Optional).\n"
+    printf -- "--copyright <copyright>\t\tPackage copyright (Optional).\n"
     printf -- "--license <license>\t\tPackage license (Required, nonblank).\n"
     printf -- "--dependencies <dependencies>\tPrerequisite package constraints (Optional).\n"
-    printf -- "--changelog-file <path>\tChangelog location (Ignored).\n"
+    printf -- "--changelog-file <path>\t\tChangelog location (Ignored).\n"
     printf -- "--url <homepage>\t\tPackage homepage (Optional).\n"
     printf -- "--help\t\t\t\tShow usage menu.\n"
+    printf -- "-V\t\t\t\tShow version banner.\n"
+}
+
+banner() {
+    echo 'rockhopper 0.0.1'
 }
 
 ROCKHOPPER_MOUNT='/mnt/rockhopper'
@@ -33,6 +38,10 @@ while [ "$#" -ge 1 ]; do
     case "$1" in
     '--help')
         usage
+        exit
+        ;;
+    '-V')
+        banner
         exit
         ;;
     '--name')
