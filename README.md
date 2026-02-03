@@ -12,7 +12,7 @@
 
 rockhopper automates *crossplatform package generation*.
 
-Cool!
+Distro hoppers, enjoy~
 
 # DEMO
 
@@ -45,15 +45,15 @@ rockhopper works by managing a collection of Docker images.
 
 Each image can potentially build packages for an entire family of operating systems.
 
-## Generators
+## Package Generators
 
-| Package Type    | Image                     | Family                                                                                          |
-| --------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
-| `*.apk`         | `n4jm4/rockhopper:alpine` | Alpine Linux, OpenWrt, etc.                                                                     |
-| `*.pkg.tar.zst` | `n4jm4/rockhopper:arch`   | Arch Linux, SteamOS, Archbang, etc.                                                             |
-| `*.deb`         | `n4jm4/rockhopper:debian` | Debian, Ubuntu, Pop!_OS, Kali Linux, Mint, etc.                                                 |
-| `*.rpm`         | `n4jm4/rockhopper:rhel`   | RHEL, Fedora, CentOS Stream, openSUSE, AlmaLinux, Rocky Linux, Amazon Linux, Oracle Linux, etc. |
-| `*-build.tgz`   | `n4jm4/rockhopper:slack`  | Slackware                                                                                       |
+| Glob            | Manager          | Image                     | Family                                                            |
+| --------------- | ---------------- | ------------------------- | ----------------------------------------------------------------- |
+| `*.apk`         | apk              | `n4jm4/rockhopper:alpine` | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
+| `*.pkg.tar.zst` | pacman           | `n4jm4/rockhopper:arch`   | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
+| `*.deb`         | apt, dpkg        | `n4jm4/rockhopper:debian` | [Debian](https://distrowatch.com/search.php?basedon=Debian)       |
+| `*.rpm`         | dnf, rpm, Zypper | `n4jm4/rockhopper:rhel`   | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
+| `*-build.tgz`   | installpkg       | `n4jm4/rockhopper:slack`  | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
 
 # USAGE
 
