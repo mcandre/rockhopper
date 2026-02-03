@@ -51,9 +51,9 @@ Example: `n4jm4/rockhopper:debian`
 
 Each image tag can potentially build packages for an entire family of operating systems.
 
-## Packages
+## Rockhopper Images
 
-| Tag      | Glob            | Managers         | Family                                                            |
+| Tag      | Package Glob    | Package Managers | Family                                                            |
 | -------- | --------------- | ---------------- | ----------------------------------------------------------------- |
 | `alpine` | `*.apk`         | apk              | [Alpine Linux](https://distrowatch.com/search.php?basedon=Alpine) |
 | `arch`   | `*.pkg.tar.zst` | pacman           | [Arch Linux](https://distrowatch.com/search.php?basedon=Arch)     |
