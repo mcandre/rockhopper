@@ -130,9 +130,9 @@ Packages write to `.rockhopper/<os-family>/<package-file>`.
  ^^
 ```
 
-With some tweaks, we can proceed to generate packages for multiple platforms. See [examples/sh/demo](demo).
+With some tweaks, we can proceed to generate packages for even more distributions. See [examples/sh/demo](demo).
 
-You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
+You've gone from source code, to executables, to installers. And we haven't even shown multi-architecture package generation. Congratulations, you're already above and beyond.
 
 Remember to test your shiny new packages. Install them into a fresh environment. Run your apps. Kick the tires!
 
