@@ -61,7 +61,7 @@ Each image tag can potentially build packages for an entire family of operating 
 | `fedora`   | `*.rpm`         | dnf             | [Fedora](https://distrowatch.com/search.php?basedon=Fedora)       |
 | `slack`    | `*-build.tgz`   | installpkg      | [Slackware](https://distrowatch.com/search.php?basedon=Slackware) |
 
-Version pinning is also supported, with [tag aliases](https://hub.docker.com/r/n4jm4/rockhopper/tags).
+Version pinning is available with [tag aliases](https://hub.docker.com/r/n4jm4/rockhopper/tags).
 
 # USAGE
 
