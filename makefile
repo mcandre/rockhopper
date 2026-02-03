@@ -80,4 +80,4 @@ docker-tag-slack:
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:slack15
 
 test:
-	sh -c "cd examples/sh && ./demo"
+	sh -c "cd examples/sh && ./demo && tree .rockhopper"

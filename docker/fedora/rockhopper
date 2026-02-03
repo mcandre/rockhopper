@@ -20,13 +20,13 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
-ROCKHOPPER_DATA_DIR='rockhopper-data'
-INTERNAL_DIR='/root/rpmbuild'
-ROCKHOPPER_ARTIFACT_DIR='/src/.rockhopper/fedora'
+ROCKHOPPER_MOUNT='/mnt/rockhopper'
+ROCKHOPPER_DATA_DIR="$ROCKHOPPER_MOUNT/rockhopper-data"
+ROCKHOPPER_ARTIFACT_DIR="$ROCKHOPPER_MOUNT/.rockhopper/fedora"
+RPM_BUILD_DIR='/root/rpmbuild'
 
 clean() {
-    rm -rf rpmbuild
-    rm -rf "$INTERNAL_DIR"
+    rm -rf "$RPM_BUILD_DIR"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -99,55 +99,55 @@ while [ "$#" -ge 1 ]; do
 done
 
 validate() {
-    if [ "${NAME:-}" = '' ]; then
+    if [ -z "${NAME:-}" ]; then
         echo "error: blank/missing --name <name>"
         usage
         exit 1
     fi
 
-    if [ "${VERSION:-}" = '' ]; then
+    if [ -z "${VERSION:-}" ]; then
         echo "error: blank/missing --version <version>"
         usage
         exit 1
     fi
 
-    if [ "${RELEASE:-}" = '' ]; then
+    if [ -z "${RELEASE:-}" ]; then
         echo "error: blank/missing --release <release>"
         usage
         exit 1
     fi
 
-    if [ "${ARCH:-}" = '' ]; then
+    if [ -z "${ARCH:-}" ]; then
         echo "error: blank/missing --arch <architecture>"
         usage
         exit 1
     fi
 
-    if [ "${MAINTAINER:-}" = '' ]; then
+    if [ -z "${MAINTAINER:-}" ]; then
         echo "error: blank/missing --maintainer <maintainer>"
         usage
         exit 1
     fi
 
-    if [ "${SUMMARY:-}" = '' ]; then
+    if [ -z "${SUMMARY:-}" ]; then
         echo "error: blank/missing --summary <summary>"
         usage
         exit 1
     fi
 
-    if [ "${DESCRIPTION:-}" = '' ]; then
+    if [ -z "${DESCRIPTION:-}" ]; then
         echo "error: blank/missing --description <description>"
         usage
         exit 1
     fi
 
-    if [ "${LICENSE:-}" = '' ]; then
+    if [ -z "${LICENSE:-}" ]; then
         echo "error: blank/missing --license <license>"
         usage
         exit 1
     fi
 
-    if [ "${CHANGELOG_PATH:-}" = '' ]; then
+    if [ -z "${CHANGELOG_PATH:-}" ]; then
         echo "error: blank/missing --changelog-file <path>"
         usage
         exit 1
@@ -155,43 +155,38 @@ validate() {
 }
 
 validate
-
-cd /src
-
-CHANGELOG="$(cat "$CHANGELOG_PATH")"
-
 clean
-
-mkdir -p "$INTERNAL_DIR/RHEL"
-
-BANNER="${NAME}-${VERSION}"
 
 LIC=""
 
-if [ "${COPYRIGHT:-}" != '' ]; then
+if [ -n "${COPYRIGHT:-}" ]; then
     LIC="$COPYRIGHT"
 fi
 
 LIC="$LIC
 $LICENSE"
 printf "$LIC\n" >/tmp/LICENSE
-mkdir -p "$INTERNAL_DIR/$BANNER/$ROCKHOPPER_DATA_DIR/usr/share/licenses/$NAME"
-cp /tmp/LICENSE "$INTERNAL_DIR/$BANNER/$ROCKHOPPER_DATA_DIR/usr/share/licenses/$NAME/LICENSE"
 
-cp -r "$ROCKHOPPER_DATA_DIR" "$INTERNAL_DIR/$BANNER"
-cd "$INTERNAL_DIR"
+BANNER="${NAME}-${VERSION}"
+mkdir -p "$RPM_BUILD_DIR/RHEL"
+mkdir -p "$RPM_BUILD_DIR/$BANNER/data/usr/share/licenses/$NAME"
+cp /tmp/LICENSE "$RPM_BUILD_DIR/$BANNER/data/usr/share/licenses/$NAME/LICENSE"
+cp -r "$ROCKHOPPER_DATA_DIR"/* "$RPM_BUILD_DIR/$BANNER/data"
+
+cd "$RPM_BUILD_DIR"
+
 tar czf "$BANNER.tar.gz" "$BANNER"
-cd /src
-mkdir -p "$INTERNAL_DIR/SOURCES"
-mv "$INTERNAL_DIR/$BANNER.tar.gz" "$INTERNAL_DIR/SOURCES"
-rm -rf "${INTERNAL_DIR:?}/${BANNER:?}"
+
+mkdir -p "$RPM_BUILD_DIR/SOURCES"
+mv "$RPM_BUILD_DIR/$BANNER.tar.gz" "$RPM_BUILD_DIR/SOURCES"
+rm -rf "${RPM_BUILD_DIR:?}/${BANNER:?}"
 
 SPEC="Name: $NAME
 Version: $VERSION
 Release: $RELEASE%%{?dist}
 Summary: $SUMMARY"
 
-if [ "${URL:-}" != '' ]; then
+if [ -n "${URL:-}" ]; then
     SPEC="$SPEC
 URL: $URL"
 fi
@@ -200,7 +195,7 @@ SPEC="$SPEC
 BuildArch: $ARCH
 License: $LICENSE"
 
-if [ "${DEPENDENCIES:-}" != '' ]; then
+if [ -n "${DEPENDENCIES:-}" ]; then
     SPEC="$SPEC\nRequires: $DEPENDENCIES"
 fi
 
@@ -221,18 +216,19 @@ mkdir -p \"%%{buildroot}/usr/share/licenses/$NAME\"
 cp /tmp/LICENSE \"%%{buildroot}/usr/share/licenses/$NAME/LICENSE\"
 "
 
-cd "/src/$ROCKHOPPER_DATA_DIR"
-for f in $(find . -print); do
-    f="${f#./}"
+cd "$ROCKHOPPER_DATA_DIR"
 
-    if [ "$f" = '.' ]; then
+for f in $(find . -print); do
+    if [ "$f" = './' ]; then
         continue
     fi
+
+    f="${f#./}"
 
     if [ -d "$f" ]; then
         SPEC="$SPEC\nmkdir -p \"%%{buildroot}/$f\""
     elif [ -f "$f" ]; then
-        SPEC="$SPEC\ncp \"/src/$ROCKHOPPER_DATA_DIR/$f\" \"%%{buildroot}/$f\""
+        SPEC="$SPEC\ncp \"$ROCKHOPPER_DATA_DIR/$f\" \"%%{buildroot}/$f\""
     else
         echo "error: unsupported file system file type for path: $ROCKHOPPER_DATA_DIR/$f"
         exit 1
@@ -247,22 +243,20 @@ for f in $(find . -type f -print); do
     f="${f#./}"
     SPEC="$SPEC\n/$f"
 done
-cd "$INTERNAL_DIR"
+
+cd "$ROCKHOPPER_MOUNT"
 
 SPEC="$SPEC
 %%changelog
-$CHANGELOG"
+$(cat "$CHANGELOG_PATH")"
 
-mkdir -p "$INTERNAL_DIR/SPECS"
-SPEC_PATH="$INTERNAL_DIR/SPECS/$NAME.spec"
+cd "$RPM_BUILD_DIR"
+
+mkdir -p "$RPM_BUILD_DIR/SPECS"
+SPEC_PATH="$RPM_BUILD_DIR/SPECS/$NAME.spec"
 printf "$SPEC\n" >"$SPEC_PATH"
-
 rpmlint "$SPEC_PATH"
-
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
-
 rpmbuild -bb "$SPEC_PATH"
-
-cp "$INTERNAL_DIR/RPMS/$ARCH/$BANNER-$RELEASE."*".$ARCH.rpm" "$ROCKHOPPER_ARTIFACT_DIR"
-
+cp "$RPM_BUILD_DIR/RPMS/$ARCH/$BANNER-$RELEASE."*".$ARCH.rpm" "$ROCKHOPPER_ARTIFACT_DIR"
 clean

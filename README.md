@@ -53,15 +53,15 @@ Each image tag can potentially build packages for an entire family of operating 
 
 ## Rockhopper Images
 
-| Distro       | Tag      |
-| ------------ | -------- |
-| Alpine Linux | `alpine` |
-| Arch Linux   | `arch`   |
-| Debian       | `debian` |
-| Fedora       | `fedora` |
-| Slackware    | `slack`  |
+| Distro       | Tag    |
+| ------------ | ------ |
+| Alpine Linux | alpine |
+| Arch Linux   | arch   |
+| Debian       | debian |
+| Fedora       | fedora |
+| Slackware    | slack  |
 
-Version pinning is available with [tag aliases](https://hub.docker.com/r/n4jm4/rockhopper/tags).
+Version pinning available with alias [tags](https://hub.docker.com/r/n4jm4/rockhopper/tags).
 
 # USAGE
 
@@ -108,7 +108,7 @@ Example:
 
 ```sh
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:debian \
     --name hello \
     --version 1.0.0 \
@@ -262,8 +262,8 @@ Image design:
 
 * standard operating system package building tools
 * a `rockhopper` shell script that receives all the configurable [CLI flags](#flags) and writes a basic, functioning, package file. (Stubs welcome!)
-* Read application assets from `/src` (e.g. `docker run -v "$(pwd):/src" <image> --name hello --version hello ...`).
-* Write package files to `/src/.rockhopper/<distro>/<basename>`.
+* Read application assets from `/mnt/rockhopper` (e.g. `docker run -v "$(pwd):/mnt/rockhopper" <image> --name hello --version hello ...`).
+* Write package files to `/mnt/rockhopper/.rockhopper/<distro>/<basename>`.
 
 This adaptable structure, empowers users to essentially copy and paste build configurations for many combinations of operating systems and architectures.
 

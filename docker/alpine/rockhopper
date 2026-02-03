@@ -20,11 +20,13 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
-ROCKHOPPER_DATA_DIR='rockhopper-data'
-ROCKHOPPER_ARTIFACT_DIR='.rockhopper/alpine'
+ROCKHOPPER_MOUNT='/mnt/rockhopper'
+ROCKHOPPER_DATA_DIR="$ROCKHOPPER_MOUNT/rockhopper-data"
+ROCKHOPPER_ARTIFACT_DIR="$ROCKHOPPER_MOUNT/.rockhopper/alpine"
+APK_BUILD_DIR="/tmp/alpinelinux"
 
 clean() {
-    rm -rf alpinelinux
+    rm -rf "$APK_BUILD_DIR"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -99,49 +101,49 @@ while [ "$#" -ge 1 ]; do
 done
 
 validate() {
-    if [ "${NAME:-}" = '' ]; then
+    if [ -z "${NAME:-}" ]; then
         echo "error: blank/missing --name <name>"
         usage
         exit 1
     fi
 
-    if [ "${VERSION:-}" = '' ]; then
+    if [ -z "${VERSION:-}" ]; then
         echo "error: blank/missing --version <version>"
         usage
         exit 1
     fi
 
-    if [ "${RELEASE:-}" = '' ]; then
+    if [ -z "${RELEASE:-}" ]; then
         echo "error: blank/missing --release <release>"
         usage
         exit 1
     fi
 
-    if [ "${ARCH:-}" = '' ]; then
+    if [ -z "${ARCH:-}" ]; then
         echo "error: blank/missing --arch <architecture>"
         usage
         exit 1
     fi
 
-    if [ "${MAINTAINER:-}" = '' ]; then
+    if [ -z "${MAINTAINER:-}" ]; then
         echo "error: blank/missing --maintainer <maintainer>"
         usage
         exit 1
     fi
 
-    if [ "${DESCRIPTION:-}" = '' ]; then
+    if [ -z "${DESCRIPTION:-}" ]; then
         echo "error: blank/missing --description <description>"
         usage
         exit 1
     fi
 
-    if [ "${LICENSE:-}" = '' ]; then
+    if [ -z "${LICENSE:-}" ]; then
         echo "error: blank/missing --license <license>"
         usage
         exit 1
     fi
 
-    if [ "${URL:-}" = '' ]; then
+    if [ -z "${URL:-}" ]; then
         echo "error: blank/missing --url <homepage>"
         usage
         exit 1
@@ -149,14 +151,11 @@ validate() {
 }
 
 validate
-
-cd /src
-
-INTERNAL_DIR="alpinelinux/$NAME"
+clean
 
 LIC=""
 
-if [ "${COPYRIGHT:-}" != '' ]; then
+if [ -n "${COPYRIGHT:-}" ]; then
     LIC="$COPYRIGHT"
 fi
 
@@ -164,8 +163,7 @@ LIC="$LIC
 $LICENSE"
 printf "$LIC\n" >/tmp/LICENSE
 
-clean
-mkdir -p "$INTERNAL_DIR"
+mkdir -p "$APK_BUILD_DIR/$NAME"
 
 APKBUILD="# Maintainer: $MAINTAINER
 pkgname=$NAME
@@ -186,7 +184,7 @@ options=\"!check\"
 
 prepare() {
     default_prepare
-    cp -r /src/$ROCKHOPPER_DATA_DIR/* \"\$builddir\"
+    cp -r \"$ROCKHOPPER_DATA_DIR/\"* \"\$builddir\"
     mkdir -p \"\$builddir/usr/share/licenses/$NAME\"
     cp /tmp/LICENSE \"\$builddir/usr/share/licenses/$NAME\"
 }
@@ -197,12 +195,13 @@ package() {
 "
 
 cd "$ROCKHOPPER_DATA_DIR"
-for f in $(find . -print); do
-    f="${f#./}"
 
-    if [ "$f" = '.' ]; then
+for f in $(find . -print); do
+    if [ "$f" = './' ]; then
         continue
     fi
+
+    f="${f#./}"
 
     if [ -d "$f" ]; then
         APKBUILD="$APKBUILD\n    mkdir -p \"\$pkgdir/$f\""
@@ -213,21 +212,18 @@ for f in $(find . -print); do
         exit 1
     fi
 done
-cd ..
 
 APKBUILD="$APKBUILD\n}"
 
-printf "$APKBUILD\n" >"$INTERNAL_DIR/APKBUILD"
+printf "$APKBUILD\n" >"$APK_BUILD_DIR/$NAME/APKBUILD"
 
-SRC_DIR="$INTERNAL_DIR/src"
+SRC_DIR="$APK_BUILD_DIR/$NAME/src"
 mkdir -p "$SRC_DIR"
 
-cd "$INTERNAL_DIR"
+cd "$APK_BUILD_DIR/$NAME"
+
 abuild -F checksum
 abuild -F -r
-cd /src
-
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ROCKHOPPER_ARTIFACT_DIR/$NAME-$VERSION-r$RELEASE.$ARCH.apk"
-
 clean

@@ -4,6 +4,7 @@
 * [Docker](https://www.docker.com/) 28.0.1+
 * POSIX compliant [findutils](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
+* [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 ## Recommended
 
@@ -11,7 +12,6 @@
 * [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
 * Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
 * [GNU time](https://www.gnu.org/software/time/)
-* [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 # BUILD
 

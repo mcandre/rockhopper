@@ -20,12 +20,13 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
-ROCKHOPPER_DATA_DIR='rockhopper-data'
-INTERNAL_DIR='archlinux'
-ROCKHOPPER_ARTIFACT_DIR='.rockhopper/arch'
+ROCKHOPPER_MOUNT='/mnt/rockhopper'
+ROCKHOPPER_DATA_DIR="$ROCKHOPPER_MOUNT/rockhopper-data"
+ROCKHOPPER_ARTIFACT_DIR="$ROCKHOPPER_MOUNT/.rockhopper/arch"
+PACMAN_BUILD_DIR='/tmp/archlinux'
 
 clean() {
-    rm -rf "$INTERNAL_DIR"
+    rm -rf "$PACMAN_BUILD_DIR"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -100,49 +101,49 @@ while [ "$#" -ge 1 ]; do
 done
 
 validate() {
-    if [ "${NAME:-}" = '' ]; then
+    if [ -z "${NAME:-}" ]; then
         echo "error: blank/missing --name <name>"
         usage
         exit 1
     fi
 
-    if [ "${VERSION:-}" = '' ]; then
+    if [ -z "${VERSION:-}" ]; then
         echo "error: blank/missing --version <version>"
         usage
         exit 1
     fi
 
-    if [ "${RELEASE:-}" = '' ]; then
+    if [ -z "${RELEASE:-}" ]; then
         echo "error: blank/missing --release <release>"
         usage
         exit 1
     fi
 
-    if [ "${ARCH:-}" = '' ]; then
+    if [ -z "${ARCH:-}" ]; then
         echo "error: blank/missing --arch <architecture>"
         usage
         exit 1
     fi
 
-    if [ "${MAINTAINER:-}" = '' ]; then
+    if [ -z "${MAINTAINER:-}" ]; then
         echo "error: blank/missing --maintainer <maintainer>"
         usage
         exit 1
     fi
 
-    if [ "${DESCRIPTION:-}" = '' ]; then
+    if [ -z "${DESCRIPTION:-}" ]; then
         echo "error: blank/missing --description <description>"
         usage
         exit 1
     fi
 
-    if [ "${LICENSE:-}" = '' ]; then
+    if [ -z "${LICENSE:-}" ]; then
         echo "error: blank/missing --license <license>"
         usage
         exit 1
     fi
 
-    if [ "${URL:-}" = '' ]; then
+    if [ -z "${URL:-}" ]; then
         echo "error: blank/missing --url <homepage>"
         usage
         exit 1
@@ -150,9 +151,6 @@ validate() {
 }
 
 validate
-
-cd /src
-
 clean
 
 PKGBUILD="# Maintainer: $MAINTAINER
@@ -167,13 +165,13 @@ depends=(${DEPENDENCIES:-})
 source=("
 
 cd "$ROCKHOPPER_DATA_DIR"
-for f in $(find -type f -print); do
+
+for f in $(find . -type f -print); do
     f="${f#./}"
     b="$(basename "$f")"
 
     PKGBUILD="$PKGBUILD\n    \"$b\""
 done
-cd /src
 
 PKGBUILD="$PKGBUILD
 )
@@ -184,13 +182,12 @@ package() {
     install \"\${srcdir}/LICENSE\" \"\${pkgdir}/usr/share/licenses/$NAME/LICENSE\"
 "
 
-cd "$ROCKHOPPER_DATA_DIR"
 for f in $(find . -print); do
-    f="${f#./}"
-
-    if [ "$f" = '.' ]; then
+    if [ "$f" = './' ]; then
         continue
     fi
+
+    f="${f#./}"
 
     if [ -d "$f" ]; then
         PKGBUILD="$PKGBUILD\n    install -d \"\${pkgdir}/$f\""
@@ -201,35 +198,31 @@ for f in $(find . -print); do
         echo "error: unsupported file system file type for path: $f"
     fi
 done
-cd /src
 
 PKGBUILD="$PKGBUILD\n}"
 
-mkdir -p "$INTERNAL_DIR"
-printf "$PKGBUILD\n" >"$INTERNAL_DIR/PKGBUILD"
+mkdir -p "$PACMAN_BUILD_DIR"
+printf "$PKGBUILD\n" >"$PACMAN_BUILD_DIR/PKGBUILD"
 
 LIC=""
 
-if [ "${COPYRIGHT:-}" != '' ]; then
+if [ -n "${COPYRIGHT:-}" ]; then
     LIC="$COPYRIGHT"
 fi
 
 LIC="$LIC
 $LICENSE"
-mkdir -p "$INTERNAL_DIR/src"
-printf "$LIC\n" >"$INTERNAL_DIR/src/LICENSE"
+mkdir -p "$PACMAN_BUILD_DIR/src"
+printf "$LIC\n" >"$PACMAN_BUILD_DIR/src/LICENSE"
 
-find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$INTERNAL_DIR" \;
+find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$PACMAN_BUILD_DIR" \;
 
-cd "$INTERNAL_DIR"
+cd "$PACMAN_BUILD_DIR"
 
 # Update sha256sums
 makepkg -g >>PKGBUILD
 
 makepkg
-
-cd /src
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
-cp "${INTERNAL_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ROCKHOPPER_ARTIFACT_DIR"
-
+cp "${PACMAN_BUILD_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ROCKHOPPER_ARTIFACT_DIR"
 clean

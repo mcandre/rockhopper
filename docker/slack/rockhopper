@@ -20,13 +20,14 @@ usage() {
     printf -- "--help\t\t\t\tShow usage menu.\n"
 }
 
-ROCKHOPPER_DATA_DIR='rockhopper-data'
-INTERNAL_DIR='/tmp/build'
-ROCKHOPPER_ARTIFACT_DIR='.rockhopper/slack'
+ROCKHOPPER_MOUNT='/mnt/rockhopper'
+ROCKHOPPER_DATA_DIR="$ROCKHOPPER_MOUNT/rockhopper-data"
+ROCKHOPPER_ARTIFACT_DIR="$ROCKHOPPER_MOUNT/.rockhopper/slack"
+PKGINSTALL_BUILD_DIR='/tmp/build'
 
 clean() {
     rm -rf /tmp/*.t?z
-    rm -rf "$INTERNAL_DIR"
+    rm -rf "$PKGINSTALL_BUILD_DIR"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -101,49 +102,49 @@ while [ "$#" -ge 1 ]; do
 done
 
 validate() {
-    if [ "${NAME:-}" = '' ]; then
+    if [ -z "${NAME:-}" ]; then
         echo "error: blank/missing --name <name>"
         usage
         exit 1
     fi
 
-    if [ "${VERSION:-}" = '' ]; then
+    if [ -z "${VERSION:-}" ]; then
         echo "error: blank/missing --version <version>"
         usage
         exit 1
     fi
 
-    if [ "${RELEASE:-}" = '' ]; then
+    if [ -z "${RELEASE:-}" ]; then
         echo "error: blank/missing --release <release>"
         usage
         exit 1
     fi
 
-    if [ "${ARCH:-}" = '' ]; then
+    if [ -z "${ARCH:-}" ]; then
         echo "error: blank/missing --arch <architecture>"
         usage
         exit 1
     fi
 
-    if [ "${MAINTAINER:-}" = '' ]; then
+    if [ -z "${MAINTAINER:-}" ]; then
         echo "error: blank/missing --maintainer <maintainer>"
         usage
         exit 1
     fi
 
-    if [ "${SUMMARY:-}" = '' ]; then
+    if [ -z "${SUMMARY:-}" ]; then
         echo "error: blank/missing --summary <summary>"
         usage
         exit 1
     fi
 
-    if [ "${LICENSE:-}" = '' ]; then
+    if [ -z "${LICENSE:-}" ]; then
         echo "error: blank/missing --license <license>"
         usage
         exit 1
     fi
 
-    if [ "${URL:-}" = '' ]; then
+    if [ -z "${URL:-}" ]; then
         echo "error: blank/missing --url <homepage>"
         usage
         exit 1
@@ -151,12 +152,9 @@ validate() {
 }
 
 validate
-
-cd /src
-
 clean
 
-mkdir -p "$INTERNAL_DIR/install"
+mkdir -p "$PKGINSTALL_BUILD_DIR/install"
 
 SLACK_DESC="#
 #      |-----handy-ruler------------------------------------------------------|
@@ -172,28 +170,23 @@ $NAME:
 $NAME:
 $NAME:"
 
-printf "$SLACK_DESC\n" >"$INTERNAL_DIR/install/slack-desc"
+printf "$SLACK_DESC\n" >"$PKGINSTALL_BUILD_DIR/install/slack-desc"
 
-mkdir -p "$INTERNAL_DIR/usr/doc/${NAME}-${VERSION}"
+mkdir -p "$PKGINSTALL_BUILD_DIR/usr/doc/${NAME}-${VERSION}"
 
 LIC=""
 
-if [ "${COPYRIGHT:-}" != '' ]; then
+if [ -n "${COPYRIGHT:-}" ]; then
     LIC="$COPYRIGHT"
 fi
 
 LIC="$LIC
 $LICENSE"
-printf "$LIC\n" >"$INTERNAL_DIR/usr/doc/${NAME}-${VERSION}/LICENSE"
-cp -r "$ROCKHOPPER_DATA_DIR/"* "$INTERNAL_DIR"
+printf "$LIC\n" >"$PKGINSTALL_BUILD_DIR/usr/doc/${NAME}-${VERSION}/LICENSE"
+cp -r "$ROCKHOPPER_DATA_DIR/"* "$PKGINSTALL_BUILD_DIR"
 
-ARTIFACT="${NAME}-${VERSION}-${RELEASE}-${ARCH}-build.tgz"
-
-cd "$INTERNAL_DIR"
-makepkg "../$ARTIFACT"
-cd /src
+cd "$PKGINSTALL_BUILD_DIR"
 
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
-cp "/tmp/$ARTIFACT" "$ROCKHOPPER_ARTIFACT_DIR"
-
+makepkg "$ROCKHOPPER_ARTIFACT_DIR/${NAME}-${VERSION}-${RELEASE}-${ARCH}-build.tgz"
 clean

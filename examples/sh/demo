@@ -3,7 +3,7 @@ unset IFS
 set euf
 
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:alpine \
     --name hello \
     --version 1.0.0 \
@@ -17,7 +17,7 @@ docker run --rm \
     --url https://bobsautoparts.test/
 
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:arch \
     --name hello \
     --version 1.0.0 \
@@ -31,7 +31,7 @@ docker run --rm \
     --url https://bobsautoparts.test/
 
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:debian \
     --name hello \
     --version 1.0.0 \
@@ -45,7 +45,7 @@ docker run --rm \
     --url https://bobsautoparts.test/
 
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:fedora \
     --name hello \
     --version 1.0.0 \
@@ -59,7 +59,7 @@ docker run --rm \
     --url https://bobsautoparts.test/
 
 docker run --rm \
-    -v "$(pwd):/src" \
+    -v "$(pwd):/mnt/rockhopper" \
     n4jm4/rockhopper:slack \
     --name hello \
     --version 1.0.0 \
