@@ -10,11 +10,9 @@
 
 # SUMMARY
 
+rockhopper supports crossplatform application development, specifically *packaging*.
+
 Grow your platform support, grow your user base!
-
-rockhopper supports developers writing crossplatform applications.
-
-We automate package creation for a wide variety of operating systems and architectures.
 
 # DEMO
 
