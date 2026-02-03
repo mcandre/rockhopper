@@ -22,7 +22,7 @@ usage() {
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='/root/rpmbuild'
-ARTIFACT_DIR='/src/.rockhopper/fedora'
+ROCKHOPPER_ARTIFACT_DIR='/src/.rockhopper/fedora'
 
 clean() {
     rm -rf rpmbuild
@@ -259,10 +259,10 @@ printf "$SPEC\n" >"$SPEC_PATH"
 
 rpmlint "$SPEC_PATH"
 
-mkdir -p "$ARTIFACT_DIR"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 
 rpmbuild -bb "$SPEC_PATH"
 
-cp "$INTERNAL_DIR/RPMS/$ARCH/$BANNER-$RELEASE."*".$ARCH.rpm" "$ARTIFACT_DIR"
+cp "$INTERNAL_DIR/RPMS/$ARCH/$BANNER-$RELEASE."*".$ARCH.rpm" "$ROCKHOPPER_ARTIFACT_DIR"
 
 clean

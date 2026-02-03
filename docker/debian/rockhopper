@@ -22,7 +22,7 @@ usage() {
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='debian'
-ARTIFACT_DIR='.rockhopper/debian'
+ROCKHOPPER_ARTIFACT_DIR='.rockhopper/debian'
 
 clean() {
     rm -rf "$INTERNAL_DIR"
@@ -184,8 +184,8 @@ printf "$LIC\n" >"$INTERNAL_DIR/DEBIAN/copyright"
 
 cp -r "$ROCKHOPPER_DATA_DIR/"* "$INTERNAL_DIR"
 
-mkdir -p "$ARTIFACT_DIR"
-ARTIFACT="$ARTIFACT_DIR/${NAME}_${VERSION}-${RELEASE}_${ARCH}.deb"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
+ARTIFACT="$ROCKHOPPER_ARTIFACT_DIR/${NAME}_${VERSION}-${RELEASE}_${ARCH}.deb"
 
 dpkg-deb --build "$INTERNAL_DIR" "$ARTIFACT"
 

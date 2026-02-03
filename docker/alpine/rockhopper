@@ -21,7 +21,7 @@ usage() {
 }
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
-ARTIFACT_DIR='.rockhopper/alpine'
+ROCKHOPPER_ARTIFACT_DIR='.rockhopper/alpine'
 
 clean() {
     rm -rf alpinelinux
@@ -227,7 +227,7 @@ abuild -F checksum
 abuild -F -r
 cd /src
 
-mkdir -p "$ARTIFACT_DIR"
-cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ARTIFACT_DIR/$NAME-$VERSION-r$RELEASE.$ARCH.apk"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
+cp "/root/packages/alpinelinux/$(uname -m)/$NAME-$VERSION-r$RELEASE.apk" "$ROCKHOPPER_ARTIFACT_DIR/$NAME-$VERSION-r$RELEASE.$ARCH.apk"
 
 clean

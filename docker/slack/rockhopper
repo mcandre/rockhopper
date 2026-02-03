@@ -22,7 +22,7 @@ usage() {
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='/tmp/build'
-ARTIFACT_DIR='.rockhopper/slack'
+ROCKHOPPER_ARTIFACT_DIR='.rockhopper/slack'
 
 clean() {
     rm -rf /tmp/*.t?z
@@ -193,7 +193,7 @@ cd "$INTERNAL_DIR"
 makepkg "../$ARTIFACT"
 cd /src
 
-mkdir -p "$ARTIFACT_DIR"
-cp "/tmp/$ARTIFACT" "$ARTIFACT_DIR"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
+cp "/tmp/$ARTIFACT" "$ROCKHOPPER_ARTIFACT_DIR"
 
 clean

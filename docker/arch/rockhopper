@@ -22,7 +22,7 @@ usage() {
 
 ROCKHOPPER_DATA_DIR='rockhopper-data'
 INTERNAL_DIR='archlinux'
-ARTIFACT_DIR='.rockhopper/arch'
+ROCKHOPPER_ARTIFACT_DIR='.rockhopper/arch'
 
 clean() {
     rm -rf "$INTERNAL_DIR"
@@ -229,7 +229,7 @@ makepkg -g >>PKGBUILD
 makepkg
 
 cd /src
-mkdir -p "$ARTIFACT_DIR"
-cp "${INTERNAL_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ARTIFACT_DIR"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
+cp "${INTERNAL_DIR}/${NAME}-${VERSION}-${RELEASE}-${ARCH}.pkg.tar.zst" "$ROCKHOPPER_ARTIFACT_DIR"
 
 clean
