@@ -12,7 +12,7 @@
 
 rockhopper supports crossplatform application development, specifically *packaging*.
 
-Grow your platform support, grow your user base!
+Grow your platform support. Grow your user base!
 
 # DEMO
 
