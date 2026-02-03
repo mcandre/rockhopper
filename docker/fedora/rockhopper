@@ -22,7 +22,7 @@ usage() {
 }
 
 banner() {
-    echo 'rockhopper 0.0.1'
+    echo 'rockhopper 0.0.2'
 }
 
 ROCKHOPPER_MOUNT='/mnt/rockhopper'
