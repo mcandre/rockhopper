@@ -1,5 +1,7 @@
 # rockhopper: Linux package generator
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/GUMROAD-36a9ae?style=flat&logo=gumroad&logoColor=white)](https://mcandre.gumroad.com/)
+
 ```text
   o<  gak! gak!
 -/)
@@ -41,7 +43,9 @@ See [INSTALL.md](INSTALL.md).
 
 # ABOUT
 
-rockhopper provides a collection of [Docker images](https://hub.docker.com/r/n4jm4/rockhopper) to generate packages.
+rockhopper works by managing a collection of Docker images.
+
+Each image can potentially build packages for an entire family of operating systems.
 
 ## Generators
 
