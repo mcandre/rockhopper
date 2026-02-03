@@ -43,13 +43,13 @@ See [INSTALL.md](INSTALL.md).
 
 rockhopper works by managing a collection of Docker images.
 
-Base image name: [n4jm4/rockhopper](https://hub.docker.com/r/n4jm4/rockhopper)
+Base image name: `n4jm4/rockhopper`
 
-The base image name combines with tags to form specific images.
+The base image name combines with distro tags, to form specific package generator images.
 
-Example: [n4jm4/rockhopper:debian](https://hub.docker.com/layers/n4jm4/rockhopper/debian/images/sha256-04cdd9d33b9c1ce0e9582b089209ff4fd22cda0c8ad5c1b2d94d44f7c4b15a56)
+Example: `n4jm4/rockhopper:debian`
 
-Each image can potentially build packages for an entire family of operating systems.
+Each image tag can potentially build packages for an entire family of operating systems.
 
 ## Packages
 
@@ -81,7 +81,7 @@ Examples:
 * JAR's wrapped in shell scripts (JVM)
 * chmod +x (shell scripts)
 
-Pro tip: Target the standard library moreso than third party libraries. Dependency optimization dovetails nicely with portability. Double points for targeting portable build system configurations.
+For maximum robustness, build your application within the same environment(s) as your target(s). This accounts for libc subtleties and other dependency variations. When in doubt, target hyperportable standard libraries, e.g. with Go or JVM.
 
 2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
