@@ -6,9 +6,13 @@
  ^^
 ```
 
-# ABOUT
+# SUMMARY
 
-rockhopper builds custom application packages for a wide variety of Linux distributions.
+Grow your platform support, grow your user base!
+
+rockhopper supports developers writing crossplatform applications.
+
+We automate package creation for a wide variety of operating systems and architectures.
 
 # DEMO
 
@@ -35,11 +39,45 @@ $ tree .rockhopper
 
 See [INSTALL.md](INSTALL.md).
 
+# ABOUT
+
+rockhopper provides a collection of [Docker images](https://hub.docker.com/r/n4jm4/rockhopper) to generate packages.
+
+## Generators
+
+| Package Type    | Image                     | Family                                                                                          |
+| --------------- | ------------------------- | ----------------------------------------------------------------------------------------------- |
+| `*.apk`         | `n4jm4/rockhopper:alpine` | Alpine Linux, OpenWrt, etc.                                                                     |
+| `*.pkg.tar.zst` | `n4jm4/rockhopper:arch`   | Arch Linux, SteamOS, Archbang, etc.                                                             |
+| `*.deb`         | `n4jm4/rockhopper:debian` | Debian, Ubuntu, Pop!_OS, Kali Linux, Mint, etc.                                                 |
+| `*.rpm`         | `n4jm4/rockhopper:rhel`   | RHEL, Fedora, CentOS Stream, openSUSE, AlmaLinux, Rocky Linux, Amazon Linux, Oracle Linux, etc. |
+| `*-build.tgz`   | `n4jm4/rockhopper:slack`  | Slackware                                                                                       |
+
 # USAGE
 
 rockhopper transforms application assets into installer packages. Here's how to do it!
 
-1. Create a `data` directory. Within `data`, layout all of your application's assets as they should appear on the end user's machine after installation. Apply the desired uid's, gid's, and chmod permissions to your entries. Linux, UNIX, and many other operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
+1. Build Linux executables for your application.
+
+```text
+no pain, no gain!  >*
+                   (\-
+                   ^^
+```
+
+Examples:
+
+* [crit](https://github.com/mcandre/crit) (Rust)
+* [factorio](https://github.com/mcandre/factorio) (Go)
+* [snek](https://github.com/mcandre/snek) (C/C++)
+* JAR's wrapped in shell scripts (JVM)
+* chmod +x (shell scripts)
+
+Pro tip: Target the standard library moreso than third party libraries. Dependency optimization dovetails nicely with portability. Double points for targeting portable build system configurations.
+
+2. Create a `data` directory. Within `data`, layout all of your application's assets as they should appear on the end user's machine after installation.
+
+Linux, UNIX, and many other operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
 
 Example:
 
@@ -51,6 +89,8 @@ $ tree
         └── bin
             └── hello
 ```
+
+Remember to apply the desired uid's, gid's, and chmod permissions to your entries.
 
 3. Spawn a container. Tailor the flags to suit your packaging needs.
 
@@ -69,9 +109,9 @@ docker run --rm \
     --release 1
 ```
 
-rockhopper forwards the configuration to the target OS build commands for package generation.
+Most applications need other packages in order to work. Optionally, insert a `--dependencies <dependencies>` flag in there. Consult your target operating systems' documentation to identify the relevant package names and versions.
 
-Packages write to `.rockhopper/<os-family>/<package-file>`.
+rockhopper forwards the configuration to the target OS build commands for package generation.
 
 Example:
 
@@ -82,9 +122,21 @@ Example:
     └── hello_1.0.0-1_all.deb
 ```
 
-rockhopper encourages developers to support multiple platforms. With minor tweaks, we quickly generate packages for multiple platforms. See [examples/sh/demo](demo).
+Packages write to `.rockhopper/<os-family>/<package-file>`.
 
-## Flags
+```text
+  o<  wowowweewow!!!
+`/)
+ ^^
+```
+
+With some tweaks, we can proceed to generate packages for multiple platforms. See [examples/sh/demo](demo).
+
+You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
+
+Remember to test your shiny new packages. Install them into a fresh environment. Run your apps. Kick the tires!
+
+## CLI Flags
 
 ### `--name <name>`
 
@@ -191,6 +243,31 @@ Required, nonblank.
 A network directory housing your software.
 
 Example: `"https://bobsautoparts.test/"`
+
+# ROCKHOPPER IMAGE STRUCTURE
+
+Images abstract the low level shell commands involved in generating packages, into a common Docker workflow.
+
+Image design:
+
+* standard operating system package building tools
+* a `rockhopper` shell script that receives all the configurable [CLI flags](#flags) and writes a basic, functioning, package file. (Stubs welcome!)
+* Read application assets from `/src` (e.g. `docker run -v "$(pwd):/src" <image> --name hello --version hello ...`).
+* Write package files to `/src/.rockhopper/<os-family>/<basename>`.
+
+This adaptable structure, empowers users to essentially copy and paste build configurations for many combinations of operating systems and architectures.
+
+You can even for-loop over a small subset of OS-relative flags!
+
+Plenty of other Linux distributions exist, beyond those of our stock images! Users are encouraged to publish and exchange similar rockhopper images.
+
+A dream of impossible colors... Let's make vendor lock a thing of the past.
+
+```text
+  -< zzZ... *as if!* ...Zzz
+,/)
+ ^^
+```
 
 # SEE ALSO
 
