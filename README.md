@@ -268,7 +268,7 @@ Plenty of other Linux distributions exist, beyond those of our stock images! Use
 A dream of impossible colors... Let's make vendor lock a thing of the past.
 
 ```text
-  -< zzZ... *as if!* ...Zzz
+  -< zzZ... *as if!* zzZ...
 ,/)
  ^^
 ```
