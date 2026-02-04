@@ -122,6 +122,16 @@ Email contact information for a package maintainer. RFC882 format.
 
 Example: `"Bob Loblaw <bob@bananastand.test>"`
 
+## `ROCKHOPPER_DEPENDENCIES`
+
+Optional.
+
+Prerequisite package constraints.
+
+Syntax relative to distribution.
+
+Example: `"curl"`
+
 ## `ROCKHOPPER_SUMMARY`
 
 Commonly required, relative to distribution.
