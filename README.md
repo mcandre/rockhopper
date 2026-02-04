@@ -124,7 +124,7 @@ Packages write to `.rockhopper/<distro>/<package-file>`.
  ^^
 ```
 
-With minor tweaks, it's possible to extend support for even more distributions. See [examples/sh/demo](demo).
+With minor tweaks, it's possible to extend support for even more distributions. See [examples/sh/demo](examples/sh/demo).
 
 You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
 
