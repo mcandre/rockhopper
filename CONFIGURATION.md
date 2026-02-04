@@ -4,13 +4,17 @@
 
 ## `--quiet`, `-q`
 
-Quiet mode. Elide most console logs.
+Overrides `ROCKHOPPER_LOG_LEVEL`.
+
+Enables quiet mode. Elide most console logs.
 
 In the event of a problem, remove this option.
 
 ## `--debug`, `-d`
 
-Debug mode. Show additional logs.
+Overrides `ROCKHOPPER_LOG_LEVEL`.
+
+Enables debug mode. Show additional logs.
 
 Cancels quiet mode.
 
@@ -32,25 +36,17 @@ Forward `<ROCKLET OPTIONS>` from `rockhopper` to individual `rocklet` containers
 
 rockhopper uses environment variables as the primary configuration mechanism.
 
-## `ROCKHOPPER_QUIET`
+## `ROCKHOPPER_LOG_LEVEL`
 
-Default: `0`
-
-Optional.
-
-When `1`, requests quiet mode.
-
-See also `--quiet, -q`.
-
-## `ROCKHOPPER_DEBUG`
-
-Default: `0`
+Default: (blank)
 
 Optional.
 
-When `1`, disables quiet mode and enables additional logging.
+When `quiet`, enables quiet mode.
 
-See also `--debug`, `-d`.
+When `debug`, enables debug mode.
+
+See also `--quiet, -q`, `--debug, -d`.
 
 ## `ROCKHOPPER_IMAGE`
 

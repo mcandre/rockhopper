@@ -2,8 +2,7 @@
 unset IFS
 set -euo pipefail
 
-ROCKHOPPER_QUIET="${ROCKHOPPER_QUIET:-0}"
-ROCKHOPPER_DEBUG="${ROCKHOPPER_DEBUG:-0}"
+ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
 ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
@@ -23,7 +22,7 @@ ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 usage() {
     printf "Usage: %s [<OPTION>]\n" "$0"
     printf "\n"
-    printf -- "--quiet \q\tReduce logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--debug -d\tIncrease logging\n"
     printf -- "--help -h\tShow usage menu\n"
     printf -- "--version -V\tShow version banner\n"
@@ -37,11 +36,11 @@ while [ "$#" -ge 1 ]; do
     case "$1" in
     '--quiet' | 'q')
         shift
-        ROCKHOPPER_QUIET='1'
+        ROCKHOPPER_LOG_LEVEL='quiet'
         ;;
     '--debug' | '-d')
         shift
-        ROCKHOPPER_DEBUG=1
+        ROCKHOPPER_LOG_LEVEL='debug'
         ;;
     '--help' | '-h')
         usage
@@ -58,10 +57,8 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "$ROCKHOPPER_DEBUG" = 1 ]; then
-    ROCKHOPPER_QUIET='0'
+if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     env | grep '^ROCKHOPPER_' | sort
-    set -x
 fi
 
 validate() {
@@ -160,7 +157,7 @@ APKBUILD="$APKBUILD\n}"
 
 printf "$APKBUILD\n" >"$ROCKHOPPER_APK_BUILD_DIR/$ROCKHOPPER_NAME/APKBUILD"
 
-if [ "$ROCKHOPPER_DEBUG" = '1' ]; then
+if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     echo "APKBUILD:"
     cat "$ROCKHOPPER_APK_BUILD_DIR/$ROCKHOPPER_NAME/APKBUILD"
 fi
@@ -174,7 +171,7 @@ abuild -F checksum
 
 COMMAND="abuild -F -r"
 
-if [ "$ROCKHOPPER_QUIET" = 1 ]; then
+if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
     $COMMAND 2>/dev/null 1>&2
 else
     $COMMAND
