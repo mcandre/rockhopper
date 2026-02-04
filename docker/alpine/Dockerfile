@@ -3,7 +3,8 @@ FROM library/alpine:3.23
 RUN apk add -U \
     alpine-sdk \
     atools \
+    bash \
     sudo && \
     abuild-keygen -n -a -i
-COPY rockhopper /usr/local/bin
-ENTRYPOINT ["/usr/local/bin/rockhopper"]
+COPY rocklet /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/rocklet"]

@@ -1,7 +1,9 @@
 # BUILDTIME REQUIREMENTS
 
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
+* [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/) 28.0.1+
+* GNU [grep](https://www.gnu.org/software/grep/)
 * POSIX compliant [findutils](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))

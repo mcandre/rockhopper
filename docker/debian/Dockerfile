@@ -1,3 +1,3 @@
 FROM library/debian:13
-COPY rockhopper /usr/local/bin
-ENTRYPOINT ["/usr/local/bin/rockhopper"]
+COPY rocklet /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/rocklet"]

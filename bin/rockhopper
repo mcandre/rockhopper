@@ -1,0 +1,85 @@
+#!/bin/bash
+unset IFS
+set -eufo pipefail
+
+ROCKHOPPER_QUIET="${ROCKHOPPER_QUIET:-0}"
+ROCKHOPPER_DEBUG="${ROCKHOPPER_DEBUG:-0}"
+ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-}"
+ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
+
+usage() {
+    printf "Usage: %s [<OPTION>] [-- [<ROCKLET_OPTIONS>]]\n" "$0"
+    printf "\n"
+    printf -- "--quiet \q\tReduce logging\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+banner() {
+    echo "$0 0.0.2"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--quiet' | 'q')
+        shift
+        ROCKHOPPER_QUIET='1'
+        ;;
+    '--debug' | '-d')
+        shift
+        ROCKHOPPER_DEBUG=1
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    '--')
+        shift
+        break
+        ;;
+    esac
+done
+
+if [ "$ROCKHOPPER_DEBUG" = 1 ]; then
+    ROCKHOPPER_QUIET='0'
+    env | grep '^ROCKHOPPER_' | sort
+    set -x
+fi
+
+validate() {
+    REQUIRED_ENV_VARS=(
+        ROCKHOPPER_IMAGE
+        ROCKHOPPER_MOUNT
+    )
+
+    for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do
+        eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
+
+        if [ -z "$REQUIRED_ENV_VAL" ]; then
+            echo "error: rockhopper: blank/missing env var: $REQUIRED_ENV_VAR"
+            exit 1
+        fi
+    done
+}
+
+validate
+
+COMMAND='docker run '
+
+# Forward ROCKHOPPER_* host environment variables to Docker
+for K in $(compgen -v | grep '^ROCKHOPPER_'); do
+    COMMAND="$COMMAND -e $K"
+done
+
+COMMAND="$COMMAND --rm -v $(pwd):${ROCKHOPPER_MOUNT} ${ROCKHOPPER_IMAGE} $@"
+
+if [ "$ROCKHOPPER_QUIET" = 1 ]; then
+    $COMMAND 2>/dev/null
+else
+    $COMMAND
+fi

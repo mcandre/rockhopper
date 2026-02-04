@@ -2,7 +2,9 @@
 
 ## Requirements
 
+* [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/) 28.0.1+
+* GNU [grep](https://www.gnu.org/software/grep/)
 
 ## Recommended
 
@@ -15,12 +17,18 @@
 
 ## Instructions
 
+1. Clone the project to a local directory.
+
+```console
+$ git clone https://github.com/mcandre/rockhopper.git "$HOME/rockhopper"
+```
+
+2. Add .../rockhopper/bin to `PATH`.
+
+For example, `$HOME/.bashrc` (bash):
+
 ```sh
-docker pull n4jm4/rockhopper:alpine
-docker pull n4jm4/rockhopper:arch
-docker pull n4jm4/rockhopper:debian
-docker pull n4jm4/rockhopper:rhel
-docker pull n4jm4/rockhopper:slack
+export PATH="$PATH:$HOME/rockhopper/bin"
 ```
 
 For more information on developing rockhopper itself, see [DEVELOPMENT.md](DEVELOPMENT.md).

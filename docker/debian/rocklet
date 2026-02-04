@@ -1,0 +1,156 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+ROCKHOPPER_QUIET="${ROCKHOPPER_QUIET:-0}"
+ROCKHOPPER_DEBUG="${ROCKHOPPER_DEBUG:-0}"
+ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
+ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
+ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
+ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
+ROCKHOPPER_MAINTAINER="${ROCKHOPPER_MAINTAINER:-}"
+ROCKHOPPER_DESCRIPTION="${ROCKHOPPER_DESCRIPTION:-}"
+ROCKHOPPER_PRIORITY="${ROCKHOPPER_PRIORITY:-optional}"
+ROCKHOPPER_DEPENDENCIES="${ROCKHOPPER_DEPENDENCIES:-}"
+ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
+ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
+ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
+ROCKHOPPER_URL="${ROCKHOPPER_URL:-}"
+ROCKHOPPER_DATA_DIR="${ROCKHOPPER_DATA_DIR:-$ROCKHOPPER_MOUNT/rockhopper-data}"
+ROCKHOPPER_ARTIFACT_DIR="${ROCKHOPPER_ARTIFACT_DIR:-$ROCKHOPPER_MOUNT/.rockhopper/debian}"
+ROCKHOPPER_APT_BUILD_DIR="${ROCKHOPPER_APT_BUILD_DIR:-/tmp/debian}"
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-all}"
+
+usage() {
+    printf "Usage: %s [<OPTION>]\n" "$0"
+    printf "\n"
+    printf -- "--quiet \q\tReduce logging\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+banner() {
+    echo "$0 0.0.2"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--quiet' | 'q')
+        shift
+        ROCKHOPPER_QUIET='1'
+        ;;
+    '--debug' | '-d')
+        shift
+        ROCKHOPPER_DEBUG=1
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "$ROCKHOPPER_DEBUG" = 1 ]; then
+    ROCKHOPPER_QUIET='0'
+    env | grep '^ROCKHOPPER_' | sort
+    set -x
+fi
+
+validate() {
+    REQUIRED_ENV_VARS=(
+        ROCKHOPPER_NAME
+        ROCKHOPPER_VERSION
+        ROCKHOPPER_MAINTAINER
+        ROCKHOPPER_DESCRIPTION
+        ROCKHOPPER_PRIORITY
+        ROCKHOPPER_LICENSE
+        ROCKHOPPER_MOUNT
+        ROCKHOPPER_DATA_DIR
+        ROCKHOPPER_ARTIFACT_DIR
+        ROCKHOPPER_APT_BUILD_DIR
+        ROCKHOPPER_ARCH
+    )
+
+    for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do
+        eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
+
+        if [ -z "$REQUIRED_ENV_VAL" ]; then
+            echo "error: ${ROCKHOPPER_IMAGE} blank/missing env var: ${REQUIRED_ENV_VAR}"
+            exit 1
+        fi
+    done
+}
+
+clean() {
+    rm -rf "$ROCKHOPPER_APT_BUILD_DIR"
+}
+
+validate
+clean
+
+mkdir -p "$ROCKHOPPER_APT_BUILD_DIR/DEBIAN"
+
+CONTROL="Package: $ROCKHOPPER_NAME
+Version: $ROCKHOPPER_VERSION
+Maintainer: $ROCKHOPPER_MAINTAINER
+Architecture: $ROCKHOPPER_ARCH
+Priority: $ROCKHOPPER_PRIORITY"
+
+if [ -n "$ROCKHOPPER_URL" ]; then
+    CONTROL="$CONTROL
+Homepage: $ROCKHOPPER_URL"
+fi
+
+CONTROL="$CONTROL
+Description: $ROCKHOPPER_DESCRIPTION"
+
+if [ -n "$ROCKHOPPER_DEPENDENCIES" ]; then
+    CONTROL="$CONTROL\nDepends: $ROCKHOPPER_DEPENDENCIES"
+fi
+
+printf "$CONTROL\n" >"$ROCKHOPPER_APT_BUILD_DIR/DEBIAN/control"
+
+if [ "$ROCKHOPPER_DEBUG" = '1' ]; then
+    echo "control:"
+    cat "$ROCKHOPPER_APT_BUILD_DIR/DEBIAN/control"
+fi
+
+LIC="Files: *"
+
+if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
+    LIC="$LIC
+Copyright: $ROCKHOPPER_COPYRIGHT"
+fi
+
+LIC="$LIC
+License: $ROCKHOPPER_LICENSE"
+printf "$LIC\n" >"$ROCKHOPPER_APT_BUILD_DIR/DEBIAN/copyright"
+
+cp -r "$ROCKHOPPER_DATA_DIR/"* "$ROCKHOPPER_APT_BUILD_DIR"
+mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
+ARTIFACT="$ROCKHOPPER_ARTIFACT_DIR/${ROCKHOPPER_NAME}_${ROCKHOPPER_VERSION}"
+
+if [ -n "$ROCKHOPPER_REV" ]; then
+    ARTIFACT="${ARTIFACT}-${ROCKHOPPER_REV}"
+fi
+
+ARTIFACT="${ARTIFACT}_${ROCKHOPPER_ARCH}.deb"
+
+COMMAND="dpkg-deb --build ${ROCKHOPPER_APT_BUILD_DIR} ${ARTIFACT}"
+
+if [ "$ROCKHOPPER_QUIET" = '1' ]; then
+    $COMMAND >/dev/null
+else
+    $COMMAND
+fi
+
+clean
