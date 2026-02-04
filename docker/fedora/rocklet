@@ -205,12 +205,10 @@ fi
 
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 
-COMMAND="rpmbuild -bb $SPEC_PATH"
-
 if [ "$ROCKHOPPER_QUIET" = '1' ]; then
-    $COMMAND >/dev/null
+    rpmbuild -bb "$SPEC_PATH" >/dev/null 2>&1
 else
-    $COMMAND
+    rpmbuild -bb "$SPEC_PATH"
 fi
 
 cp "${ROCKHOPPER_RPM_BUILD_DIR}/RPMS/${ROCKHOPPER_ARCH}/${BANNER}-${ROCKHOPPER_REV}."*".${ROCKHOPPER_ARCH}.rpm" "${ROCKHOPPER_ARTIFACT_DIR}"

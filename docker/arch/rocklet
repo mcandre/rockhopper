@@ -181,15 +181,20 @@ find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$ROCKHOPPER_PACMAN_BUILD_DIR"
 
 cd "$ROCKHOPPER_PACMAN_BUILD_DIR"
 
+#
 # Update sha256sums
-makepkg -g >>PKGBUILD
+#
 
-COMMAND='makepkg'
-
-if [ "$ROCKHOPPER_QUIET" = 1 ]; then
-    $COMMAND >/dev/null
+if [ "$ROCKHOPPER_QUIET" = '1' ]; then
+    makepkg -g >>PKGBUILD 2>/dev/null
 else
-    $COMMAND
+    makepkg -g >>PKGBUILD
+fi
+
+if [ "$ROCKHOPPER_QUIET" = '1' ]; then
+    makepkg >/dev/null 2>&1
+else
+    makepkg
 fi
 
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"

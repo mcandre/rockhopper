@@ -142,12 +142,10 @@ fi
 
 ARTIFACT="${ARTIFACT}-${ROCKHOPPER_ARCH}-build.${ROCKHOPPER_INSTALLPKG_EXTENSION}"
 
-COMMAND="makepkg -c y ${ARTIFACT}"
-
 if [ "$ROCKHOPPER_QUIET" = '1' ]; then
-    $COMMAND >/dev/null
+    makepkg -c y "$ARTIFACT" >/dev/null 2>&1
 else
-    $COMMAND
+    makepkg -c y "$ARTIFACT"
 fi
 
 clean

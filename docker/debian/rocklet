@@ -145,12 +145,10 @@ fi
 
 ARTIFACT="${ARTIFACT}_${ROCKHOPPER_ARCH}.deb"
 
-COMMAND="dpkg-deb --build ${ROCKHOPPER_APT_BUILD_DIR} ${ARTIFACT}"
-
 if [ "$ROCKHOPPER_QUIET" = '1' ]; then
-    $COMMAND >/dev/null
+    dpkg-deb --build "$ROCKHOPPER_APT_BUILD_DIR" "$ARTIFACT" >/dev/null
 else
-    $COMMAND
+    dpkg-deb --build "$ROCKHOPPER_APT_BUILD_DIR" "$ARTIFACT"
 fi
 
 clean

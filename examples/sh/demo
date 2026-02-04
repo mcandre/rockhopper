@@ -2,6 +2,7 @@
 unset IFS
 set -eufo pipefail
 
+# ROCKHOPPER_QUIET='1'
 # ROCKHOPPER_DEBUG='1'
 ROCKHOPPER_NAME='hello'
 ROCKHOPPER_VERSION='1.0.0'

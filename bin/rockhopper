@@ -69,17 +69,15 @@ validate() {
 
 validate
 
-COMMAND='docker run '
+ENV_ARGS=''
 
 # Forward ROCKHOPPER_* host environment variables to Docker
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
-    COMMAND="$COMMAND -e $K"
+    ENV_ARGS="$ENV_ARGS -e $K"
 done
 
-COMMAND="$COMMAND --rm -v $(pwd):${ROCKHOPPER_MOUNT} ${ROCKHOPPER_IMAGE} $@"
-
-if [ "$ROCKHOPPER_QUIET" = 1 ]; then
-    $COMMAND 2>/dev/null
-else
-    $COMMAND
-fi
+docker run \
+    -v "$(pwd):$ROCKHOPPER_MOUNT" \
+    $ENV_ARGS \
+    "$ROCKHOPPER_IMAGE" \
+    "$@"

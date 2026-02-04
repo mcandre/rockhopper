@@ -175,7 +175,7 @@ abuild -F checksum
 COMMAND="abuild -F -r"
 
 if [ "$ROCKHOPPER_QUIET" = 1 ]; then
-    $COMMAND >/dev/null
+    $COMMAND 2>/dev/null 1>&2
 else
     $COMMAND
 fi
