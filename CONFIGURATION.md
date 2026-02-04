@@ -56,7 +56,7 @@ See also `--debug`, `-d`.
 
 Required, nonblank.
 
-A Docker image implementing the [ROCKLET](ROCKLET.md) interface for package generation.
+A Docker image implementing the [ROCKLET](ROCKLETS.md) interface for package generation.
 
 Example: `"n4jm4/rockhopper:debian"`
 
