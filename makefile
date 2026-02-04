@@ -47,7 +47,7 @@ docker-build-fedora:
 docker-build-slack:
 	sh -c "cd docker/slack && docker build -t n4jm4/rockhopper:slack . --load"
 
-docker-push: docker-tag-alpine docker-tag-arch docker-tag-debian docker-tag-fedora docker-tag-slack
+docker-push: docker-build docker-tag-alpine docker-tag-arch docker-tag-debian docker-tag-fedora docker-tag-slack
 	docker push n4jm4/rockhopper --all-tags
 
 docker-tag-alpine:

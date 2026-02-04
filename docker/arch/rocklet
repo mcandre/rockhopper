@@ -189,8 +189,12 @@ makepkg() {
         fi
     done
 
-    if [ -z "$HAS_GENINTEG" ] && [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        command makepkg "$@" >/dev/null 2>&1
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        if [ -n "$HAS_GENINTEG" ]; then
+            command makepkg "$@" 2>/dev/null
+        else
+            command makepkg "$@" >/dev/null 2>&1
+        fi
     else
         command makepkg "$@"
     fi
