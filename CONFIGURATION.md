@@ -60,6 +60,14 @@ A Docker image implementing the [ROCKLET](ROCKLETS.md) interface for package gen
 
 Example: `"n4jm4/rockhopper:debian"`
 
+## `ROCKHOPPER_DATA_DIR`
+
+Default: `"/mnt/rockhopper/rockhopper-data"`
+
+Optional.
+
+A directory path relative to `ROCKHOPPER_MOUNT`, which lays out application files according to the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
+
 ## `ROCKHOPPER_NAME`
 
 Required, nonblank.
