@@ -18,7 +18,7 @@
 .IGNORE: \
 	clean
 
-VERSION=0.0.2
+VERSION=0.0.3
 
 all: docker-build
 
