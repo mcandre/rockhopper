@@ -24,8 +24,8 @@ ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 usage() {
     printf "Usage: %s [<OPTION>]\n" "$0"
     printf "\n"
-    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--help -h\tShow usage menu\n"
     printf -- "--version -V\tShow version banner\n"
 }
@@ -36,13 +36,13 @@ banner() {
 
 while [ "$#" -ge 1 ]; do
     case "$1" in
-    '--quiet' | 'q')
-        shift
-        ROCKHOPPER_LOG_LEVEL='quiet'
-        ;;
     '--debug' | '-d')
         shift
         ROCKHOPPER_LOG_LEVEL='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        ROCKHOPPER_LOG_LEVEL='quiet'
         ;;
     '--help' | '-h')
         usage
@@ -203,11 +203,15 @@ fi
 
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-    rpmbuild -bb "$SPEC_PATH" >/dev/null 2>&1
-else
-    rpmbuild -bb "$SPEC_PATH"
-fi
+rpmbuild() {
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command rpmbuild "$@" >/dev/null 2>&1
+    else
+        command rpmbuild "$@"
+    fi
+}
+
+rpmbuild -bb "$SPEC_PATH"
 
 cp "${ROCKHOPPER_RPM_BUILD_DIR}/RPMS/${ROCKHOPPER_ARCH}/${BANNER}-${ROCKHOPPER_REV}."*".${ROCKHOPPER_ARCH}.rpm" "${ROCKHOPPER_ARTIFACT_DIR}"
 clean

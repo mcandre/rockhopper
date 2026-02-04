@@ -2,7 +2,7 @@
 unset IFS
 set -euo pipefail
 
-ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-}"
+ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
 ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
@@ -22,8 +22,8 @@ ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 usage() {
     printf "Usage: %s [<OPTION>]\n" "$0"
     printf "\n"
-    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--help -h\tShow usage menu\n"
     printf -- "--version -V\tShow version banner\n"
 }
@@ -34,13 +34,13 @@ banner() {
 
 while [ "$#" -ge 1 ]; do
     case "$1" in
-    '--quiet' | 'q')
-        shift
-        ROCKHOPPER_LOG_LEVEL='quiet'
-        ;;
     '--debug' | '-d')
         shift
         ROCKHOPPER_LOG_LEVEL='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        ROCKHOPPER_LOG_LEVEL='quiet'
         ;;
     '--help' | '-h')
         usage
@@ -167,16 +167,16 @@ mkdir -p "$SRC_DIR"
 
 cd "$ROCKHOPPER_APK_BUILD_DIR/$ROCKHOPPER_NAME"
 
+abuild() {
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command abuild "$@" 2>/dev/null 1>&2
+    else
+        command abuild "$@"
+    fi
+}
+
 abuild -F checksum
-
-COMMAND="abuild -F -r"
-
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-    $COMMAND 2>/dev/null 1>&2
-else
-    $COMMAND
-fi
-
+abuild -F -r
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 cp "/root/packages/alpinelinux/$(uname -m)/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.apk" "$ROCKHOPPER_ARTIFACT_DIR/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.$ROCKHOPPER_ARCH.apk"
 clean

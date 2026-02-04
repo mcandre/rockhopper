@@ -2,15 +2,15 @@
 unset IFS
 set -eufo pipefail
 
-ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-}"
+ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
 
 usage() {
     printf "Usage: %s [<OPTION>] [-- <ROCKLET_OPTIONS>]\n" "$0"
     printf "\n"
-    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--help -h\tShow usage menu\n"
     printf -- "--version -V\tShow version banner\n"
 }

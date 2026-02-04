@@ -2,6 +2,14 @@
 
 # FLAGS
 
+## `--debug`, `-d`
+
+Overrides `ROCKHOPPER_LOG_LEVEL`.
+
+Enables debug mode. Show additional logs.
+
+In the event a problem, debug mode provides context for common resources, such as package configurations.
+
 ## `--quiet`, `-q`
 
 Overrides `ROCKHOPPER_LOG_LEVEL`.
@@ -9,16 +17,6 @@ Overrides `ROCKHOPPER_LOG_LEVEL`.
 Enables quiet mode. Elide most console logs.
 
 In the event of a problem, remove this option.
-
-## `--debug`, `-d`
-
-Overrides `ROCKHOPPER_LOG_LEVEL`.
-
-Enables debug mode. Show additional logs.
-
-Cancels quiet mode.
-
-In the event a problem, debug mode provides context for common resources, such as package configurations.
 
 ## `--help`, `-h`
 
@@ -38,9 +36,11 @@ rockhopper uses environment variables as the primary configuration mechanism.
 
 ## `ROCKHOPPER_LOG_LEVEL`
 
-Default: (blank)
+Default: `info`
 
 Optional.
+
+When `info`, propagate logs from package building commands.
 
 When `quiet`, enables quiet mode.
 

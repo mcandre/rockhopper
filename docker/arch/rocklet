@@ -2,7 +2,7 @@
 unset IFS
 set -euo pipefail
 
-ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-}"
+ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
 ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
@@ -22,8 +22,8 @@ ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-any}"
 usage() {
     printf "Usage: %s [<OPTION>]\n" "$0"
     printf "\n"
-    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
     printf -- "--help -h\tShow usage menu\n"
     printf -- "--version -V\tShow version banner\n"
 }
@@ -34,13 +34,13 @@ banner() {
 
 while [ "$#" -ge 1 ]; do
     case "$1" in
-    '--quiet' | 'q')
-        shift
-        ROCKHOPPER_LOG_LEVEL='quiet'
-        ;;
     '--debug' | '-d')
         shift
         ROCKHOPPER_LOG_LEVEL='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        ROCKHOPPER_LOG_LEVEL='quiet'
         ;;
     '--help' | '-h')
         usage
@@ -179,22 +179,27 @@ find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$ROCKHOPPER_PACMAN_BUILD_DIR"
 
 cd "$ROCKHOPPER_PACMAN_BUILD_DIR"
 
-#
+makepkg() {
+    HAS_GENINTEG=''
+
+    for ARG in "$@"; do
+        if [ "$ARG" = '-g' ] || [ "$ARG" = '--geninteg' ]; then
+            HAS_GENINTEG='1'
+            break
+        fi
+    done
+
+    if [ -z "$HAS_GENINTEG" ] && [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command makepkg "$@" >/dev/null 2>&1
+    else
+        command makepkg "$@"
+    fi
+}
+
 # Update sha256sums
-#
+makepkg -g >>PKGBUILD
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-    makepkg -g >>PKGBUILD 2>/dev/null
-else
-    makepkg -g >>PKGBUILD
-fi
-
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-    makepkg >/dev/null 2>&1
-else
-    makepkg
-fi
-
+makepkg
 mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
 cp "${ROCKHOPPER_PACMAN_BUILD_DIR}/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-$ROCKHOPPER_REV-$ROCKHOPPER_ARCH.pkg.tar.zst" "$ROCKHOPPER_ARTIFACT_DIR"
 clean
