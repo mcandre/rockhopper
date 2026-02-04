@@ -49,11 +49,13 @@ Reduce nonerror console logs.
 ## CLI Flags
 
 * `--quiet`, `-q`: Elide all console logs from stdout and from stderr, except in the event of an error.
-* `--debug`, `-d`: When the user opts in, show relevant package build context.
+* `--debug`, `-d`: When the user opts in, enable additional logs, especially relevant package build context.
 * `--help`, `-h`: Show usage menu.
-* `--version`, `-V`: Show a rockhopper compatibility version banner, such as `rockhopper-0.0.3`.
+* `--version`, `-V`: Show a rockhopper compatibility version banner, of the form `<rocklet executable> <rockhopper version>`.
 
-The `rockhopper-` banner prefix may be customized.
+The banner executable indicated may be either basename or absolute path.
+
+The banner may include additional text columns beyond the executable and rockhopper version.
 
 Rocklets may implement new CLI flags.
 
