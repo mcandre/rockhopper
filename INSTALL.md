@@ -31,4 +31,6 @@ For example, `$HOME/.bashrc` (bash):
 export PATH="$PATH:$HOME/rockhopper/bin"
 ```
 
+For more information on developing custom rockhopper package generator images, see [ROCKLETS.md](ROCKLETS.md).
+
 For more information on developing rockhopper itself, see [DEVELOPMENT.md](DEVELOPMENT.md).
