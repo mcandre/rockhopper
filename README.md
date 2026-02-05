@@ -1,4 +1,4 @@
-# rockhopper: Linux package generator
+# rockhopper: metapackage generator
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/GUMROAD-36a9ae?style=flat&logo=gumroad&logoColor=white)](https://mcandre.gumroad.com/)
 
@@ -10,7 +10,7 @@
 
 # SUMMARY
 
-rockhopper automates *crossplatform package generation*.
+rockhopper generates installer packages for a wide variety of platforms.
 
 Distro hoppers, enjoy~
 
