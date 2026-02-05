@@ -31,8 +31,10 @@ $ tree .rockhopper
 │   └── hello_1.0.0-1_all.deb
 ├── fedora
 │   └── hello-1.0.0-1.fc43.noarch.rpm
-└── slack
-    └── hello-1.0.0-1-noarch-build.tgz
+├── slack
+│   └── hello-1.0.0-1-noarch-build.tgz
+└── ubuntu
+    └── hello_1.0.0-1_all.deb
 ```
 
 # INSTALLATION
@@ -45,13 +47,16 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 ## Rockhopper Images
 
-| Distro       | Image                   |
-| ------------ | ----------------------- |
-| Alpine Linux | n4jm4/rockhopper:alpine |
-| Arch Linux   | n4jm4/rockhopper:arch   |
-| Debian       | n4jm4/rockhopper:debian |
-| Fedora       | n4jm4/rockhopper:fedora |
-| Slackware    | n4jm4/rockhopper:slack  |
+| Distro                 | Image                   |
+| ---------------------- | ----------------------- |
+| Alpine Linux           | n4jm4/rockhopper:alpine |
+| Arch Linux             | n4jm4/rockhopper:arch   |
+| Debian                 | n4jm4/rockhopper:debian |
+| Fedora                 | n4jm4/rockhopper:fedora |
+| Slackware              | n4jm4/rockhopper:slack  |
+| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu |
+
+Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available.
 

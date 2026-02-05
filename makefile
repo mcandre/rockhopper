@@ -7,13 +7,15 @@
 	docker-build-arch \
 	docker-build-debian \
 	docker-build-fedora \
-	docker-build-slack
+	docker-build-slack \
+	docker-build-ubuntu \
 	docker-push \
 	docker-tag-alpine \
 	docker-tag-arch \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-slack \
+	docker-tag-ubuntu \
 	test
 .IGNORE: \
 	clean
@@ -30,7 +32,8 @@ docker-build: \
 	docker-build-arch \
 	docker-build-debian \
 	docker-build-fedora \
-	docker-build-slack
+	docker-build-slack \
+	docker-build-ubuntu
 
 docker-build-alpine:
 	sh -c "cd docker/alpine && docker build -t n4jm4/rockhopper:alpine . --load"
@@ -47,7 +50,10 @@ docker-build-fedora:
 docker-build-slack:
 	sh -c "cd docker/slack && docker build -t n4jm4/rockhopper:slack . --load"
 
-docker-push: docker-build docker-tag-alpine docker-tag-arch docker-tag-debian docker-tag-fedora docker-tag-slack
+docker-build-ubuntu:
+	sh -c "cd docker/ubuntu && docker build -t n4jm4/rockhopper:ubuntu . --load"
+
+docker-push: docker-build docker-tag-alpine docker-tag-arch docker-tag-debian docker-tag-fedora docker-tag-slack docker-tag-ubuntu
 	docker push n4jm4/rockhopper --all-tags
 
 docker-tag-alpine:
@@ -78,6 +84,15 @@ docker-tag-slack:
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:$(VERSION)-slack
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:slack15.0
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:slack15
+
+docker-tag-ubuntu:
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-noble
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu24.04
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu24
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:noble
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:ubuntu24.04
+	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:ubuntu24
 
 test:
 	sh -c "cd examples/sh && ./demo && tree .rockhopper"
