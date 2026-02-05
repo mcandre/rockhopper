@@ -72,10 +72,19 @@ A unique, memorable name for a package.
 
 Example: `"hello"`
 
-Search Linux databases for similarly named tools:
+Search databases for any existing names:
 
 * https://linux.die.net/
+* https://man.freebsd.org/cgi/man.cgi
 * https://pkgs.org/
+* https://brew.sh/
+* https://hub.docker.com/
+* https://github.com/
+* https://snapcraft.io/
+* https://launchpad.net/ubuntu/+ppas
+* https://ss64.com/mac/
+* https://chocolatey.org/
+* https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands
 
 ## `ROCKHOPPER_VERSION`
 
