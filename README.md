@@ -153,6 +153,7 @@ A dream of impossible colors... Let's make vendor lock a thing of the past.
 
 # SEE ALSO
 
+* [chandler](https://github.com/mcandre), an OS agnostic tar normalizer
 * [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
 * [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
 * [fpm](https://github.com/jordansissel/fpm), an older, host native package generator
