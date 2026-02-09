@@ -113,6 +113,8 @@ export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
 export ROCKHOPPER_ARCH='all'
 ```
 
+Note: Customize `ROCKHOPPER_ARCH` to match each of your target ISA(s).
+
 Note: Debian and other distros often have additional optional and/or required fields.
 
 4. Generate packages and verify.
