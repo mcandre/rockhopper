@@ -67,7 +67,10 @@ docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && docker build -t n4jm4/rockhopper:ubuntu . --load"
 
 docker-clean-tags:
-	docker images | grep '^n4jm4/rockhopper' | awk '{ print $1 }' | xargs -n 1 docker rmi -f
+	docker images 2>/dev/null | \
+		grep '^n4jm4/rockhopper' | \
+		awk '{print $$1 }' | \
+		xargs -n 1 docker rmi -f
 
 docker-push: docker-clean-tags docker-build docker-tag
 	docker push n4jm4/rockhopper --all-tags
@@ -114,8 +117,13 @@ docker-tag-mint:
 	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:mint22
 
 docker-tag-raspbian:
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian6-trixie
 	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian6
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian-trixie
 	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:raspbian6-trixie
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:raspbian6
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:raspbian-trixie
 
 docker-tag-slack:
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:$(VERSION)-slack15.0
