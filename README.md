@@ -25,6 +25,8 @@ $ tree .rockhopper
 .rockhopper
 ├── alpine
 │   └── hello-1.0.0-r1.noarch.apk
+├── antix
+│   └── hello_1.0.0-1_all.deb
 ├── arch
 │   └── hello-1.0.0-1-any.pkg.tar.zst
 ├── cachy
@@ -56,6 +58,7 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 | Distro                 | Image                     |
 | ---------------------- | ------------------------- |
 | Alpine Linux           | n4jm4/rockhopper:alpine   |
+| AntiX                  | n4jm4/rockhopper:antix    |
 | Arch Linux             | n4jm4/rockhopper:arch     |
 | CachyOS                | n4jm4/rockhopper:cachy    |
 | Debian                 | n4jm4/rockhopper:debian   |

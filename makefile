@@ -4,6 +4,7 @@
 	all \
 	docker-build \
 	docker-build-alpine \
+	docker-build-antix \
 	docker-build-arch \
 	docker-build-cachy \
 	docker-build-debian \
@@ -15,6 +16,7 @@
 	docker-push \
 	docker-tag \
 	docker-tag-alpine \
+	docker-tag-antix \
 	docker-tag-arch \
 	docker-tag-cachy \
 	docker-tag-debian \
@@ -36,6 +38,7 @@ clean:
 
 docker-build: \
 	docker-build-alpine \
+	docker-build-antix \
 	docker-build-arch \
 	docker-build-cachy \
 	docker-build-debian \
@@ -47,6 +50,9 @@ docker-build: \
 
 docker-build-alpine:
 	sh -c "cd docker/alpine && docker build -t n4jm4/rockhopper:alpine . --load"
+
+docker-build-antix:
+	sh -c "cd docker/antix && docker build -t n4jm4/rockhopper:antix . --load"
 
 docker-build-arch:
 	sh -c "cd docker/arch && docker build -t n4jm4/rockhopper:arch . --load"
@@ -83,6 +89,7 @@ docker-push: docker-clean-tags docker-build docker-tag
 
 docker-tag: \
 	docker-tag-alpine \
+	docker-tag-antix \
 	docker-tag-arch \
 	docker-tag-cachy \
 	docker-tag-debian \
@@ -98,6 +105,13 @@ docker-tag-alpine:
 	docker tag n4jm4/rockhopper:alpine n4jm4/rockhopper:$(VERSION)-alpine
 	docker tag n4jm4/rockhopper:alpine n4jm4/rockhopper:alpine3.23
 	docker tag n4jm4/rockhopper:alpine n4jm4/rockhopper:alpine3
+
+docker-tag-antix:
+	docker tag n4jm4/rockhopper:antix n4jm4/rockhopper:$(VERSION)-antix-bookworm
+	docker tag n4jm4/rockhopper:antix n4jm4/rockhopper:$(VERSION)-antix-debian12
+	docker tag n4jm4/rockhopper:antix n4jm4/rockhopper:$(VERSION)-antix
+	docker tag n4jm4/rockhopper:antix n4jm4/rockhopper:antix-bookworm
+	docker tag n4jm4/rockhopper:antix n4jm4/rockhopper:antix-debian12
 
 docker-tag-arch:
 	docker tag n4jm4/rockhopper:arch n4jm4/rockhopper:$(VERSION)-arch

@@ -20,6 +20,7 @@ done
 
 PLATFORMS=(
     n4jm4/rockhopper:alpine#noarch
+    n4jm4/rockhopper:antix#all
     n4jm4/rockhopper:arch#any
     n4jm4/rockhopper:cachy#any
     n4jm4/rockhopper:debian#all
