@@ -1,0 +1,33 @@
+Name: {{ ROCKHOPPER_NAME }}
+Version: {{ ROCKHOPPER_VERSION }}
+Release: {{ ROCKHOPPER_REV }}
+Summary:  {{ ROCKHOPPER_SUMMARY }}
+{% if ROCKHOPPER_URL is defined %}
+URL: {{ ROCKHOPPER_URL }}
+{% endif %}
+BuildArch: {{ ROCKHOPPER_ARCH }}
+License: {{ ROCKHOPPER_LICENSE }}
+{% if ROCKHOPPER_DEPENDENCIES is defined %}
+Requires: {{ ROCKHOPPER_DEPENDENCIES }}
+{% endif %}
+Source0: {{ FEDORA_SOURCE0 }}
+
+%description
+{{ ROCKHOPPER_DESCRIPTION }}
+
+%prep
+%setup -q
+
+%build
+
+%install
+mkdir -p "%{buildroot}/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+cp "{{ FEDORA_LICENSE }}" "%{buildroot}/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE"
+{{ FEDORA_DATA }}
+
+%files
+/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE
+{{ FEDORA_FILES }}
+
+%changelog
+%autochangelog

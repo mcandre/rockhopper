@@ -1,0 +1,20 @@
+{% if ROCKHOPPER_MAINTAINER is defined %}
+# Maintainer: {{ ROCKHOPPER_MAINTAINER }}
+{% endif %}
+pkgname="{{ ROCKHOPPER_NAME }}"
+pkgver="{{ ROCKHOPPER_VERSION }}"
+pkgrel="{{ ROCKHOPPER_REV }}"
+pkgdesc="{{ ROCKHOPPER_DESCRIPTION | default('') }}"
+arch=({{ ROCKHOPPER_ARCH }})
+url="{{ ROCKHOPPER_URL | default('') }}"
+{% if ROCKHOPPER_LICENSE %}
+license=('{{ ROCKHOPPER_LICENSE }}')
+{% endif %}
+depends=({{ ROCKHOPPER_DEPENDENCIES | default('') }})
+source=({{ PACMAN_SOURCES }})
+sha256sums=('...')
+package() {
+    install -d "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    install "$srcdir/LICENSE" "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    {{ PACMAN_PACKAGE }}
+}

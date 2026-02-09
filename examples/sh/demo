@@ -12,7 +12,6 @@ ROCKHOPPER_SUMMARY='greeter'
 ROCKHOPPER_DESCRIPTION='hello world welcomes new developers'
 ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
 ROCKHOPPER_LICENSE='0BSD'
-ROCKHOPPER_CHANGELOG='CHANGELOG.txt'
 ROCKHOPPER_URL='https://bobslawblog.test/'
 
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -24,6 +23,7 @@ PLATFORMS=(
     n4jm4/rockhopper:arch#any
     n4jm4/rockhopper:debian#all
     n4jm4/rockhopper:fedora#noarch
+    n4jm4/rockhopper:mint#all
     n4jm4/rockhopper:slack#noarch
     n4jm4/rockhopper:ubuntu#all
 )

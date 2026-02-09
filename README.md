@@ -30,7 +30,9 @@ $ tree .rockhopper
 ├── debian
 │   └── hello_1.0.0-1_all.deb
 ├── fedora
-│   └── hello-1.0.0-1.fc43.noarch.rpm
+│   └── hello-1.0.0-1.noarch.rpm
+├── mint
+│   └── hello_1.0.0-1_all.deb
 ├── slack
 │   └── hello-1.0.0-1-noarch-build.tgz
 └── ubuntu
@@ -53,6 +55,7 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 | Arch Linux             | n4jm4/rockhopper:arch   |
 | Debian                 | n4jm4/rockhopper:debian |
 | Fedora                 | n4jm4/rockhopper:fedora |
+| Linux Mint             | n4jm4/rockhopper:mint   |
 | Slackware              | n4jm4/rockhopper:slack  |
 | Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu |
 
@@ -110,6 +113,8 @@ export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
 export ROCKHOPPER_ARCH='all'
 ```
 
+Note: Debian and other distros often have additional optional and/or required fields.
+
 4. Generate packages and verify.
 
 ```sh
@@ -118,7 +123,7 @@ $ rockhopper
 $ tree .rockhopper
 .rockhopper
 └── debian
-    └── hello_1.0.0-1_all.deb
+    └── hello_1.0.0_all.deb
 ```
 
 Packages write to `.rockhopper/<distro>/<package-file>`.

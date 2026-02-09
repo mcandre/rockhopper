@@ -1,0 +1,8 @@
+Package: {{ ROCKHOPPER_NAME }}
+Version: {{ ROCKHOPPER_VERSION }}{% if ROCKHOPPER_REV != '' %}-{{ ROCKHOPPER_REV }}{% endif %}
+Maintainer: {{ ROCKHOPPER_MAINTAINER }}
+Architecture: {{ ROCKHOPPER_ARCH }}
+Priority: {{ ROCKHOPPER_PRIORITY | default('optional') }}
+Description: {{ ROCKHOPPER_DESCRIPTION }}
+Depends: {{ ROCKHOPPER_DEPENDENCIES | default('') }}
+{% if ROCKHOPPER_URL is defined %}Homepage: {{ ROCKHOPPER_URL }}{% endif %}

@@ -1,0 +1,33 @@
+{% if ROCKHOPPER_MAINTAINER is defined %}
+# Maintainer: {{ ROCKHOPPER_MAINTAINER }}
+{% endif %}
+pkgname="{{ ROCKHOPPER_NAME }}"
+pkgver="{{ ROCKHOPPER_VERSION }}"
+pkgrel="{{ ROCKHOPPER_REV }}"
+pkgdesc="{{ ROCKHOPPER_DESCRIPTION }}"
+url="{{ ROCKHOPPER_URL }}"
+arch="{{ ROCKHOPPER_ARCH }}"
+license="{{ ROCKHOPPER_LICENSE }}"
+depends="{{ ROCKHOPPER_DEPENDENCIES | default('') }}"
+makedepends="{{ ROCKHOPPER_APK_MAKE_DEPENDS | default('') }}"
+checkdepends="{{ ROCKHOPPER_APK_CHECK_DEPENDS | default('') }}"
+install=""
+subpackages=""
+source="{{ ROCKHOPPER_APK_SOURCE | default('') }}"
+builddir="$srcdir"
+options="!check"
+
+prepare() {
+    default_prepare
+    cp -r "{{ ROCKHOPPER_DATA }}/"* "$builddir"
+    mkdir -p "$builddir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    printf "{{ APK_LICENSE }}\n" >"$builddir/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE"
+}
+
+package() {
+    mkdir -p "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    cp \
+        "$srcdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE" \
+        "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    {{ APK_PACKAGE }}
+}

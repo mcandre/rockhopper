@@ -12,19 +12,25 @@ Docker conveniently abstracts many components which otherwise would require host
 
 Rocklets mount the current working directory as `ROCKHOPPER_MOUNT`, which defaults to `/mnt/rockhopper` when not overriden by the end user.
 
-Rocklets read assets from `ROCKHOPPER_DATA_DIR`, which defaults to `/mnt/rockhopper/rockhopper-data`, when not overridden by the end user.
+Rocklets read assets from `ROCKHOPPER_DATA`, which defaults to `/mnt/rockhopper/rockhopper-data`, when not overridden by the end user.
 
 Rocklets validate package configuration, such as missing or blank variables.
 
 Rocklets terminate nonzero in the event of an error.
 
-Rocklets write packages to a `ROCKHOPPER_ARTIFACT_DIR` directory.
+Rocklets write packages to a `ROCKHOPPER_ARTIFACT` directory.
 
 Select a unique, short, intuitive `<distro>` name to represent the kind of packages that your rocklet generates.
 
-`ROCKHOPPER_ARTIFACT_DIR` defaults to `"${ROCKHOPPER_MOUNT}/.rockhopper/<distro>`, when not overridden by the end user.
+`ROCKHOPPER_ARTIFACT` defaults to `"${ROCKHOPPER_MOUNT}/.rockhopper/<distro>`, when not overridden by the end user.
 
-Create `ROCKHOPPER_ARTIFACT_DIR` idempotently (e.g. `mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"`).
+Create `ROCKHOPPER_ARTIFACT` idempotently (e.g. `mkdir -p "$ROCKHOPPER_ARTIFACT"`).
+
+## Templates
+
+rocklets may use [Jinja](https://jinja.palletsprojects.com/en/stable/) format template files, in order to wire together user settings with the configuration files that control package builds.
+
+rocklets read template files from a `ROCKHOPPER_SPECS` directory, default `$HOME/rockhopper-specs`.
 
 ### Warning
 

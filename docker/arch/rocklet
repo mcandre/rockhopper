@@ -7,17 +7,19 @@ ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
 ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
 ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
-ROCKHOPPER_MAINTAINER="${ROCKHOPPER_MAINTAINER:-}"
-ROCKHOPPER_DESCRIPTION="${ROCKHOPPER_DESCRIPTION:-}"
-ROCKHOPPER_DEPENDENCIES="${ROCKHOPPER_DEPENDENCIES:-}"
 ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
 ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
-ROCKHOPPER_URL="${ROCKHOPPER_URL:-}"
-ROCKHOPPER_DATA_DIR="${ROCKHOPPER_DATA_DIR:-$ROCKHOPPER_MOUNT/rockhopper-data}"
-ROCKHOPPER_ARTIFACT_DIR="${ROCKHOPPER_ARTIFACT_DIR:-$ROCKHOPPER_MOUNT/.rockhopper/arch}"
-ROCKHOPPER_PACMAN_BUILD_DIR="${ROCKHOPPER_PACMAN_BUILD_DIR:-/tmp/archlinux}"
+ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-$ROCKHOPPER_MOUNT/rockhopper-data}"
+ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-${HOME}/rockhopper-specs}"
+ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/arch}"
+ROCKHOPPER_PACMAN_BUILD="${ROCKHOPPER_PACMAN_BUILD:-/tmp/archlinux}"
 ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-any}"
+
+# Forward rockhopper environment variables to Jinja
+for K in $(compgen -v | grep '^ROCKHOPPER_'); do
+    export "$K"
+done
 
 usage() {
     printf "Usage: %s [<OPTION>]\n" "$0"
@@ -67,13 +69,12 @@ validate() {
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_REV
-        ROCKHOPPER_DESCRIPTION
         ROCKHOPPER_LICENSE
         ROCKHOPPER_MOUNT
-        ROCKHOPPER_URL
-        ROCKHOPPER_DATA_DIR
-        ROCKHOPPER_ARTIFACT_DIR
-        ROCKHOPPER_PACMAN_BUILD_DIR
+        ROCKHOPPER_DATA
+        ROCKHOPPER_SPECS
+        ROCKHOPPER_ARTIFACT
+        ROCKHOPPER_PACMAN_BUILD
         ROCKHOPPER_ARCH
     )
 
@@ -88,50 +89,26 @@ validate() {
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_PACMAN_BUILD_DIR"
+    rm -rf "$ROCKHOPPER_PACMAN_BUILD"
 }
 
 validate
 clean
 
-PKGBUILD="# Maintainer: $ROCKHOPPER_MAINTAINER
-pkgname=$ROCKHOPPER_NAME
-pkgver=$ROCKHOPPER_VERSION
-pkgrel=$ROCKHOPPER_REV
-pkgdesc=\"$ROCKHOPPER_DESCRIPTION\"
-arch=($ROCKHOPPER_ARCH)
-url=\"$ROCKHOPPER_URL\""
+cd "$ROCKHOPPER_DATA"
 
-if [ -n "$ROCKHOPPER_LICENSE" ]; then
-    PKGBUILD="$PKGBUILD
-license=('$ROCKHOPPER_LICENSE')"
-fi
-
-PKGBUILD="$PKGBUILD
-depends=($ROCKHOPPER_DEPENDENCIES)
-source=("
-
-cd "$ROCKHOPPER_DATA_DIR"
+PACMAN_SOURCES=''
 
 for f in $(find . -type f -print); do
     f="${f#./}"
     b="$(basename "$f")"
 
-    PKGBUILD="$PKGBUILD\n    \"$b\""
+    PACMAN_SOURCES="$PACMAN_SOURCES\"$b\" "
 done
 
-PKGBUILD="$PKGBUILD
-)
-sha256sums=('...')
+export PACMAN_SOURCES
 
-package() {"
-
-if [ -n "$ROCKHOPPER_COPYRIGHT" ] || [ -n "$ROCKHOPPER_LICENSE" ]; then
-    PKGBUILD="$PKGBUILD
-    install -d \"\${pkgdir}/usr/share/licenses/$ROCKHOPPER_NAME\"
-    install \"\${srcdir}/LICENSE\" \"\${pkgdir}/usr/share/licenses/$ROCKHOPPER_NAME/LICENSE\"
-"
-fi
+PACMAN_PACKAGE=''
 
 for f in $(find . -print); do
     if [ "$f" = './' ]; then
@@ -141,43 +118,43 @@ for f in $(find . -print); do
     f="${f#./}"
 
     if [ -d "$f" ]; then
-        PKGBUILD="$PKGBUILD\n    install -d \"\${pkgdir}/$f\""
+        PACMAN_PACKAGE="${PACMAN_PACKAGE}install -d \"\${pkgdir}/$f\"; "
     elif [ -f "$f" ]; then
         b="$(basename "$f")"
-        PKGBUILD="$PKGBUILD\n    install \"\${srcdir}/$b\" \"\${pkgdir}/$f\""
+        PACMAN_PACKAGE="${PACMAN_PACKAGE}install \"\${srcdir}/$b\" \"\${pkgdir}/$f\"; "
     else
         echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
     fi
 done
 
-PKGBUILD="$PKGBUILD\n}"
+export PACMAN_PACKAGE
+PKGBUILD="$ROCKHOPPER_PACMAN_BUILD/PKGBUILD"
 
-mkdir -p "$ROCKHOPPER_PACMAN_BUILD_DIR/src"
-printf "$PKGBUILD\n" >"$ROCKHOPPER_PACMAN_BUILD_DIR/PKGBUILD"
+mkdir -p "$ROCKHOPPER_PACMAN_BUILD/src"
+rsubst "$ROCKHOPPER_SPECS/PKGBUILD.j2" >"$PKGBUILD"
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     echo "PKGBUILD:"
-    cat "$ROCKHOPPER_PACMAN_BUILD_DIR/PKGBUILD"
+    cat "$PKGBUILD"
 fi
 
 if [ -n "$ROCKHOPPER_COPYRIGHT" ] || [ -n "$ROCKHOPPER_LICENSE" ]; then
-    LIC=""
+    LIC=''
 
     if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
         LIC="$ROCKHOPPER_COPYRIGHT"
     fi
 
     if [ -n "$ROCKHOPPER_LICENSE" ]; then
-        LIC="$LIC
-$ROCKHOPPER_LICENSE"
+        LIC="${LIC}\n$ROCKHOPPER_LICENSE"
     fi
 
-    printf "$LIC\n" >"$ROCKHOPPER_PACMAN_BUILD_DIR/src/LICENSE"
+    printf "$LIC\n" >"$ROCKHOPPER_PACMAN_BUILD/src/LICENSE"
 fi
 
-find "$ROCKHOPPER_DATA_DIR" -type f -exec cp "{}" "$ROCKHOPPER_PACMAN_BUILD_DIR" \;
+find "$ROCKHOPPER_DATA" -type f -exec cp "{}" "$ROCKHOPPER_PACMAN_BUILD" \;
 
-cd "$ROCKHOPPER_PACMAN_BUILD_DIR"
+cd "$ROCKHOPPER_PACMAN_BUILD"
 
 makepkg() {
     HAS_GENINTEG=''
@@ -204,6 +181,11 @@ makepkg() {
 makepkg -g >>PKGBUILD
 
 makepkg
-mkdir -p "$ROCKHOPPER_ARTIFACT_DIR"
-cp "${ROCKHOPPER_PACMAN_BUILD_DIR}/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-$ROCKHOPPER_REV-$ROCKHOPPER_ARCH.pkg.tar.zst" "$ROCKHOPPER_ARTIFACT_DIR"
+
+mkdir -p "$ROCKHOPPER_ARTIFACT"
+
+cp \
+    "${ROCKHOPPER_PACMAN_BUILD}/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-$ROCKHOPPER_REV-$ROCKHOPPER_ARCH.pkg.tar.zst" \
+    "$ROCKHOPPER_ARTIFACT"
+
 clean

@@ -7,13 +7,16 @@
 	docker-build-arch \
 	docker-build-debian \
 	docker-build-fedora \
+	docker-build-mint \
 	docker-build-slack \
 	docker-build-ubuntu \
 	docker-push \
+	docker-tag \
 	docker-tag-alpine \
 	docker-tag-arch \
 	docker-tag-debian \
 	docker-tag-fedora \
+	docker-tag-mint \
 	docker-tag-slack \
 	docker-tag-ubuntu \
 	test
@@ -32,6 +35,7 @@ docker-build: \
 	docker-build-arch \
 	docker-build-debian \
 	docker-build-fedora \
+	docker-build-mint \
 	docker-build-slack \
 	docker-build-ubuntu
 
@@ -47,14 +51,26 @@ docker-build-debian:
 docker-build-fedora:
 	sh -c "cd docker/fedora && docker build -t n4jm4/rockhopper:fedora . --load"
 
+docker-build-mint:
+	sh -c "cd docker/mint && docker build -t n4jm4/rockhopper:mint . --load"
+
 docker-build-slack:
 	sh -c "cd docker/slack && docker build -t n4jm4/rockhopper:slack . --load"
 
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && docker build -t n4jm4/rockhopper:ubuntu . --load"
 
-docker-push: docker-build docker-tag-alpine docker-tag-arch docker-tag-debian docker-tag-fedora docker-tag-slack docker-tag-ubuntu
+docker-push: docker-build docker-tag
 	docker push n4jm4/rockhopper --all-tags
+
+docker-tag: \
+	docker-tag-alpine \
+	docker-tag-arch \
+	docker-tag-debian \
+	docker-tag-fedora \
+	docker-tag-mint \
+	docker-tag-slack \
+	docker-tag-ubuntu
 
 docker-tag-alpine:
 	docker tag n4jm4/rockhopper:alpine n4jm4/rockhopper:$(VERSION)-alpine3.23
@@ -77,6 +93,15 @@ docker-tag-fedora:
 	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:$(VERSION)-fedora43
 	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:$(VERSION)-fedora
 	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:fedora43
+
+docker-tag-mint:
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:$(VERSION)-zena
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:$(VERSION)-mint22.3
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:$(VERSION)-mint22
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:$(VERSION)-mint
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:zena
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:mint22.3
+	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:mint22
 
 docker-tag-slack:
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:$(VERSION)-slack15.0

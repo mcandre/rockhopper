@@ -1,13 +1,16 @@
-FROM library/archlinux:base-devel
-RUN useradd -m builder && \
-    passwd -d builder && \
+FROM linuxmintd/mint22.3-amd64
+RUN apt update && \
+    apt install -y \
+        curl \
+        mint-dev-tools && \
     curl -LO https://github.com/jtdowney/rsubst/releases/download/v0.1.4/rsubst-x86_64-unknown-linux-musl.tar.gz && \
     tar xf rsubst-x86_64-unknown-linux-musl.tar.gz && \
     mv rsubst /usr/bin && \
     rm -rf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    mkdir /home/builder/rockhopper-specs
-COPY PKGBUILD.j2 /home/builder/rockhopper-specs
+    apt remove -y --autoremove --purge curl && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir /root/rockhopper-specs
+COPY control.j2 /root/rockhopper-specs
 COPY rocklet /usr/local/bin
-WORKDIR /home/builder
-USER builder
 ENTRYPOINT ["/usr/local/bin/rocklet"]
