@@ -60,7 +60,10 @@ docker-build-slack:
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && docker build -t n4jm4/rockhopper:ubuntu . --load"
 
-docker-push: docker-build docker-tag
+docker-clean-tags:
+	docker images | grep '^n4jm4/rockhopper' | awk '{ print $1 }' | xargs -n 1 docker rmi -f
+
+docker-push: docker-clean-tags docker-build docker-tag
 	docker push n4jm4/rockhopper --all-tags
 
 docker-tag: \
