@@ -5,6 +5,7 @@
 	docker-build \
 	docker-build-alpine \
 	docker-build-arch \
+	docker-build-cachy \
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-mint \
@@ -15,6 +16,7 @@
 	docker-tag \
 	docker-tag-alpine \
 	docker-tag-arch \
+	docker-tag-cachy \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-mint \
@@ -35,6 +37,7 @@ clean:
 docker-build: \
 	docker-build-alpine \
 	docker-build-arch \
+	docker-build-cachy \
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-mint \
@@ -47,6 +50,9 @@ docker-build-alpine:
 
 docker-build-arch:
 	sh -c "cd docker/arch && docker build -t n4jm4/rockhopper:arch . --load"
+
+docker-build-cachy:
+	sh -c "cd docker/cachy && docker build -t n4jm4/rockhopper:cachy . --load"
 
 docker-build-debian:
 	sh -c "cd docker/debian && docker build -t n4jm4/rockhopper:debian . --load"
@@ -78,6 +84,7 @@ docker-push: docker-clean-tags docker-build docker-tag
 docker-tag: \
 	docker-tag-alpine \
 	docker-tag-arch \
+	docker-tag-cachy \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-mint \
@@ -94,6 +101,9 @@ docker-tag-alpine:
 
 docker-tag-arch:
 	docker tag n4jm4/rockhopper:arch n4jm4/rockhopper:$(VERSION)-arch
+
+docker-tag-cachy:
+	docker tag n4jm4/rockhopper:cachy n4jm4/rockhopper:$(VERSION)-cachy
 
 docker-tag-debian:
 	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:$(VERSION)-trixie

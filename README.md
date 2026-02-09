@@ -27,6 +27,8 @@ $ tree .rockhopper
 │   └── hello-1.0.0-r1.noarch.apk
 ├── arch
 │   └── hello-1.0.0-1-any.pkg.tar.zst
+├── cachy
+│   └── hello-1.0.0-1-any.pkg.tar.zst
 ├── debian
 │   └── hello_1.0.0-1_all.deb
 ├── fedora
@@ -55,6 +57,7 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 | ---------------------- | ------------------------- |
 | Alpine Linux           | n4jm4/rockhopper:alpine   |
 | Arch Linux             | n4jm4/rockhopper:arch     |
+| CachyOS                | n4jm4/rockhopper:cachy    |
 | Debian                 | n4jm4/rockhopper:debian   |
 | Fedora                 | n4jm4/rockhopper:fedora   |
 | Linux Mint             | n4jm4/rockhopper:mint     |
@@ -64,7 +67,9 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
-[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form: `n4jm4/rockhopper:<rockhopper version>-<distro>`.
+[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
+
+`n4jm4/rockhopper:<rockhopper version>-<distro>`
 
 # USAGE
 
