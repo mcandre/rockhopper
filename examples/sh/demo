@@ -24,6 +24,7 @@ PLATFORMS=(
     n4jm4/rockhopper:debian#all
     n4jm4/rockhopper:fedora#noarch
     n4jm4/rockhopper:mint#all
+    n4jm4/rockhopper:raspbian#all
     n4jm4/rockhopper:slack#noarch
     n4jm4/rockhopper:ubuntu#all
 )

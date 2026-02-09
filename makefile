@@ -8,6 +8,7 @@
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-mint \
+	docker-build-raspbian \
 	docker-build-slack \
 	docker-build-ubuntu \
 	docker-push \
@@ -17,6 +18,7 @@
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-mint \
+	docker-tag-raspbian \
 	docker-tag-slack \
 	docker-tag-ubuntu \
 	test
@@ -36,6 +38,7 @@ docker-build: \
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-mint \
+	docker-build-raspbian \
 	docker-build-slack \
 	docker-build-ubuntu
 
@@ -53,6 +56,9 @@ docker-build-fedora:
 
 docker-build-mint:
 	sh -c "cd docker/mint && docker build -t n4jm4/rockhopper:mint . --load"
+
+docker-build-raspbian:
+	sh -c "cd docker/raspbian && docker build -t n4jm4/rockhopper:raspbian . --load"
 
 docker-build-slack:
 	sh -c "cd docker/slack && docker build -t n4jm4/rockhopper:slack . --load"
@@ -72,6 +78,7 @@ docker-tag: \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-mint \
+	docker-tag-raspbian \
 	docker-tag-slack \
 	docker-tag-ubuntu
 
@@ -105,6 +112,10 @@ docker-tag-mint:
 	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:zena
 	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:mint22.3
 	docker tag n4jm4/rockhopper:mint n4jm4/rockhopper:mint22
+
+docker-tag-raspbian:
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian6
+	docker tag n4jm4/rockhopper:raspbian n4jm4/rockhopper:$(VERSION)-raspbian
 
 docker-tag-slack:
 	docker tag n4jm4/rockhopper:slack n4jm4/rockhopper:$(VERSION)-slack15.0

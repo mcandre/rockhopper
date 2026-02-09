@@ -33,6 +33,8 @@ $ tree .rockhopper
 │   └── hello-1.0.0-1.noarch.rpm
 ├── mint
 │   └── hello_1.0.0-1_all.deb
+├── raspbian
+│   └── hello_1.0.0-1_all.deb
 ├── slack
 │   └── hello-1.0.0-1-noarch-build.tgz
 └── ubuntu
@@ -49,19 +51,20 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 ## Rockhopper Images
 
-| Distro                 | Image                   |
-| ---------------------- | ----------------------- |
-| Alpine Linux           | n4jm4/rockhopper:alpine |
-| Arch Linux             | n4jm4/rockhopper:arch   |
-| Debian                 | n4jm4/rockhopper:debian |
-| Fedora                 | n4jm4/rockhopper:fedora |
-| Linux Mint             | n4jm4/rockhopper:mint   |
-| Slackware              | n4jm4/rockhopper:slack  |
-| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu |
+| Distro                 | Image                     |
+| ---------------------- | ------------------------- |
+| Alpine Linux           | n4jm4/rockhopper:alpine   |
+| Arch Linux             | n4jm4/rockhopper:arch     |
+| Debian                 | n4jm4/rockhopper:debian   |
+| Fedora                 | n4jm4/rockhopper:fedora   |
+| Linux Mint             | n4jm4/rockhopper:mint     |
+| Raspbian               | n4jm4/rockhopper:raspbian |
+| Slackware              | n4jm4/rockhopper:slack    |
+| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu   |
 
 Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
-[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available.
+[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form: `n4jm4/rockhopper:<rockhopper version>-<distro>`.
 
 # USAGE
 
