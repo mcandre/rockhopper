@@ -83,6 +83,8 @@ Examples:
 * JAR's wrapped in shell scripts (JVM)
 * chmod +x (shell scripts)
 
+Pro tip: Target dynamic scripts, pure Go binaries, or fully static musl binaries. These do not depend on glibc, often a sticking point for cross-distro compatibility.
+
 2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
 Linux, and many UNIX style operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
