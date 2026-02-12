@@ -23,26 +23,20 @@ $ ./demo
 
 $ tree .rockhopper
 .rockhopper
-├── alpine
+├── alpine-linux
 │   └── hello-1.0.0-r1.noarch.apk
-├── antix
-│   └── hello_1.0.0-1_all.deb
-├── arch
-│   └── hello-1.0.0-1-any.pkg.tar.zst
-├── cachy
+├── arch-linux
 │   └── hello-1.0.0-1-any.pkg.tar.zst
 ├── debian
 │   └── hello_1.0.0-1_all.deb
 ├── fedora
 │   └── hello-1.0.0-1.noarch.rpm
-├── mint
-│   └── hello_1.0.0-1_all.deb
-├── raspbian
-│   └── hello_1.0.0-1_all.deb
-├── slack
+├── slackware-linux
 │   └── hello-1.0.0-1-noarch-build.tgz
-└── ubuntu
-    └── hello_1.0.0-1_all.deb
+├── ubuntu
+│   └── hello_1.0.0-1_all.deb
+└── void-linux-musl
+    └── hello-1.0.0_1.x86_64-musl.xbps
 ```
 
 # INSTALLATION
@@ -55,18 +49,15 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 ## Rockhopper Images
 
-| Distro                 | Image                     |
-| ---------------------- | ------------------------- |
-| Alpine Linux           | n4jm4/rockhopper:alpine   |
-| AntiX                  | n4jm4/rockhopper:antix    |
-| Arch Linux             | n4jm4/rockhopper:arch     |
-| CachyOS                | n4jm4/rockhopper:cachy    |
-| Debian                 | n4jm4/rockhopper:debian   |
-| Fedora                 | n4jm4/rockhopper:fedora   |
-| Linux Mint             | n4jm4/rockhopper:mint     |
-| Raspbian               | n4jm4/rockhopper:raspbian |
-| Slackware              | n4jm4/rockhopper:slack    |
-| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu   |
+| Distro                 | Image                            |
+| ---------------------- | -------------------------------- |
+| Alpine Linux           | n4jm4/rockhopper:alpine-linux    |
+| Arch Linux             | n4jm4/rockhopper:arch            |
+| Debian                 | n4jm4/rockhopper:debian          |
+| Fedora                 | n4jm4/rockhopper:fedora          |
+| Slackware Linux        | n4jm4/rockhopper:slackware-linux |
+| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu          |
+| Void Linux (musl)      | n4jm4/rockhopper:void-linux-musl |
 
 Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 

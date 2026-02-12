@@ -12,10 +12,9 @@ ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
 ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-$ROCKHOPPER_MOUNT/rockhopper-data}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-${HOME}/rockhopper-specs}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/slack}"
-ROCKHOPPER_INSTALLPKG_BUILD="${ROCKHOPPER_INSTALLPKG_BUILD:-/tmp/build}"
-ROCKHOPPER_INSTALLPKG_EXTENSION="${ROCKHOPPER_INSTALLPKG_EXTENSION:-tgz}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
+ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/arch-linux}"
+ROCKHOPPER_PACMAN_BUILD="${ROCKHOPPER_PACMAN_BUILD:-/tmp/arch-linux}"
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-any}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -39,7 +38,7 @@ while [ "$#" -ge 1 ]; do
     case "$1" in
     '--debug' | '-d')
         shift
-        ROCKHOPPER_LOG_LEVEL='info'
+        ROCKHOPPER_LOG_LEVEL='debug'
         ;;
     '--quiet' | 'q')
         shift
@@ -69,11 +68,13 @@ validate() {
     REQUIRED_ENV_VARS=(
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
+        ROCKHOPPER_REV
+        ROCKHOPPER_LICENSE
         ROCKHOPPER_MOUNT
         ROCKHOPPER_DATA
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_INSTALLPKG_BUILD
+        ROCKHOPPER_PACMAN_BUILD
         ROCKHOPPER_ARCH
     )
 
@@ -88,23 +89,54 @@ validate() {
 }
 
 clean() {
-    rm -rf /tmp/*.t?z
-    rm -rf "$ROCKHOPPER_INSTALLPKG_BUILD"
+    rm -rf "$ROCKHOPPER_PACMAN_BUILD"
 }
 
 validate
 clean
 
-mkdir -p "$ROCKHOPPER_INSTALLPKG_BUILD/install"
-SLACK_DESC="$ROCKHOPPER_INSTALLPKG_BUILD/install/slack-desc"
-rsubst "$ROCKHOPPER_SPECS/slack-desc.j2" >"$SLACK_DESC"
+cd "$ROCKHOPPER_DATA"
+
+PACMAN_SOURCES=''
+
+for f in $(find . -type f -print); do
+    f="${f#./}"
+    b="$(basename "$f")"
+
+    PACMAN_SOURCES="$PACMAN_SOURCES\"$b\" "
+done
+
+export PACMAN_SOURCES
+
+PACMAN_PACKAGE=''
+
+for f in $(find . -print); do
+    if [ "$f" = './' ]; then
+        continue
+    fi
+
+    f="${f#./}"
+
+    if [ -d "$f" ]; then
+        PACMAN_PACKAGE="${PACMAN_PACKAGE}install -d \"\${pkgdir}/$f\"; "
+    elif [ -f "$f" ]; then
+        b="$(basename "$f")"
+        PACMAN_PACKAGE="${PACMAN_PACKAGE}install \"\${srcdir}/$b\" \"\${pkgdir}/$f\"; "
+    else
+        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+    fi
+done
+
+export PACMAN_PACKAGE
+PKGBUILD="$ROCKHOPPER_PACMAN_BUILD/PKGBUILD"
+
+mkdir -p "$ROCKHOPPER_PACMAN_BUILD/src"
+rsubst "$ROCKHOPPER_SPECS/PKGBUILD.j2" >"$PKGBUILD"
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    echo "slack-desc:"
-    cat "$SLACK_DESC"
+    echo "PKGBUILD:"
+    cat "$PKGBUILD"
 fi
-
-mkdir -p "$ROCKHOPPER_INSTALLPKG_BUILD/usr/doc/${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}"
 
 if [ -n "$ROCKHOPPER_COPYRIGHT" ] || [ -n "$ROCKHOPPER_LICENSE" ]; then
     LIC=''
@@ -117,30 +149,43 @@ if [ -n "$ROCKHOPPER_COPYRIGHT" ] || [ -n "$ROCKHOPPER_LICENSE" ]; then
         LIC="${LIC}\n$ROCKHOPPER_LICENSE"
     fi
 
-    printf "$LIC\n" >"$ROCKHOPPER_INSTALLPKG_BUILD/usr/doc/${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}/LICENSE"
+    printf "$LIC\n" >"$ROCKHOPPER_PACMAN_BUILD/src/LICENSE"
 fi
 
-cp -r "$ROCKHOPPER_DATA/"* "$ROCKHOPPER_INSTALLPKG_BUILD"
+find "$ROCKHOPPER_DATA" -type f -exec cp "{}" "$ROCKHOPPER_PACMAN_BUILD" \;
 
-cd "$ROCKHOPPER_INSTALLPKG_BUILD"
-
-mkdir -p "$ROCKHOPPER_ARTIFACT"
-ARTIFACT="${ROCKHOPPER_ARTIFACT}/${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}"
-
-if [ -n "$ROCKHOPPER_REV" ]; then
-    ARTIFACT="${ARTIFACT}-${ROCKHOPPER_REV}"
-fi
-
-ARTIFACT="${ARTIFACT}-${ROCKHOPPER_ARCH}-build.${ROCKHOPPER_INSTALLPKG_EXTENSION}"
+cd "$ROCKHOPPER_PACMAN_BUILD"
 
 makepkg() {
+    HAS_GENINTEG=''
+
+    for ARG in "$@"; do
+        if [ "$ARG" = '-g' ] || [ "$ARG" = '--geninteg' ]; then
+            HAS_GENINTEG='1'
+            break
+        fi
+    done
+
     if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        command makepkg "$@" >/dev/null 2>&1
+        if [ -n "$HAS_GENINTEG" ]; then
+            command makepkg "$@" 2>/dev/null
+        else
+            command makepkg "$@" >/dev/null 2>&1
+        fi
     else
         command makepkg "$@"
     fi
 }
 
-makepkg -c y "$ARTIFACT"
+# Update sha256sums
+makepkg -g >>PKGBUILD
+
+makepkg
+
+mkdir -p "$ROCKHOPPER_ARTIFACT"
+
+cp \
+    "${ROCKHOPPER_PACMAN_BUILD}/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-$ROCKHOPPER_REV-$ROCKHOPPER_ARCH.pkg.tar.zst" \
+    "$ROCKHOPPER_ARTIFACT"
 
 clean

@@ -34,6 +34,16 @@ Forward `<ROCKLET OPTIONS>` from `rockhopper` to individual `rocklet` containers
 
 rockhopper uses environment variables as the primary configuration mechanism.
 
+## `ROCKHOPPER_DOCKER_FLAGS`
+
+Default: (blank)
+
+Optional.
+
+Adds the given flags to `docker run` commands.
+
+Example: `--privileged` may be necessary for some distros.
+
 ## `ROCKHOPPER_LOG_LEVEL`
 
 Default: `info`

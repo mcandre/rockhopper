@@ -12,9 +12,9 @@ ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
 ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-$ROCKHOPPER_MOUNT/rockhopper-data}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-${HOME}/rockhopper-specs}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/alpine}"
-ROCKHOPPER_APK_BUILD="${ROCKHOPPER_APK_BUILD:-/tmp/alpinelinux}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
+ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/void-linux-musl}"
+ROCKHOPPER_XBPS_BUILD="${ROCKHOPPER_XBPS_BUILD:-/tmp/void-linux-musl}"
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -61,6 +61,7 @@ done
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     env | grep '^ROCKHOPPER_' | sort
+    set -x
 fi
 
 validate() {
@@ -73,7 +74,7 @@ validate() {
         ROCKHOPPER_DATA
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_APK_BUILD
+        ROCKHOPPER_XBPS_BUILD
         ROCKHOPPER_ARCH
     )
 
@@ -81,80 +82,109 @@ validate() {
         eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
 
         if [ -z "$REQUIRED_ENV_VAL" ]; then
-            echo "error: ${ROCKHOPPER_IMAGE}: blank/missing env var: ${REQUIRED_ENV_VAR}"
+            echo "error: ${ROCKHOPPER_IMAGE} blank/missing env var: ${REQUIRED_ENV_VAR}"
             exit 1
         fi
     done
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_APK_BUILD"
+    rm -rf "$ROCKHOPPER_XBPS_BUILD"
 }
 
 validate
 clean
 
-APK_LICENSE=''
+git-clone() {
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command git clone -q "$@"
+    else
+        command git clone "$@"
+    fi
+}
+
+git-clone --depth 1 https://github.com/void-linux/void-packages.git "$ROCKHOPPER_XBPS_BUILD"
+XBPS_SRC="$ROCKHOPPER_XBPS_BUILD/srcpkgs/$ROCKHOPPER_NAME"
+mkdir -p "$XBPS_SRC"
+
+LIC=''
 
 if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
-    APK_LICENSE="$ROCKHOPPER_COPYRIGHT"
+    LIC="Copyright: $ROCKHOPPER_COPYRIGHT"
 fi
 
-APK_LICENSE="$APK_LICENSE\\n$ROCKHOPPER_LICENSE"
-export APK_LICENSE
+LIC="${LIC}\nLicense: $ROCKHOPPER_LICENSE"
+FILES="$XBPS_SRC/files"
+LICENSES="$FILES/licenses"
+mkdir -p "$LICENSES"
+printf "$LIC\n" >"$LICENSES/LICENSE"
+DATA="$FILES/data"
+mkdir -p "$DATA"
+cp -r "$ROCKHOPPER_DATA/"* "$DATA"
 
-cd "$ROCKHOPPER_DATA"
+cd "$FILES"
 
-APK_PACKAGE=''
+XBPS_PRE_INSTALL=''
 
 for f in $(find . -print); do
     f="${f#./}"
 
-    if [ "$f" = '' ]; then
+    if [ "$f" = '.' ]; then
         continue
     fi
 
     if [ -d "$f" ]; then
-        APK_PACKAGE="${APK_PACKAGE}mkdir -p \"\$pkgdir/$f\"; "
+        XBPS_PRE_INSTALL="${XBPS_PRE_INSTALL}mkdir -p \"$f\"; "
     elif [ -f "$f" ]; then
-        APK_PACKAGE="${APK_PACKAGE}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
+        XBPS_PRE_INSTALL="${XBPS_PRE_INSTALL}cp \"\$FILESDIR/$f\" \"$f\"; "
     else
-        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${ROCKHOPPER_DATA}/${f}"
-        exit 1
+        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
     fi
 done
 
-export APK_PACKAGE
+export XBPS_PRE_INSTALL
 
-mkdir -p "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
-APKBUILD="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/APKBUILD"
-rsubst "$ROCKHOPPER_SPECS/APKBUILD.j2" >"$APKBUILD"
+cd "$DATA"
+
+XBPS_PACKAGE=''
+
+for f in $(find . -print); do
+    f="${f#./}"
+
+    if [ "$f" = '.' ]; then
+        continue
+    fi
+
+    if [ -d "$f" ]; then
+        XBPS_PACKAGE="${XBPS_PACKAGE}vmkdir \"$f\"; "
+    elif [ -f "$f" ]; then
+        XBPS_PACKAGE="${XBPS_PACKAGE}vcopy \"data/$f\" \"$f\"; "
+    else
+        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+    fi
+done
+
+export XBPS_PACKAGE
+
+TEMPLATE="$XBPS_SRC/template"
+rsubst "$ROCKHOPPER_SPECS/template.j2" >"$TEMPLATE"
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    echo "APKBUILD:"
-    cat "$APKBUILD"
+    echo "template:"
+    cat "$TEMPLATE"
 fi
 
-SRC="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/src"
-mkdir -p "$SRC"
-
-cd "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
-
-abuild() {
+xbps-src() {
     if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        command abuild "$@" 2>/dev/null 1>&2
+        ./xbps-src "$@" >/dev/null 2>&1
     else
-        command abuild "$@"
+        ./xbps-src "$@"
     fi
 }
 
-abuild -F checksum
-abuild -F -r
+cd "$ROCKHOPPER_XBPS_BUILD"
 
+xbps-src pkg "$ROCKHOPPER_NAME"
 mkdir -p "$ROCKHOPPER_ARTIFACT"
-
-cp \
-    "/root/packages/alpinelinux/$(uname -m)/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.apk" \
-    "$ROCKHOPPER_ARTIFACT/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.$ROCKHOPPER_ARCH.apk"
-
+cp "$ROCKHOPPER_XBPS_BUILD/hostdir/binpkgs/"*.xbps "$ROCKHOPPER_ARTIFACT"
 clean

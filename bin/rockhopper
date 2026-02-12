@@ -5,6 +5,7 @@ set -eufo pipefail
 ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
+ROCKHOPPER_DOCKER_FLAGS="${ROCKHOPPER_DOCKER_FLAGS:-}"
 
 usage() {
     printf "Usage: %s [<OPTION>] [-- <ROCKLET_OPTIONS>]\n" "$0"
@@ -75,6 +76,7 @@ for K in $(compgen -v | grep '^ROCKHOPPER_'); do
 done
 
 docker run \
+    $ROCKHOPPER_DOCKER_FLAGS \
     -v "$(pwd):$ROCKHOPPER_MOUNT" \
     $ENV_ARGS \
     "$ROCKHOPPER_IMAGE" \

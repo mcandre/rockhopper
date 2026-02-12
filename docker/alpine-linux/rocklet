@@ -12,9 +12,9 @@ ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
 ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-$ROCKHOPPER_MOUNT/rockhopper-data}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-${HOME}/rockhopper-specs}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/antix}"
-ROCKHOPPER_APT_BUILD="${ROCKHOPPER_APT_BUILD:-/tmp/antix}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-all}"
+ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-$ROCKHOPPER_MOUNT/.rockhopper/alpine-linux}"
+ROCKHOPPER_APK_BUILD="${ROCKHOPPER_APK_BUILD:-/tmp/alpine-linux}"
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -61,19 +61,19 @@ done
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     env | grep '^ROCKHOPPER_' | sort
-    set -x
 fi
 
 validate() {
     REQUIRED_ENV_VARS=(
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
+        ROCKHOPPER_REV
         ROCKHOPPER_LICENSE
         ROCKHOPPER_MOUNT
         ROCKHOPPER_DATA
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_APT_BUILD
+        ROCKHOPPER_APK_BUILD
         ROCKHOPPER_ARCH
     )
 
@@ -81,55 +81,80 @@ validate() {
         eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
 
         if [ -z "$REQUIRED_ENV_VAL" ]; then
-            echo "error: ${ROCKHOPPER_IMAGE} blank/missing env var: ${REQUIRED_ENV_VAR}"
+            echo "error: ${ROCKHOPPER_IMAGE}: blank/missing env var: ${REQUIRED_ENV_VAR}"
             exit 1
         fi
     done
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_APT_BUILD"
+    rm -rf "$ROCKHOPPER_APK_BUILD"
 }
 
 validate
 clean
 
-mkdir -p "$ROCKHOPPER_APT_BUILD/DEBIAN"
-CONTROL="$ROCKHOPPER_APT_BUILD/DEBIAN/control"
-rsubst "$ROCKHOPPER_SPECS/control.j2" >"$CONTROL"
-
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    echo "control:"
-    cat "$CONTROL"
-fi
-
-LIC='Files: *'
+APK_LICENSE=''
 
 if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
-    LIC="${LIC}\nCopyright: $ROCKHOPPER_COPYRIGHT"
+    APK_LICENSE="$ROCKHOPPER_COPYRIGHT"
 fi
 
-LIC="${LIC}\nLicense: $ROCKHOPPER_LICENSE"
-printf "$LIC\n" >"$ROCKHOPPER_APT_BUILD/DEBIAN/copyright"
+APK_LICENSE="$APK_LICENSE\\n$ROCKHOPPER_LICENSE"
+export APK_LICENSE
 
-cp -r "$ROCKHOPPER_DATA/"* "$ROCKHOPPER_APT_BUILD"
-mkdir -p "$ROCKHOPPER_ARTIFACT"
-ARTIFACT="$ROCKHOPPER_ARTIFACT/${ROCKHOPPER_NAME}_${ROCKHOPPER_VERSION}"
+cd "$ROCKHOPPER_DATA"
 
-if [ -n "$ROCKHOPPER_REV" ]; then
-    ARTIFACT="${ARTIFACT}-${ROCKHOPPER_REV}"
-fi
+APK_PACKAGE=''
 
-ARTIFACT="${ARTIFACT}_${ROCKHOPPER_ARCH}.deb"
+for f in $(find . -print); do
+    f="${f#./}"
 
-dpkg-deb() {
-    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        command dpkg-deb "$@" >/dev/null
+    if [ "$f" = '' ]; then
+        continue
+    fi
+
+    if [ -d "$f" ]; then
+        APK_PACKAGE="${APK_PACKAGE}mkdir -p \"\$pkgdir/$f\"; "
+    elif [ -f "$f" ]; then
+        APK_PACKAGE="${APK_PACKAGE}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
-        command dpkg-deb "$@"
+        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${ROCKHOPPER_DATA}/${f}"
+        exit 1
+    fi
+done
+
+export APK_PACKAGE
+
+mkdir -p "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
+APKBUILD="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/APKBUILD"
+rsubst "$ROCKHOPPER_SPECS/APKBUILD.j2" >"$APKBUILD"
+
+if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
+    echo "APKBUILD:"
+    cat "$APKBUILD"
+fi
+
+SRC="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/src"
+mkdir -p "$SRC"
+
+cd "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
+
+abuild() {
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command abuild "$@" 2>/dev/null 1>&2
+    else
+        command abuild "$@"
     fi
 }
 
-dpkg-deb --build "$ROCKHOPPER_APT_BUILD" "$ARTIFACT"
+abuild -F checksum
+abuild -F -r
+
+mkdir -p "$ROCKHOPPER_ARTIFACT"
+
+cp \
+    "/root/packages/alpine-linux/$(uname -m)/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.apk" \
+    "$ROCKHOPPER_ARTIFACT/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.$ROCKHOPPER_ARCH.apk"
 
 clean

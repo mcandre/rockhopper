@@ -14,21 +14,21 @@ ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
 ROCKHOPPER_LICENSE='0BSD'
 ROCKHOPPER_URL='https://bobslawblog.test/'
 
+# Void Linux
+ROCKHOPPER_DOCKER_FLAGS='--privileged'
+
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
     export "$K"
 done
 
 PLATFORMS=(
-    n4jm4/rockhopper:alpine#noarch
-    n4jm4/rockhopper:antix#all
-    n4jm4/rockhopper:arch#any
-    n4jm4/rockhopper:cachy#any
-    n4jm4/rockhopper:debian#all
-    n4jm4/rockhopper:fedora#noarch
-    n4jm4/rockhopper:mint#all
-    n4jm4/rockhopper:raspbian#all
-    n4jm4/rockhopper:slack#noarch
-    n4jm4/rockhopper:ubuntu#all
+    'n4jm4/rockhopper:alpine-linux#noarch'
+    'n4jm4/rockhopper:arch-linux#any'
+    'n4jm4/rockhopper:debian#all'
+    'n4jm4/rockhopper:fedora#noarch'
+    'n4jm4/rockhopper:slackware-linux#noarch'
+    'n4jm4/rockhopper:ubuntu#all'
+    'n4jm4/rockhopper:void-linux-musl#*'
 )
 
 for PLATFORM in "${PLATFORMS[@]}"; do
