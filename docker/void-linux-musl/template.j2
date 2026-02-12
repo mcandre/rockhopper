@@ -8,7 +8,7 @@ homepage="{{ ROCKHOPPER_URL }}"
 {% if ROCKHOPPER_CHANGELOG is defined %}
 changelog="{{ ROCKHOPPER_CHANGELOG }}"
 {% endif %}
-archs="{{ ROCKHOPPER_ARCH }}"
+archs="{{ ROCKHOPPER_ARCH | default('*') }}"
 
 pre_install() {
     {{ XBPS_PRE_INSTALL }}

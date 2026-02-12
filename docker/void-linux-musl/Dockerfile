@@ -1,11 +1,14 @@
 FROM ghcr.io/void-linux/void-musl
 RUN xbps-install -Syu && \
     xbps-install -y \
+        bash \
+        curl \
+        findutils \
+        git \
         gzip \
         shadow \
         tar \
-        util-linux \
-        xtools && \
+        util-linux && \
     curl -LO https://github.com/jtdowney/rsubst/releases/download/v0.1.4/rsubst-x86_64-unknown-linux-musl.tar.gz && \
     tar xf rsubst-x86_64-unknown-linux-musl.tar.gz && \
     mv rsubst /usr/bin && \

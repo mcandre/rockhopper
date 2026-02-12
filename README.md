@@ -35,7 +35,7 @@ $ tree .rockhopper
 │   └── hello-1.0.0-1-noarch-build.tgz
 ├── ubuntu
 │   └── hello_1.0.0-1_all.deb
-└── void-linux-musl
+└── void-linux
     └── hello-1.0.0_1.x86_64-musl.xbps
 ```
 
