@@ -27,6 +27,8 @@ $ tree .rockhopper
 │   └── hello-1.0.0-r1.noarch.apk
 ├── arch-linux
 │   └── hello-1.0.0-1-any.pkg.tar.zst
+├── crux-x86_64
+│   └── hello#1.0.0-1.pkg.tar.gz
 ├── debian
 │   └── hello_1.0.0-1_all.deb
 ├── fedora
@@ -53,6 +55,7 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 | ---------------------- | -------------------------------- |
 | Alpine Linux           | n4jm4/rockhopper:alpine-linux    |
 | Arch Linux             | n4jm4/rockhopper:arch            |
+| CRUX                   | n4jm4/rockhopper:crux            |
 | Debian                 | n4jm4/rockhopper:debian          |
 | Fedora                 | n4jm4/rockhopper:fedora          |
 | Slackware Linux        | n4jm4/rockhopper:slackware-linux |

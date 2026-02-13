@@ -5,6 +5,7 @@
 	docker-build \
 	docker-build-alpine-linux \
 	docker-build-arch-linux \
+	docker-build-crux \
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-slackware-linux \
@@ -14,6 +15,7 @@
 	docker-tag \
 	docker-tag-alpine-linux \
 	docker-tag-arch-linux \
+	docker-tag-crux \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-slackware-linux \
@@ -33,6 +35,7 @@ clean:
 docker-build: \
 	docker-build-alpine-linux \
 	docker-build-arch-linux \
+	docker-build-crux \
 	docker-build-debian \
 	docker-build-fedora \
 	docker-build-slackware-linux \
@@ -44,6 +47,9 @@ docker-build-alpine-linux:
 
 docker-build-arch-linux:
 	sh -c "cd docker/arch-linux && docker build -t n4jm4/rockhopper:arch-linux . --load"
+
+docker-build-crux:
+	sh -c "cd docker/crux && docker build -t n4jm4/rockhopper:crux . --load"
 
 docker-build-debian:
 	sh -c "cd docker/debian && docker build -t n4jm4/rockhopper:debian . --load"
@@ -72,6 +78,7 @@ docker-push: docker-clean-tags docker-build docker-tag
 docker-tag: \
 	docker-tag-alpine-linux \
 	docker-tag-arch-linux \
+	docker-tag-crux \
 	docker-tag-debian \
 	docker-tag-fedora \
 	docker-tag-slackware-linux \
@@ -87,6 +94,13 @@ docker-tag-alpine-linux:
 
 docker-tag-arch-linux:
 	docker tag n4jm4/rockhopper:arch-linux n4jm4/rockhopper:$(VERSION)-arch-linux
+
+docker-tag-crux:
+	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux3.8
+	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux3
+	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux
+	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:crux3.8
+	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:crux3
 
 docker-tag-debian:
 	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:$(VERSION)-trixie

@@ -12,9 +12,9 @@ ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
 ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/debian"}"
-ROCKHOPPER_APT_BUILD="${ROCKHOPPER_APT_BUILD:-/tmp/debian}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-all}"
+ROCKHOPPER_PKGMK_BUILD="${ROCKHOPPER_PKGMK_BUILD:-/tmp/crux}"
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-"$(uname -m)"}"
+ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/crux-$ROCKHOPPER_ARCH"}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -68,12 +68,12 @@ validate() {
     REQUIRED_ENV_VARS=(
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
-        ROCKHOPPER_LICENSE
+        ROCKHOPPER_REV
         ROCKHOPPER_MOUNT
         ROCKHOPPER_DATA
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_APT_BUILD
+        ROCKHOPPER_PKGMK_BUILD
         ROCKHOPPER_ARCH
     )
 
@@ -88,48 +88,79 @@ validate() {
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_APT_BUILD"
+    rm -rf "$ROCKHOPPER_PKGMK_BUILD"
 }
 
 validate
 clean
 
-mkdir -p "$ROCKHOPPER_APT_BUILD/DEBIAN"
-CONTROL="$ROCKHOPPER_APT_BUILD/DEBIAN/control"
-rsubst "$ROCKHOPPER_SPECS/control.j2" >"$CONTROL"
-
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    echo "control:"
-    cat "$CONTROL"
-fi
-
-LIC='Files: *'
+LIC=''
 
 if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
-    LIC="${LIC}\nCopyright: $ROCKHOPPER_COPYRIGHT"
+    LIC="Copyright: $ROCKHOPPER_COPYRIGHT"
 fi
 
-LIC="${LIC}\nLicense: $ROCKHOPPER_LICENSE"
-printf "$LIC\n" >"$ROCKHOPPER_APT_BUILD/DEBIAN/copyright"
-
-cp -r "$ROCKHOPPER_DATA/"* "$ROCKHOPPER_APT_BUILD"
-mkdir -p "$ROCKHOPPER_ARTIFACT"
-ARTIFACT="$ROCKHOPPER_ARTIFACT/${ROCKHOPPER_NAME}_${ROCKHOPPER_VERSION}"
-
-if [ -n "$ROCKHOPPER_REV" ]; then
-    ARTIFACT="${ARTIFACT}-${ROCKHOPPER_REV}"
+if [ -n "$ROCKHOPPER_LICENSE" ]; then
+    LIC="${LIC}\nLicense: $ROCKHOPPER_LICENSE"
 fi
 
-ARTIFACT="${ARTIFACT}_${ROCKHOPPER_ARCH}.deb"
+FILES="$ROCKHOPPER_PKGMK_BUILD/files"
+mkdir -p "$FILES"
+printf "$LIC\n" >"$FILES/LICENSE"
 
-dpkg-deb() {
-    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        command dpkg-deb "$@" >/dev/null
+DATA="$FILES/data"
+mkdir -p "$DATA"
+cp -r "$ROCKHOPPER_DATA/"* "$DATA"
+
+cd "$ROCKHOPPER_DATA"
+
+PKGMK_SOURCE="${FILES}/LICENSE "
+PKGMK_PACKAGE=''
+
+for f in $(find . -print); do
+    f="${f#./}"
+
+    if [ "$f" = '.' ]; then
+        continue
+    fi
+
+    if [ -d "$f" ]; then
+        PKGMK_PACKAGE="${PKGMK_PACKAGE}mkdir -p \"\${PKG}/$f\"; "
+    elif [ -f "$f" ]; then
+        PKGMK_SOURCE="${PKGMK_SOURCE}${FILES}/data/$f "
+        b="$(basename "$f")"
+        PKGMK_PACKAGE="${PKGMK_PACKAGE}install \"$b\" \"\${PKG}/$f\"; "
     else
-        command dpkg-deb "$@"
+        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+    fi
+done
+
+export PKGMK_SOURCE
+export PKGMK_PACKAGE
+
+PKGFILE="$ROCKHOPPER_PKGMK_BUILD/Pkgfile"
+rsubst "$ROCKHOPPER_SPECS/Pkgfile.j2" >"$PKGFILE"
+
+if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
+    echo "Pkgfile:"
+    cat "$PKGFILE"
+fi
+
+ARTIFACT="$ROCKHOPPER_PKGMK_BUILD/$ROCKHOPPER_NAME#$ROCKHOPPER_VERSION-$ROCKHOPPER_REV.pkg.tar.gz"
+
+cd "$ROCKHOPPER_PKGMK_BUILD"
+
+pkgmk() {
+    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+        command pkgmk "$@" >/dev/null 2>&1
+    else
+        command pkgmk "$@"
     fi
 }
 
-dpkg-deb --build "$ROCKHOPPER_APT_BUILD" "$ARTIFACT"
+pkgmk -kw
+
+mkdir -p "$ROCKHOPPER_ARTIFACT"
+cp "$ARTIFACT" "$ROCKHOPPER_ARTIFACT"
 
 clean

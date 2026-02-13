@@ -1,0 +1,10 @@
+name={{ ROCKHOPPER_NAME }}
+version={{ ROCKHOPPER_VERSION }}
+release={{ ROCKHOPPER_REV }}
+source=({{ PKGMK_SOURCE }})
+
+build() {
+    mkdir -p "$PKG/usr/share/licenses/{{ ROCKHOPPER_NAME}}"
+    install LICENSE "$PKG/usr/share/licenses/{{ ROCKHOPPER_NAME}}"
+    {{ PKGMK_PACKAGE }}
+}
