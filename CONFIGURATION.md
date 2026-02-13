@@ -116,7 +116,7 @@ Example: `"1.0.0"`
 
 ## `ROCKHOPPER_ARCH`
 
-Required, nonblank.
+Commonly required, relative to distribution.
 
 Target architecture.
 
