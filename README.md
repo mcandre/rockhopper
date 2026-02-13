@@ -86,27 +86,6 @@ For more details on developing rockhopper itself, see our [development guide](DE
 
 rockhopper bundles all the tools needed to generate packages, inside Docker containers.
 
-# ROCKLETS
-
-| Distro                 | Image                            |
-| ---------------------- | -------------------------------- |
-| Alpine Linux           | n4jm4/rockhopper:alpine-linux    |
-| Arch Linux             | n4jm4/rockhopper:arch            |
-| CRUX                   | n4jm4/rockhopper:crux            |
-| Debian                 | n4jm4/rockhopper:debian          |
-| Fedora                 | n4jm4/rockhopper:fedora          |
-| Slackware Linux        | n4jm4/rockhopper:slackware-linux |
-| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu          |
-| Void Linux (musl)      | n4jm4/rockhopper:void-linux-musl |
-
-[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
-
-`n4jm4/rockhopper:<rockhopper version>-<distro>`
-
-Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
-
-For information on developing custom rockhopper package generators, see the [rocklets interface](ROCKLETS.md).
-
 # USAGE
 
 1. Build Linux executables for your application.
