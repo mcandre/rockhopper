@@ -2,9 +2,9 @@
 
 In addition to curl, rockhopper also supports alternative installation methods.
 
-# INSTALL (DOCKER IMAGE)
+# INSTALL (DOCKER)
 
-Rocklet images can run/download on an individual basis.
+Rockhopper images can run/download on an individual basis.
 
 ```sh
 docker run -v "<cwd>:/mnt/rockhopper" -e ROCKHOPPER_NAME="hello" -e ROCKHOPPER_VERSION="1.0.0" -e ROCKHOPPER_REV="1" <image>
