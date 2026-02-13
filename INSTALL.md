@@ -51,9 +51,11 @@ We post OS packages for rockhopper itself.
 
 ## Warning
 
-Packages are currently posted to a rate limited, non-CDN, CloudFlare R2 bucket.
+Packages are currently posted to a rate limited, non-CDN, CloudFlare R2 bucket. This may periodically interrupt local automation or remote CI/CD pipelines.
 
-Copy packages to a suitable caching proxy, before weaving them into downstream automated processes like CI/CD pipelines.
+Before weaving rockhopper host OS packages into automation, copy packages to a suitable caching proxy, such as nginx, squid, Artifactory, Nexus, AWS S3, etc.
+
+## Install Media
 
 | Host Distro Family | Package |
 | ------------- | ------- |
