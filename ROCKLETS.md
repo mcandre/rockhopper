@@ -2,6 +2,14 @@
 
 The ROCKLET interface provides a unified framework for developers to generate basic installer packages for a diverse set of distributions.
 
+## Easy Mode
+
+In a pinch, copy one of the Dockerfile setups for stock rockhopper images.
+
+This method can quickly derive new package generators for related package formats, such as Debian -> Linux Mint, Fedora -> RHEL, Arch Linux -> CachyOS, etc.
+
+Note: Some Dockerfiles end with nonroot `USER`s and nonroot `WORKDIR`s. If you need to conduct root operations during image builds, such as installing additional packages, then temporarily resetting these attributes.
+
 ## Docker Image
 
 The Docker image is the fundamental unit of package generation.

@@ -47,8 +47,6 @@ $ tree .rockhopper
 
 For more installation methods, see our [install guide](INSTALL.md).
 
-For information on developing custom rockhopper package generators, see the [rocklets interface](ROCKLETS.md).
-
 For more details on developing rockhopper itself, see our [development guide](DEVELOPMENT.md).
 
 ## Runtime Requirements
@@ -63,7 +61,7 @@ For more details on developing rockhopper itself, see our [development guide](DE
 * a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
 * [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
 * Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
-* [GNU time](https://www.gnu.org/software/time/)
+* GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 # ABOUT
@@ -83,11 +81,13 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 | Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu          |
 | Void Linux (musl)      | n4jm4/rockhopper:void-linux-musl |
 
-Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
-
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
 
 `n4jm4/rockhopper:<rockhopper version>-<distro>`
+
+Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
+
+For information on developing custom rockhopper package generators, see the [rocklets interface](ROCKLETS.md).
 
 # USAGE
 
@@ -95,8 +95,8 @@ Windows users may gain access to Ubuntu via [WSL](https://learn.microsoft.com/en
 
 ```text
 no pain, no gain!  >*
-                   (\-
-                   ^^
+                  (\-
+                  ^^
 ```
 
 Examples:
@@ -111,7 +111,7 @@ Pro tip: Target dynamic scripts, pure Go binaries, or fully static musl binaries
 
 2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
-Linux, and many UNIX style operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
+   Linux, and many UNIX style operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
 
 Example:
 
@@ -123,6 +123,8 @@ $ tree
         └── bin
             └── hello
 ```
+
+In this simple example, we've laid out the directory structure directly in git. However, most mature projects will use a combination of `mkdir` / `cp` commands to accomplish this as a dynamic build step.
 
 Shell scripts and other interpreted executables may be checked this way into version control. For binary assets, configure `make` or another build system, to copy the files there dynamically.
 
@@ -141,11 +143,13 @@ export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
 export ROCKHOPPER_ARCH='all'
 ```
 
-Note: Customize `ROCKHOPPER_ARCH` to match each of your target ISA(s).
+Note: Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
 
 Note: Debian and other distros often have additional optional and/or required fields.
 
 4. Generate packages and verify.
+
+Packages write to `.rockhopper/<distro>/<package-file>`.
 
 ```sh
 $ rockhopper
@@ -156,15 +160,13 @@ $ tree .rockhopper
     └── hello_1.0.0_all.deb
 ```
 
-Packages write to `.rockhopper/<distro>/<package-file>`.
+With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
 
 ```text
   o<  wowowweewow!!!
 `/)
  ^^
 ```
-
-With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
 
 You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
 

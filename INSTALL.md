@@ -27,11 +27,11 @@ Supported host environments:
 * Linux
 * macOS
 * Other UNIX-like environments with access to the `docker` CLI
-* Windows native✝ or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+* Windows native† or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 Prerequisites:
 
 * [Docker](https://www.docker.com/) 28.0.1+
 * [git](https://git-scm.com/)
 
-✝ Windows native users can invoke individual rocklets with `docker run`... commands. Recommend bundling commands together in a scripting engine (make, PowerShell, etc.)
+† Windows native users may invoke individual rockhopper images with `docker run`... commands. Recommend bundling commands together in a custom script (e.g. MS-DOS batch scripts).
