@@ -32,6 +32,8 @@ $ tree .rockhopper
 ...
 ```
 
+For more detail on distro targets, see our [rocklet images](INSTALL.md#rocklet-images).
+
 # DOWNLOAD
 
 ```sh
@@ -183,6 +185,7 @@ A dream of impossible colors... Let's make vendor lock a thing of the past.
 
 # SEE ALSO
 
+* [alien](https://joeyh.name/code/alien/), an OS package converter
 * [chandler](https://github.com/mcandre), an OS agnostic tar normalizer
 * [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
 * [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler

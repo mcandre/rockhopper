@@ -29,7 +29,7 @@ PLATFORMS=(
     'n4jm4/rockhopper:fedora#noarch'
     'n4jm4/rockhopper:slackware-linux#noarch'
     'n4jm4/rockhopper:ubuntu#all'
-    'n4jm4/rockhopper:void-linux-musl#noarch'
+    'n4jm4/rockhopper:void-linux-musl#x86_64'
 )
 
 for PLATFORM in "${PLATFORMS[@]}"; do

@@ -9,11 +9,7 @@ depends="{{ ROCKHOPPER_DEPENDENCIES | default('') }}"
 {% if ROCKHOPPER_CHANGELOG is defined %}
 changelog="{{ ROCKHOPPER_CHANGELOG }}"
 {% endif %}
-{% if ROCKHOPPER_ARCH == 'noarch' %}
-noarch="yes"
-{% else %}
 archs="{{ ROCKHOPPER_ARCH }}"
-{% endif %}
 
 pre_install() {
     {{ XBPS_PRE_INSTALL }}

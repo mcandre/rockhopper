@@ -5,5 +5,15 @@ BUILD='/tmp/rockhopper'
 BUCKET='s3://rockhopper'
 VERSION='0.0.8'
 DEST="$BUCKET/rockhopper-$VERSION/"
+
+# Accelerate connection timeouts
+# Reduce console noise
+aws() {
+    command aws \
+        --cli-connect-timeout 1 \
+        "$@" \
+        >/dev/null
+}
+
 aws s3 cp --recursive "$BUILD/.rockhopper" "$DEST"
 echo "install media uploaded to \"$DEST\""

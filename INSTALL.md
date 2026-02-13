@@ -12,7 +12,7 @@ docker run -v "<cwd>:/mnt/rockhopper" -e ROCKHOPPER_NAME="hello" -e ROCKHOPPER_V
 
 ## Rocklet Images
 
-| Target Distro | Image |
+| Target Distro Family | Image |
 | ------------- | ----- |
 | Alpine Linux | n4jm4/rockhopper:alpine-linux |
 | Arch Linux | n4jm4/rockhopper:arch |
@@ -66,7 +66,7 @@ Before weaving rockhopper host OS packages into automation, copy packages to a s
 | Fedora | [rockhopper-0.0.8-1.noarch.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/fedora/rockhopper-0.0.8-1.noarch.rpm) |
 | Slackware Linux | [rockhopper-0.0.8-1-noarch-build.tgz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/slackware-linux/rockhopper-0.0.8-1-noarch-build.tgz) |
 | Ubuntu / Windows (WSL) | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/ubuntu/rockhopper_0.0.8-1_all.deb) |
-| Void Linux (musl) | [rockhopper-0.0.8_1.noarch.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/void-linux/rockhopper-0.0.8_1.noarch.xbps) |
+| Void Linux (musl) | [rockhopper-0.0.8_1.x86_64.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/void-linux-musl/rockhopper-0.0.8_1.x86_64.xbps) |
 
 # System Requirements
 
