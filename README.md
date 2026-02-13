@@ -34,25 +34,43 @@ $ tree .rockhopper
 
 # DOWNLOAD
 
-| Distro       | Package |
-| ------------ | ------- |
-| Alpine Linux | [rockhopper-0.0.8-r1.noarch.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/alpine-linux/rockhopper-0.0.8-r1.noarch.apk) |
-| Arch Linux | [rockhopper-0.0.8-1-any.pkg.tar.zst](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/arch-linux/rockhopper-0.0.8-1-any.pkg.tar.zst) |
-| CRUX | [rockhopper#0.0.8-1.pkg.tar.gz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/crux-x86_64/rockhopper%230.0.8-1.pkg.tar.gz) |
-| Debian | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/debian/rockhopper_0.0.8-1_all.deb) |
-| Fedora | [rockhopper-0.0.8-1.noarch.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/fedora/rockhopper-0.0.8-1.noarch.rpm) |
-| Slackware Linux | [rockhopper-0.0.8-1-noarch-build.tgz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/slackware-linux/rockhopper-0.0.8-1-noarch-build.tgz) |
-| Ubuntu / Windows (WSL) | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/ubuntu/rockhopper_0.0.8-1_all.deb) |
-| Void Linux (musl) | [rockhopper-0.0.8_1.noarch.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/void-linux/rockhopper-0.0.8_1.noarch.xbps) |
+```sh
+curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/install-rockhopper | sh
+```
+
+## Postinstall
+
+Ensure `$HOME/.local/bin` is registered with your shell's `PATH` environment variable.
+
+## Uninstall
+
+```sh
+curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uninstall-rockhopper | sh
+```
+
+## System Requirements
+
+Supported host environments:
+
+* BSD's
+* Linux
+* macOS
+* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+* Other UNIX-like environments with access to the `docker` CLI
+
+Prerequisites:
+
+* [bash](https://www.gnu.org/software/bash/) 4+
+* [curl](https://curl.se/)
 
 For more installation methods, see our [install guide](INSTALL.md).
 
 For more details on developing rockhopper itself, see our [development guide](DEVELOPMENT.md).
 
-## Runtime Requirements
+# RUNTIME REQUIREMENTS
 
 * [bash](https://www.gnu.org/software/bash/) 4+
-* [Docker](https://www.docker.com/) 28.0.1+
+* a [docker](https://www.docker.com/) CLI
 * GNU [grep](https://www.gnu.org/software/grep/)
 
 ## Recommended
@@ -68,7 +86,7 @@ For more details on developing rockhopper itself, see our [development guide](DE
 
 rockhopper bundles all the tools needed to generate packages, inside Docker containers.
 
-## Rockhopper Images
+# ROCKLETS
 
 | Distro                 | Image                            |
 | ---------------------- | -------------------------------- |

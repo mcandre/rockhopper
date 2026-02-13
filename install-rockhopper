@@ -1,0 +1,14 @@
+#!/bin/bash
+unset IFS
+set -euf
+
+GH_FORK='mcandre'
+APP='rockhopper'
+DEST="$HOME/.local/bin"
+
+mkdir -p "$DEST"
+cd "$DEST"
+
+curl -LO "https://raw.githubusercontent.com/$GH_FORK/$APP/refs/heads/main/bin/rockhopper"
+chmod +x "$APP"
+echo "installed $APP binaries to $DEST"
