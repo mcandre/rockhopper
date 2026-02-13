@@ -1,36 +1,37 @@
-# INSTALL
+# INSTALL GUIDE
 
-## Requirements
+In addition to OS packages, we also support git cloning.
 
-* [bash](https://www.gnu.org/software/bash/) 4+
-* [Docker](https://www.docker.com/) 28.0.1+
-* GNU [grep](https://www.gnu.org/software/grep/)
+# INSTALL (GIT)
 
-## Recommended
-
-* a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
-* a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
-* [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
-* Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
-* [GNU time](https://www.gnu.org/software/time/)
-* [tree](https://en.wikipedia.org/wiki/Tree_(command))
-
-## Instructions
-
-1. Clone the project to a local directory.
-
-```console
-$ git clone https://github.com/mcandre/rockhopper.git "$HOME/rockhopper"
-```
-
-2. Add .../rockhopper/bin to `PATH`.
-
-For example, `$HOME/.bashrc` (bash):
+## Install
 
 ```sh
-export PATH="$PATH:$HOME/rockhopper/bin"
+git clone https://github.com/mcandre/rockhopper.git "$HOME/rockhopper"
 ```
 
-For more information on developing custom rockhopper package generator images, see [ROCKLETS.md](ROCKLETS.md).
+## Postinstall
 
-For more information on developing rockhopper itself, see [DEVELOPMENT.md](DEVELOPMENT.md).
+Ensure the rockhopper `bin` directory is registered with your shell's `PATH` environment variable.
+
+## Uninstall
+
+```sh
+rm -rf "$HOME/rockhopper"
+```
+
+## System Requirements
+
+Supported host environments:
+
+* Linux
+* macOS
+* Other UNIX-like environments with access to the `docker` CLI
+* Windows native✝ or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+
+Prerequisites:
+
+* [Docker](https://www.docker.com/) 28.0.1+
+* [git](https://git-scm.com/)
+
+✝ Windows native users can invoke individual rocklets with `docker run`... commands. Recommend bundling commands together in a scripting engine (make, PowerShell, etc.)

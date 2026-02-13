@@ -5,10 +5,15 @@ short_desc="{{ ROCKHOPPER_SUMMARY }}"
 maintainer="{{ ROCKHOPPER_MAINTAINER }}"
 license="{{ ROCKHOPPER_LICENSE }}"
 homepage="{{ ROCKHOPPER_URL }}"
+depends="{{ ROCKHOPPER_DEPENDENCIES | default('') }}"
 {% if ROCKHOPPER_CHANGELOG is defined %}
 changelog="{{ ROCKHOPPER_CHANGELOG }}"
 {% endif %}
-archs="{{ ROCKHOPPER_ARCH | default('*') }}"
+{% if ROCKHOPPER_ARCH == 'noarch' %}
+noarch="yes"
+{% else %}
+archs="{{ ROCKHOPPER_ARCH }}"
+{% endif %}
 
 pre_install() {
     {{ XBPS_PRE_INSTALL }}

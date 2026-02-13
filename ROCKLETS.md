@@ -40,7 +40,7 @@ Regarding the `.rockhopper` directory tree, do not touch file paths outside of t
 
 Configuration for a rocklet uses some combination of the following mechanisms:
 
-* Environment variable examples documented in [CONFIGURATION.md](CONFIGURATION.md)
+* Environment variables documented in [CONFIGURATION.md](CONFIGURATION.md)
 * Environment variable conventions used by stock rockhopper [docker](docker) images
 * New environment variables with a `ROCKHOPPER_` prefix
 * Files loaded through `ROCKHOPPER_MOUNT`

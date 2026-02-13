@@ -1,0 +1,58 @@
+#!/bin/bash
+unset IFS
+set -eufo pipefail
+
+# ROCKHOPPER_LOG_LEVEL='debug'
+ROCKHOPPER_LOG_LEVEL='quiet'
+ROCKHOPPER_NAME='rockhopper'
+ROCKHOPPER_VERSION='0.0.8'
+ROCKHOPPER_REV='1'
+ROCKHOPPER_MAINTAINER='Andrew Pennebaker <n4jm4@bpm.me>'
+ROCKHOPPER_SUMMARY='metapackage generator'
+ROCKHOPPER_DESCRIPTION='rockhopper generates installer packages for a wide variety of platforms'
+ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Andrew Pennebaker'
+ROCKHOPPER_LICENSE='0BSD'
+ROCKHOPPER_URL='https://github.com/mcandre/rockhopper'
+ROCKHOPPER_DEPENDENCIES='bash'
+
+# Void Linux
+ROCKHOPPER_DOCKER_FLAGS='--privileged'
+
+for K in $(compgen -v | grep '^ROCKHOPPER_'); do
+    export "$K"
+done
+
+PLATFORMS=(
+    'n4jm4/rockhopper:alpine-linux#noarch'
+    'n4jm4/rockhopper:arch-linux#any'
+    'n4jm4/rockhopper:crux#'
+    'n4jm4/rockhopper:debian#all'
+    'n4jm4/rockhopper:fedora#noarch'
+    'n4jm4/rockhopper:slackware-linux#noarch'
+    'n4jm4/rockhopper:ubuntu#all'
+    'n4jm4/rockhopper:void-linux-musl#noarch'
+)
+
+BUILD='/tmp/rockhopper'
+BIN="$BUILD/rockhopper-data/usr/bin"
+
+clean() {
+    rm -rf "$BUILD"
+}
+
+clean
+
+mkdir -p "$BIN"
+cp bin/rockhopper "$BIN"
+
+cd "$BUILD"
+
+for PLATFORM in "${PLATFORMS[@]}"; do
+    IMAGE="${PLATFORM%%#*}"
+    ARCH="${PLATFORM#*#}"
+
+    echo "building $PLATFORM"
+    env ROCKHOPPER_IMAGE="$IMAGE" ROCKHOPPER_ARCH="$ARCH" rockhopper
+done
+
+echo "install media copied to \"$BUILD/.rockhopper\""

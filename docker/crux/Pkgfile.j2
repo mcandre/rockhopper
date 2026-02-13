@@ -1,3 +1,6 @@
+{% if ROCKHOPPER_DEPENDENCIES != '' %}
+# Depends: {{ ROCKHOPPER_DEPENDENCIES }}
+{% endif %}
 name={{ ROCKHOPPER_NAME }}
 version={{ ROCKHOPPER_VERSION }}
 release={{ ROCKHOPPER_REV }}

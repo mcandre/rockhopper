@@ -2,6 +2,9 @@
 .SILENT:
 .PHONY: \
 	all \
+	clean \
+	clean-self-host \
+	clean-example \
 	docker-build \
 	docker-build-alpine-linux \
 	docker-build-arch-linux \
@@ -21,16 +24,25 @@
 	docker-tag-slackware-linux \
 	docker-tag-ubuntu \
 	docker-tag-void-linux-musl \
-	test
+	port \
+	test \
+	upload
 .IGNORE: \
-	clean
+	clean \
+	clean-self-host \
+	clean-example
 
 VERSION=0.0.8
 
 all: docker-build
 
-clean:
-	rm -rf examples/sh/.rockhopper
+clean: clean-self-host clean-example
+
+clean-self-host:
+	rm -rf /tmp/rockhopper
+
+clean-example:
+	rm -rf example/sh/.rockhopper
 
 docker-build: \
 	docker-build-alpine-linux \
@@ -133,5 +145,11 @@ docker-tag-ubuntu:
 docker-tag-void-linux-musl:
 	docker tag n4jm4/rockhopper:void-linux-musl n4jm4/rockhopper:$(VERSION)-void-linux-musl
 
+port: docker-build
+	./port
+
 test: docker-build
-	sh -c "cd examples/sh && ./demo && tree .rockhopper"
+	sh -c "cd example/sh && ./demo && tree .rockhopper"
+
+upload:
+	./upload

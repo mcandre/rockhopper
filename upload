@@ -1,0 +1,9 @@
+#!/bin/bash
+unset IFS
+set -eufo pipefail
+BUILD='/tmp/rockhopper'
+BUCKET='s3://rockhopper'
+VERSION='0.0.8'
+DEST="$BUCKET/rockhopper-$VERSION/"
+aws s3 cp --recursive "$BUILD/.rockhopper" "$DEST"
+echo "install media uploaded to \"$DEST\""

@@ -7,6 +7,8 @@ ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
 ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
 ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
+ROCKHOPPER_SUMMARY="${ROCKHOPPER_SUMMARY:-}"
+ROCKHOPPER_DEPENDENCIES="${ROCKHOPPER_DEPENDENCIES:-}"
 ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
 ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
@@ -69,6 +71,7 @@ validate() {
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_REV
+        ROCKHOPPER_SUMMARY
         ROCKHOPPER_LICENSE
         ROCKHOPPER_MOUNT
         ROCKHOPPER_DATA
@@ -174,17 +177,24 @@ if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
     cat "$TEMPLATE"
 fi
 
-xbps-src() {
+. "$TEMPLATE"
+
+mkdir -p "$ROCKHOPPER_ARTIFACT"
+cd "$ROCKHOPPER_ARTIFACT"
+
+xbps-create() {
     if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
-        ./xbps-src "$@" >/dev/null 2>&1
+        command xbps-create -q "$@"
     else
-        ./xbps-src "$@"
+        command xbps-create "$@"
     fi
 }
 
-cd "$ROCKHOPPER_XBPS_BUILD"
+xbps-create \
+    -A "$ROCKHOPPER_ARCH" \
+    -s "$ROCKHOPPER_SUMMARY" \
+    -n "${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}_${ROCKHOPPER_REV}" \
+    -D "$ROCKHOPPER_DEPENDENCIES" \
+    "$ROCKHOPPER_DATA"
 
-xbps-src pkg "$ROCKHOPPER_NAME"
-mkdir -p "$ROCKHOPPER_ARTIFACT"
-cp "$ROCKHOPPER_XBPS_BUILD/hostdir/binpkgs/"*.xbps "$ROCKHOPPER_ARTIFACT"
 clean

@@ -1,6 +1,6 @@
 # rockhopper: metapackage generator
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
+[![CloudFlare R2 install media downloads](https://img.shields.io/badge/Cloudflare-F28220?style=for-the-badge&logo=Cloudflare&logoColor=white&style=flat)](#download) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
 
 ```text
   o<  gak! gak!
@@ -14,10 +14,10 @@ rockhopper generates installer packages for a wide variety of platforms.
 
 Distro hoppers, enjoy~
 
-# DEMO
+# EXAMPLE
 
 ```console
-$ cd examples/sh
+$ cd example/sh
 
 $ ./demo
 
@@ -29,21 +29,42 @@ $ tree .rockhopper
 │   └── hello-1.0.0-1-any.pkg.tar.zst
 ├── crux-x86_64
 │   └── hello#1.0.0-1.pkg.tar.gz
-├── debian
-│   └── hello_1.0.0-1_all.deb
-├── fedora
-│   └── hello-1.0.0-1.noarch.rpm
-├── slackware-linux
-│   └── hello-1.0.0-1-noarch-build.tgz
-├── ubuntu
-│   └── hello_1.0.0-1_all.deb
-└── void-linux
-    └── hello-1.0.0_1.x86_64-musl.xbps
+...
 ```
 
-# INSTALLATION
+# DOWNLOAD
 
-See [INSTALL.md](INSTALL.md).
+| Distro       | Package |
+| ------------ | ------- |
+| Alpine Linux | [rockhopper-0.0.8-r1.noarch.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/alpine-linux/rockhopper-0.0.8-r1.noarch.apk) |
+| Arch Linux | [rockhopper-0.0.8-1-any.pkg.tar.zst](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/arch-linux/rockhopper-0.0.8-1-any.pkg.tar.zst) |
+| CRUX | [rockhopper#0.0.8-1.pkg.tar.gz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/crux-x86_64/rockhopper%230.0.8-1.pkg.tar.gz) |
+| Debian | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/debian/rockhopper_0.0.8-1_all.deb) |
+| Fedora | [rockhopper-0.0.8-1.noarch.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/fedora/rockhopper-0.0.8-1.noarch.rpm) |
+| Slackware Linux | [rockhopper-0.0.8-1-noarch-build.tgz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/slackware-linux/rockhopper-0.0.8-1-noarch-build.tgz) |
+| Ubuntu / Windows (WSL) | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/ubuntu/rockhopper_0.0.8-1_all.deb) |
+| Void Linux (musl) | [rockhopper-0.0.8_1.noarch.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/void-linux/rockhopper-0.0.8_1.noarch.xbps) |
+
+For more installation methods, see our [install guide](INSTALL.md).
+
+For information on developing custom rockhopper package generators, see the [rocklets interface](ROCKLETS.md).
+
+For more details on developing rockhopper itself, see our [development guide](DEVELOPMENT.md).
+
+## Runtime Requirements
+
+* [bash](https://www.gnu.org/software/bash/) 4+
+* [Docker](https://www.docker.com/) 28.0.1+
+* GNU [grep](https://www.gnu.org/software/grep/)
+
+## Recommended
+
+* a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
+* a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
+* [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
+* Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
+* [GNU time](https://www.gnu.org/software/time/)
+* [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 # ABOUT
 
@@ -143,7 +164,7 @@ Packages write to `.rockhopper/<distro>/<package-file>`.
  ^^
 ```
 
-With minor tweaks, it's possible to extend support for even more distributions. See [examples/sh/demo](examples/sh/demo).
+With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
 
 You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
 
@@ -152,10 +173,6 @@ Remember to test your shiny new packages. Install them into a fresh environment.
 # CONFIGURATION
 
 For more usage options, see [CONFIGURATION.md](CONFIGURATION.md).
-
-# ROCKLETS
-
-For information on provisioning your own custom package building images, see the [ROCKLETS](ROCKLETS.md) interface.
 
 A dream of impossible colors... Let's make vendor lock a thing of the past.
 
