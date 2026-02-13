@@ -30,7 +30,7 @@ VERSION=0.0.8
 all: docker-build
 
 clean:
-	find . -type d -name .rockhopper -exec rm -rf "{}" \;
+	rm -rf examples/sh/.rockhopper
 
 docker-build: \
 	docker-build-alpine-linux \
