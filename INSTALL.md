@@ -8,7 +8,7 @@ Packages are currently posted to a rate limited, non-CDN, CloudFlare R2 bucket.
 
 Before weaving packages into downstream automation, such as CI/CD pipelines, first copy them to a suitable caching proxy. For example, nginx, squid, Artifactory, Nexus, etc.
 
-# INSTALL (OS PACKAGE)
+## INSTALL (OS PACKAGE)
 
 | Distro Family | Package |
 | ------------- | ------- |
