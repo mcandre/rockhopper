@@ -92,15 +92,15 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 1. Write and test Linux applications.
 
-   Lost? Try [Raspberry Pi for Dummies](https://www.amazon.com/Raspberry-Pi-Dummies-Sean-McManus/dp/1119796822/).
-
    ```text
    no pain, no gain! >*
                      (\-
                      ^^
    ```
 
-   Pro tip: Fully static [Go](https://go.dev/)/[musl](https://musl.libc.org/) binaries reduce libc friction across distros.
+   Note: Fully static [Go](https://go.dev/)/[musl](https://musl.libc.org/) binaries tend to improve portability for compiled applications.
+
+   Lost? Try [Raspberry Pi for Dummies](https://www.amazon.com/Raspberry-Pi-Dummies-Sean-McManus/dp/1119796822/). *We all gotta start somewhere.*
 
 2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
