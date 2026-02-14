@@ -5,7 +5,7 @@ set -eufo pipefail
 # ROCKHOPPER_LOG_LEVEL='debug'
 ROCKHOPPER_LOG_LEVEL='quiet'
 ROCKHOPPER_NAME='rockhopper'
-ROCKHOPPER_VERSION='0.0.8'
+ROCKHOPPER_VERSION='0.0.9'
 ROCKHOPPER_REV='1'
 ROCKHOPPER_MAINTAINER='Andrew Pennebaker <n4jm4@bpm.me>'
 ROCKHOPPER_SUMMARY='metapackage generator'

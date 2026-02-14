@@ -59,14 +59,14 @@ Before weaving rockhopper host OS packages into automation, copy packages to a s
 
 | Host Distro Family | Package |
 | ------------- | ------- |
-| Alpine Linux | [rockhopper-0.0.8-r1.noarch.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/alpine-linux/rockhopper-0.0.8-r1.noarch.apk) |
-| Arch Linux | [rockhopper-0.0.8-1-any.pkg.tar.zst](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/arch-linux/rockhopper-0.0.8-1-any.pkg.tar.zst) |
-| CRUX | [rockhopper#0.0.8-1.pkg.tar.gz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/crux-x86_64/rockhopper%230.0.8-1.pkg.tar.gz) |
-| Debian | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/debian/rockhopper_0.0.8-1_all.deb) |
-| Fedora | [rockhopper-0.0.8-1.noarch.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/fedora/rockhopper-0.0.8-1.noarch.rpm) |
-| Slackware Linux | [rockhopper-0.0.8-1-noarch-build.tgz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/slackware-linux/rockhopper-0.0.8-1-noarch-build.tgz) |
-| Ubuntu / Windows (WSL) | [rockhopper_0.0.8-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/ubuntu/rockhopper_0.0.8-1_all.deb) |
-| Void Linux (musl) | [rockhopper-0.0.8_1.x86_64.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.8/void-linux-musl/rockhopper-0.0.8_1.x86_64.xbps) |
+| Alpine Linux | [rockhopper-0.0.9-r1.noarch.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/alpine-linux/rockhopper-0.0.9-r1.noarch.apk) |
+| Arch Linux | [rockhopper-0.0.9-1-any.pkg.tar.zst](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/arch-linux/rockhopper-0.0.9-1-any.pkg.tar.zst) |
+| CRUX | [rockhopper#0.0.9-1.pkg.tar.gz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/crux-x86_64/rockhopper%230.0.9-1.pkg.tar.gz) |
+| Debian | [rockhopper_0.0.9-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/debian/rockhopper_0.0.9-1_all.deb) |
+| Fedora | [rockhopper-0.0.9-1.noarch.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/fedora/rockhopper-0.0.9-1.noarch.rpm) |
+| Slackware Linux | [rockhopper-0.0.9-1-noarch-build.tgz](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/slackware-linux/rockhopper-0.0.9-1-noarch-build.tgz) |
+| Ubuntu / Windows (WSL) | [rockhopper_0.0.9-1_all.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/ubuntu/rockhopper_0.0.9-1_all.deb) |
+| Void Linux (musl) | [rockhopper-0.0.9_1.x86_64.xbps](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/void-linux-musl/rockhopper-0.0.9_1.x86_64.xbps) |
 
 # System Requirements
 

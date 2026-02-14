@@ -32,7 +32,7 @@
 	clean-self-host \
 	clean-example
 
-VERSION=0.0.8
+VERSION=0.0.9
 
 all: docker-build
 

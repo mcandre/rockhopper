@@ -32,7 +32,7 @@ usage() {
 }
 
 banner() {
-    echo "$0 0.0.8"
+    echo "$0 0.0.9"
 }
 
 while [ "$#" -ge 1 ]; do
