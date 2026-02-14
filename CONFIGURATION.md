@@ -42,8 +42,6 @@ Optional.
 
 Adds the given flags to `docker run` commands.
 
-Example: `--privileged` may be necessary for some distros.
-
 ## `ROCKHOPPER_LOG_LEVEL`
 
 Default: `info`

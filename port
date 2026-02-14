@@ -15,9 +15,6 @@ ROCKHOPPER_LICENSE='0BSD'
 ROCKHOPPER_URL='https://github.com/mcandre/rockhopper'
 ROCKHOPPER_DEPENDENCIES='bash'
 
-# Void Linux
-ROCKHOPPER_DOCKER_FLAGS='--privileged'
-
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
     export "$K"
 done
