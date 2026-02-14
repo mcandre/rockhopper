@@ -35,10 +35,12 @@ $ tree .rockhopper
 # DOWNLOAD
 
 ```sh
-docker pull n4jm4/rockhopper:<tag>
+docker pull -a n4jm4/rockhopper
 ```
 
 ## Docker Images
+
+rockhopper organizes package generators by distro.
 
 | Target Distro          | Tag             |
 | ---------------------- | --------------- |

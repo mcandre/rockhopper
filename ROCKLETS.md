@@ -2,11 +2,17 @@
 
 The ROCKLET interface provides a unified framework for developers to generate basic installer packages for a diverse set of distributions.
 
+The stock rockhopper rocklets span fundamental package managers (dpkg, rpm, etc.) in the Linux ecosystem. This design balances portability, with practical needs developing the rockhopper system itself.
+
+For other target platforms, including non-Linux platforms, rockhopper is designed extensibly. We anticipate custom rocklets to account for other targets, and to help keep up with emerging needs.
+
+Note: FreeBSD hosts enable FreeBSD containers, but may break alternative libc Linux containers (musl, uClibC, etc.)
+
 ## Easy Mode
 
 In a pinch, copy one of the Dockerfile setups for stock rockhopper images.
 
-This method can quickly derive new package generators for related package formats, such as Debian -> Linux Mint, Fedora -> RHEL, Arch Linux -> CachyOS, etc.
+This method can quickly derive new rocklets. For example, Fedora -> RHEL.
 
 Note: Some Dockerfiles end with nonroot `USER`s and nonroot `WORKDIR`s. If you need to conduct root operations during image builds, such as installing additional packages, then temporarily resetting these attributes.
 
