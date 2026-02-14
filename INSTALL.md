@@ -1,49 +1,36 @@
 # INSTALL GUIDE
 
-In addition to curl, rockhopper also supports alternative installation methods.
+In addition to individual Docker images, rockhopper also supports alternative installation methods.
 
-# INSTALL (DOCKER)
-
-Rockhopper images can run/download on an individual basis.
+# INSTALL (CURL)
 
 ```sh
-docker run -v "<cwd>:/mnt/rockhopper" -e ROCKHOPPER_NAME="hello" -e ROCKHOPPER_VERSION="1.0.0" -e ROCKHOPPER_REV="1" <image>
+curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/install-rockhopper | sh
 ```
 
-## Rocklet Images
+## Postinstall
 
-| Target Distro Family | Image |
-| ------------- | ----- |
-| Alpine Linux | n4jm4/rockhopper:alpine-linux |
-| Arch Linux | n4jm4/rockhopper:arch |
-| CRUX | n4jm4/rockhopper:crux |
-| Debian | n4jm4/rockhopper:debian |
-| Fedora | n4jm4/rockhopper:fedora |
-| Slackware Linux | n4jm4/rockhopper:slackware-linux |
-| Ubuntu / Windows (WSL) | n4jm4/rockhopper:ubuntu |
-| Void Linux (musl) | n4jm4/rockhopper:void-linux-musl |
+Ensure `$HOME/.local/bin` is registered with your shell's `PATH` environment variable.
 
-[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
+## Uninstall
 
-`n4jm4/rockhopper:<rockhopper version>-<distro>`
-
-Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
-
-For information on developing custom rockhopper package generators, see the [rocklets interface](ROCKLETS.md).
+```sh
+curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uninstall-rockhopper | sh
+```
 
 ## System Requirements
 
 Supported host environments:
 
-* BSD's
 * Linux
 * macOS
-* Windows native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
-* Other UNIX-like environments with access to the `docker` CLI
+* UNIX
+* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 Prerequisites:
 
-* a [docker](https://www.docker.com/) CLI
+* [bash](https://www.gnu.org/software/bash/) 4+
+* [curl](https://curl.se/)
 
 # INSTALL (HOST OS PACKAGE)
 
@@ -74,9 +61,3 @@ Supported host environments:
 
 * Linux
 * Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
-
-Prerequisites:
-
-* a [docker](https://www.docker.com/) CLI
-
-We decouple Docker from formal OS package dependencies. This allows more flexibility in terms of container runtimes.

@@ -32,38 +32,45 @@ $ tree .rockhopper
 ...
 ```
 
-For more detail on distro targets, see our [rocklet images](INSTALL.md#rocklet-images).
-
 # DOWNLOAD
 
 ```sh
-curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/install-rockhopper | sh
+docker pull n4jm4/rockhopper:<tag>
 ```
 
-## Postinstall
+## Docker Images
 
-Ensure `$HOME/.local/bin` is registered with your shell's `PATH` environment variable.
+| Target Distro          | Tag             |
+| ---------------------- | --------------- |
+| Alpine Linux           | alpine-linux    |
+| Arch Linux             | arch            |
+| CRUX                   | crux            |
+| Debian                 | debian          |
+| Fedora                 | fedora          |
+| Slackware Linux        | slackware-linux |
+| Ubuntu / Windows (WSL) | ubuntu          |
+| Void Linux (musl)      | void-linux-musl |
 
-## Uninstall
+[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
 
-```sh
-curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uninstall-rockhopper | sh
-```
+`<rockhopper version>-<distro>`.
+
+Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
+
+For information on developing custom package generators, see the [rocklets interface](ROCKLETS.md).
 
 ## System Requirements
 
 Supported host environments:
 
-* BSD's
 * Linux
 * macOS
-* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
-* Other UNIX-like environments with access to the `docker` CLI
+* UNIX
+* Windows native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 Prerequisites:
 
-* [bash](https://www.gnu.org/software/bash/) 4+
-* [curl](https://curl.se/)
+* a [docker](https://www.docker.com/) CLI
 
 For more installation methods, see our [install guide](INSTALL.md).
 
@@ -71,9 +78,7 @@ For more details on developing rockhopper itself, see our [development guide](DE
 
 # RUNTIME REQUIREMENTS
 
-* [bash](https://www.gnu.org/software/bash/) 4+
 * a [docker](https://www.docker.com/) CLI
-* GNU [grep](https://www.gnu.org/software/grep/)
 
 ## Recommended
 
@@ -81,6 +86,8 @@ For more details on developing rockhopper itself, see our [development guide](DE
 * a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
 * [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
 * Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
+* [bash](https://www.gnu.org/software/bash/) 4+
+* GNU [grep](https://www.gnu.org/software/grep/)
 * GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
