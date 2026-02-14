@@ -90,86 +90,80 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
 
 # USAGE
 
-1. Build Linux executables for your application.
+1. Write and test Linux applications.
 
-```text
-no pain, no gain!  >*
-                  (\-
-                  ^^
-```
+   Lost? Try [Raspberry Pi for Dummies](https://www.amazon.com/Raspberry-Pi-Dummies-Sean-McManus/dp/1119796822/).
 
-Examples:
+   ```text
+   no pain, no gain! >*
+                     (\-
+                     ^^
+   ```
 
-* [crit](https://github.com/mcandre/crit) (Rust)
-* [factorio](https://github.com/mcandre/factorio) (Go)
-* [snek](https://github.com/mcandre/snek) (C/C++)
-* JAR's wrapped in shell scripts (JVM)
-* chmod +x (shell scripts)
-
-Pro tip: Target dynamic scripts, pure Go binaries, or fully static musl binaries. These do not depend on glibc, often a sticking point for cross-distro compatibility.
+   Pro tip: Fully static [Go](https://go.dev/)/[musl](https://musl.libc.org/) binaries reduce libc friction across distros.
 
 2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
 
    Linux, and many UNIX style operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
 
-Example:
+   Example:
 
-```console
-$ tree
-.
-└── rockhopper-data
-    └── usr
-        └── bin
-            └── hello
-```
+   ```console
+   $ tree
+   .
+   └── rockhopper-data
+       └── usr
+           └── bin
+               └── hello
+   ```
 
-In this simple example, we've laid out the directory structure directly in git. However, most mature projects will use a combination of `mkdir` / `cp` commands to accomplish this as a dynamic build step.
+   In this simple example, we've laid out the directory structure directly in git. However, most mature projects will use a combination of `mkdir` / `cp` commands to accomplish this as a dynamic build step.
 
-Shell scripts and other interpreted executables may be checked this way into version control. For binary assets, configure `make` or another build system, to copy the files there dynamically.
+   Shell scripts and other interpreted executables may be checked this way into version control. For binary assets, configure `make` or another build system, to copy the files there dynamically.
 
 3. Configure target platform.
 
-Example:
+   Example:
 
-```sh
-export ROCKHOPPER_NAME='hello'
-export ROCKHOPPER_VERSION='1.0.0'
-export ROCKHOPPER_MAINTAINER='Bob Loblaw <bob@bananastand.test>'
-export ROCKHOPPER_DESCRIPTION='hello world welcomes new developers'
-export ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
-export ROCKHOPPER_LICENSE='0BSD'
-export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
-export ROCKHOPPER_ARCH='all'
-```
+   ```sh
+   export ROCKHOPPER_NAME='hello'
+   export ROCKHOPPER_VERSION='1.0.0'
+   export ROCKHOPPER_MAINTAINER='Bob Loblaw <bob@bananastand.test>'
+   export ROCKHOPPER_DESCRIPTION='hello world welcomes new developers'
+   export ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
+   export ROCKHOPPER_LICENSE='0BSD'
+   export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
+   export ROCKHOPPER_ARCH='all'
+   ```
 
-Note: Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
+   Note: Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
 
-Note: Debian and other distros often have additional optional and/or required fields.
+   Note: Debian and other distros often have additional optional and/or required fields.
 
 4. Generate packages and verify.
 
-Packages write to `.rockhopper/<distro>/<package-file>`.
+   Packages write to `.rockhopper/<distro>/<package-file>`.
 
-```sh
-$ rockhopper
+   ```sh
+   $ rockhopper
 
-$ tree .rockhopper
-.rockhopper
-└── debian
-    └── hello_1.0.0_all.deb
-```
+   $ tree .rockhopper
+   .rockhopper
+   └── debian
+       └── hello_1.0.0_all.deb
+   ```
 
-With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
+   With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
 
-```text
-  o<  wowowweewow!!!
-`/)
- ^^
-```
+   ```text
+     o<  wowowweewow!!!
+   `/)
+    ^^
+   ```
 
-You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
+   You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
 
-Remember to test your shiny new packages. Install them into a fresh environment. Run your apps. Kick the tires!
+   Remember to test your shiny new packages. Install them into a fresh environment. Run your apps. Kick the tires!
 
 # CONFIGURATION
 
@@ -186,10 +180,11 @@ A dream of impossible colors... Let's make vendor lock a thing of the past.
 # SEE ALSO
 
 * [alien](https://joeyh.name/code/alien/), an OS package converter
-* [chandler](https://github.com/mcandre), an OS agnostic tar normalizer
+* [chandler](https://github.com/mcandre/chandler), an OS agnostic tar normalizer
 * [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
 * [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
 * [fpm](https://github.com/jordansissel/fpm), an older, host native package generator
 * [tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
+* [xgo](https://github.com/techknowlogick/xgo), an automated cGo multiplatform compiler
 
 🐧
