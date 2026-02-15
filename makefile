@@ -14,6 +14,7 @@
 	docker-build-slackware-linux \
 	docker-build-ubuntu \
 	docker-build-void-linux-musl \
+	docker-build-windows \
 	docker-push \
 	docker-tag \
 	docker-tag-alpine-linux \
@@ -24,6 +25,7 @@
 	docker-tag-slackware-linux \
 	docker-tag-ubuntu \
 	docker-tag-void-linux-musl \
+	docker-tag-windows \
 	port \
 	test \
 	upload
@@ -52,7 +54,8 @@ docker-build: \
 	docker-build-fedora \
 	docker-build-slackware-linux \
 	docker-build-ubuntu \
-	docker-build-void-linux-musl
+	docker-build-void-linux-musl \
+	docker-build-windows
 
 docker-build-alpine-linux:
 	sh -c "cd docker/alpine-linux && docker build -t n4jm4/rockhopper:alpine-linux . --load"
@@ -78,6 +81,9 @@ docker-build-ubuntu:
 docker-build-void-linux-musl:
 	sh -c "cd docker/void-linux-musl && docker build -t n4jm4/rockhopper:void-linux-musl . --load"
 
+docker-build-windows:
+	sh -c "cd docker/windows && docker build -t n4jm4/rockhopper:windows . --load"
+
 docker-clean-tags:
 	docker images 2>/dev/null | \
 		grep '^n4jm4/rockhopper' | \
@@ -95,7 +101,8 @@ docker-tag: \
 	docker-tag-fedora \
 	docker-tag-slackware-linux \
 	docker-tag-ubuntu \
-	docker-tag-void-linux-musl
+	docker-tag-void-linux-musl \
+	docker-tag-windows
 
 docker-tag-alpine-linux:
 	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:$(VERSION)-alpine-linux3.23
@@ -144,6 +151,9 @@ docker-tag-ubuntu:
 
 docker-tag-void-linux-musl:
 	docker tag n4jm4/rockhopper:void-linux-musl n4jm4/rockhopper:$(VERSION)-void-linux-musl
+
+docker-tag-windows:
+	docker tag n4jm4/rockhopper:windows n4jm4/rockhopper:$(VERSION)-windows
 
 port: docker-build
 	./port

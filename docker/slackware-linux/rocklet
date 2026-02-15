@@ -2,6 +2,14 @@
 unset IFS
 set -euo pipefail
 
+#
+# Slackware Linux ISA identifiers
+# https://docs.slackware.com/howtos:hardware:arm:naming_slackware_packages
+#
+# ISA independent package convention: "noarch"
+#
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
+
 ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
@@ -15,7 +23,6 @@ ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
 ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/slackware-linux"}"
 ROCKHOPPER_INSTALLPKG_BUILD="${ROCKHOPPER_INSTALLPKG_BUILD:-/tmp/build}"
 ROCKHOPPER_INSTALLPKG_EXTENSION="${ROCKHOPPER_INSTALLPKG_EXTENSION:-tgz}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -67,6 +74,7 @@ fi
 
 validate() {
     REQUIRED_ENV_VARS=(
+        ROCKHOPPER_ARCH
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_MOUNT
@@ -74,7 +82,6 @@ validate() {
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
         ROCKHOPPER_INSTALLPKG_BUILD
-        ROCKHOPPER_ARCH
     )
 
     for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do

@@ -55,7 +55,7 @@ rockhopper organizes package generators by distro.
 
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
 
-`<rockhopper version>-<distro>`.
+`<rockhopper-version>-<distro>`.
 
 Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
@@ -92,6 +92,7 @@ For more details on developing rockhopper itself, see our [development guide](DE
 * GNU [grep](https://www.gnu.org/software/grep/)
 * GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
+* [uuidgen](https://linux.die.net/man/1/uuidgen) (for Windows targets)
 
 # ABOUT
 
@@ -145,9 +146,11 @@ rockhopper bundles all the tools needed to generate packages, inside Docker cont
    export ROCKHOPPER_ARCH='all'
    ```
 
-   Note: Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
+   Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
 
-   Note: Debian and other distros often have additional optional and/or required fields.
+   Generally, expect distros to vary in terms of metadata requirements and syntax.
+
+   For example, Arch Linux, CRUX, and Windows require unique [basenames](https://en.wikipedia.org/wiki/Basename) for each file path.
 
 4. Generate packages and verify.
 

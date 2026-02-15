@@ -1,0 +1,59 @@
+#!/bin/bash
+set -euf
+
+#
+# Generate wix v3 entry XML trees
+#
+
+usage() {
+    printf "usage: %s <source-directory>\n" "$0"
+}
+
+if [ "$#" != 1 ] || [ -z "$1" ]; then
+    usage
+    exit 1
+fi
+
+ENTRY_ID_PREFIX='entry_'
+ENTRY_ID=0
+
+set -x
+
+wix-entry() {
+    local dir="$1"
+    local dir_basename="$(basename "$dir")"
+    local f=''
+
+    for f in $(find "$dir" -maxdepth 1 -print | sort); do
+        f="${f#./}"
+
+        if [ "$f" = '.' ]; then
+            continue
+        fi
+
+        local b="$(basename "$f")"
+
+        if [ -d "$f" ]; then
+            printf "<Directory Id=\"%s%d\" Name=\"%s\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$b"
+            ENTRY_ID=$((ENTRY_ID + 1))
+
+            cd "$f"
+
+            wix-entry .
+
+            cd ..
+
+            printf "</Directory>"
+        elif [ -f "$f" ]; then
+            printf "<Component Id=\"%s%d\" Guid=\"%s\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$(uuidgen)"
+            ENTRY_ID=$((ENTRY_ID + 1))
+            printf "<File Id=\"%s%d\" Name=\"%s\" Source=\"%s\" DiskId=\"1\" />" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$b" "$b"
+            printf "</Component>"
+            ENTRY_ID=$((ENTRY_ID + 1))
+        else
+            echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+        fi
+    done
+}
+
+wix-entry "$1"

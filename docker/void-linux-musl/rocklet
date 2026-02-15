@@ -2,6 +2,18 @@
 unset IFS
 set -euo pipefail
 
+#
+# Void Linux ISA identifiers
+# https://voidlinux.org/download/
+#
+# Warning:
+#
+# Void Linux has deprecated "noarch".
+# Select specific ISA's for packages.
+# Rebuild the package for each individual ISA.
+#
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
+
 ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
@@ -16,7 +28,6 @@ ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
 ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/void-linux-musl"}"
 ROCKHOPPER_XBPS_BUILD="${ROCKHOPPER_XBPS_BUILD:-/tmp/void-linux-musl}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -68,6 +79,7 @@ fi
 
 validate() {
     REQUIRED_ENV_VARS=(
+        ROCKHOPPER_ARCH
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_REV
@@ -78,7 +90,6 @@ validate() {
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
         ROCKHOPPER_XBPS_BUILD
-        ROCKHOPPER_ARCH
     )
 
     for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do

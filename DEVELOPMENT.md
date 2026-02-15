@@ -11,6 +11,7 @@ rockhopper follows standard UNIX operations for running shell code.
 * GNU [grep](https://www.gnu.org/software/grep/)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
+* [uuidgen](https://linux.die.net/man/1/uuidgen)
 
 ## Recommended
 

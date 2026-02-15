@@ -2,6 +2,14 @@
 unset IFS
 set -euo pipefail
 
+#
+# Arch Linux ISA identifiers
+# https://wiki.archlinux.org/title/PKGBUILD
+#
+# ISA independent package convention: "any"
+#
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
+
 ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
@@ -10,11 +18,13 @@ ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
 ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
 ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
 ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
+
+# Requires unique basenames for each file path
 ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
+
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
 ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/arch-linux"}"
 ROCKHOPPER_PACMAN_BUILD="${ROCKHOPPER_PACMAN_BUILD:-/tmp/arch-linux}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-any}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -66,6 +76,7 @@ fi
 
 validate() {
     REQUIRED_ENV_VARS=(
+        ROCKHOPPER_ARCH
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_REV
@@ -75,7 +86,6 @@ validate() {
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
         ROCKHOPPER_PACMAN_BUILD
-        ROCKHOPPER_ARCH
     )
 
     for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do

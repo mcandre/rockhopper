@@ -2,8 +2,8 @@
 unset IFS
 set -eufo pipefail
 
-# ROCKHOPPER_LOG_LEVEL='debug'
-ROCKHOPPER_LOG_LEVEL='quiet'
+ROCKHOPPER_LOG_LEVEL='debug'
+# ROCKHOPPER_LOG_LEVEL='quiet'
 ROCKHOPPER_NAME='hello'
 ROCKHOPPER_VERSION='1.0.0'
 ROCKHOPPER_REV='1'
@@ -13,20 +13,25 @@ ROCKHOPPER_DESCRIPTION='hello world welcomes new developers'
 ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
 ROCKHOPPER_LICENSE='0BSD'
 ROCKHOPPER_URL='https://bobslawblog.test/'
+ROCKHOPPER_UPGRADE_CODE='42E7A43F-E88B-4768-A52A-BA1B0B723ABA'
+ROCKHOPPER_PRODUCT_CODE='81BD525D-5353-4473-A42A-3F3C2FD14499'
+ROCKHOPPER_LCID='1033' # en-US
+ROCKHOPPER_MANUFACTURER='Banana Stand'
 
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
     export "$K"
 done
 
 PLATFORMS=(
-    'n4jm4/rockhopper:alpine-linux#noarch'
-    'n4jm4/rockhopper:arch-linux#any'
-    'n4jm4/rockhopper:crux#'
-    'n4jm4/rockhopper:debian#all'
-    'n4jm4/rockhopper:fedora#noarch'
-    'n4jm4/rockhopper:slackware-linux#noarch'
-    'n4jm4/rockhopper:ubuntu#all'
-    'n4jm4/rockhopper:void-linux-musl#x86_64'
+    # 'n4jm4/rockhopper:alpine-linux#noarch'
+    # 'n4jm4/rockhopper:arch-linux#any'
+    # 'n4jm4/rockhopper:crux#'
+    # 'n4jm4/rockhopper:debian#all'
+    # 'n4jm4/rockhopper:fedora#noarch'
+    # 'n4jm4/rockhopper:slackware-linux#noarch'
+    # 'n4jm4/rockhopper:ubuntu#all'
+    # 'n4jm4/rockhopper:void-linux-musl#x86_64'
+    'n4jm4/rockhopper:windows#0'
 )
 
 for PLATFORM in "${PLATFORMS[@]}"; do

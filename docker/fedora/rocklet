@@ -2,6 +2,15 @@
 unset IFS
 set -euo pipefail
 
+#
+# Fedora ISA identifiers
+# https://fedoraproject.org/wiki/Architectures
+# https://docs.fedoraproject.org/en-US/packaging-guidelines/Debuginfo/
+#
+# ISA independent package convention: "noarch"
+#
+ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
+
 ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
 ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
 ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
@@ -14,7 +23,6 @@ ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
 ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/fedora"}"
 ROCKHOPPER_RPM_BUILD="${ROCKHOPPER_RPM_BUILD:-/root/rpmbuild}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -66,6 +74,7 @@ fi
 
 validate() {
     REQUIRED_ENV_VARS=(
+        ROCKHOPPER_ARCH
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
         ROCKHOPPER_REV
@@ -75,7 +84,6 @@ validate() {
         ROCKHOPPER_SPECS
         ROCKHOPPER_ARTIFACT
         ROCKHOPPER_RPM_BUILD
-        ROCKHOPPER_ARCH
     )
 
     for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do
