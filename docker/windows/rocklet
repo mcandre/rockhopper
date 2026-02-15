@@ -31,15 +31,15 @@ ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-}"
 # as well as for different versions of the same package.
 #
 ROCKHOPPER_UPGRADE_CODE="${ROCKHOPPER_UPGRADE_CODE:-}"
-ROCKHOPPER_PRODUCT_CODE="${ROCKHOPPER_PRODUCT_CODE:-}"
+# ROCKHOPPER_PRODUCT_CODE="${ROCKHOPPER_PRODUCT_CODE:-}"
 
-#
-# Microsoft locale ID
-# https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
-#
-# en-US: "1033"
-#
-ROCKHOPPER_LCID="${ROCKHOPPER_LCID:-}"
+# #
+# # Microsoft locale ID
+# # https://learn.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
+# #
+# # en-US: "1033"
+# #
+# ROCKHOPPER_LCID="${ROCKHOPPER_LCID:-}"
 
 # #
 # # Microsft Code Page
@@ -64,7 +64,7 @@ ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
 
 ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
 ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/windows"}"
-ROCKHOPPER_MSI_BUILD="${ROCKHOPPER_MSI_BUILD:-/tmp/windows}"
+ROCKHOPPER_MSI_BUILD="${ROCKHOPPER_MSI_BUILD:-/tmp/windows/"${ROCKHOPPER_NAME}"}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^ROCKHOPPER_'); do
@@ -118,8 +118,8 @@ validate() {
     REQUIRED_ENV_VARS=(
         ROCKHOPPER_ARCH
         ROCKHOPPER_UPGRADE_CODE
-        ROCKHOPPER_PRODUCT_CODE
-        ROCKHOPPER_LCID
+        # ROCKHOPPER_PRODUCT_CODE
+        # ROCKHOPPER_LCID
         # ROCKHOPPER_CODE_PAGE
         ROCKHOPPER_NAME
         ROCKHOPPER_VERSION
@@ -164,18 +164,28 @@ for f in $(find "$ROCKHOPPER_DATA" -type f -print); do
     cp "$f" "$ROCKHOPPER_MSI_BUILD"
 done
 
-cd "$ROCKHOPPER_MSI_BUILD"
+MSI_FILES=''
 
-export MSI_COMPONENTS="$(wix-tree .)"
+for f in $(find "$ROCKHOPPER_MSI_BUILD" -type f -print); do
+    MSI_FILES="${MSI_FILES}<File Source=\"$f\" />"
+done
 
-cd "$ROCKHOPPER_MOUNT"
+export MSI_FILES
 
-PRODUCT="$ROCKHOPPER_MSI_BUILD/product.wxs"
-rsubst "$ROCKHOPPER_SPECS/product.wxs.j2" >"$PRODUCT"
+# cd "$ROCKHOPPER_MSI_BUILD"
+
+# export MSI_COMPONENTS="$(wix-tree .)"
+
+# cd "$ROCKHOPPER_MOUNT"
+
+cp "$ROCKHOPPER_SPECS/QuickStart.wixproj" "$ROCKHOPPER_MSI_BUILD"
+
+PACKAGE="$ROCKHOPPER_MSI_BUILD/Package.wxs"
+rsubst "$ROCKHOPPER_SPECS/Package.wxs.j2" >"$PACKAGE"
 
 if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    echo "product:"
-    cat "$PRODUCT"
+    echo "package:"
+    cat "$PACKAGE"
 fi
 
 mkdir -p "$ROCKHOPPER_ARTIFACT"
@@ -197,6 +207,15 @@ fi
 #     fi
 # }
 
-wixl $WIXL_ARCH -o "$ARTIFACT" "$PRODUCT"
+# wixl $WIXL_ARCH -o "$ARTIFACT" "$PRODUCT"
+
+cd "$ROCKHOPPER_MSI_BUILD"
+
+dotnet build
+
+find / -name '*.msi' -print 2>/dev/null
+
+exit 1
+# stub
 
 clean

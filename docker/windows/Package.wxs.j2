@@ -1,0 +1,11 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package
+        Id="{{ ROCKHOPPER_MANUFACTURER }}.{{ ROCKHOPPER_NAME }}"
+        Name="{{ ROCKHOPPER_NAME }}"
+        Manufacturer="{{ ROCKHOPPER_MANUFACTURER }}"
+        Version="{{ ROCKHOPPER_VERSION }}"
+        UpgradeCode="{{ ROCKHOPPER_UPGRADE_CODE }}"
+    >
+        {{ MSI_FILES }}
+    </Package>
+</Wix>
