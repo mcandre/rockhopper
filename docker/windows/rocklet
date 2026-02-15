@@ -164,8 +164,6 @@ for f in $(find "$ROCKHOPPER_DATA" -type f -print); do
     cp "$f" "$ROCKHOPPER_MSI_BUILD"
 done
 
-cp -r "$ROCKHOPPER_DATA/"* "$ROCKHOPPER_MSI_BUILD"
-
 cd "$ROCKHOPPER_MSI_BUILD"
 
 export MSI_COMPONENTS="$(wix-tree .)"
