@@ -76,7 +76,7 @@ Remove the application executables from the selected directory.
 
 Bitness: 64
 
-Supported host environments:
+Hosts:
 
 * FreeBSD (Intel)
 * macOS (ARM, Intel)

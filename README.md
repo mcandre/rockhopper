@@ -43,14 +43,18 @@ See `rockhopper -h` for more options.
 
 # System Requirements
 
-Host operating systems:
+Bitness: 64
+
+As a Docker utility, rockhopper relies on 64-bit hosts.
+
+Host Operating Systems:
 
 * Alpine Linux
 * Fedora
 * Ubuntu
 * Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
-Host architectures:
+Host Architectures:
 
 * 64-bit ARM
 * 64-bit Intel
