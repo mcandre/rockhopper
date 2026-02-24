@@ -37,10 +37,10 @@ Bitness: 64
 Hosts:
 
 * FreeBSD (Intel)
+* Illumos (Intel)
+* Linux (ARM, Intel)
 * macOS (ARM, Intel)
 * NetBSD (Intel)
-* Linux (ARM, Intel)
-* Illumos (Intel)
 * Windows (ARM, Intel) via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 Prerequisites:
@@ -79,10 +79,10 @@ Bitness: 64
 Hosts:
 
 * FreeBSD (Intel)
+* Illumos (Intel)
+* Linux (ARM, Intel)
 * macOS (ARM, Intel)
 * NetBSD (Intel)
-* Linux (ARM, Intel)
-* Illumos (Intel)
 * Windows (ARM, Intel) native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 # INSTALL (COMPILE FROM SOURCE)
