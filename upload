@@ -1,7 +1,6 @@
 #!/bin/bash
 unset IFS
 set -eufo pipefail
-BUILD='/tmp/rockhopper'
 BUCKET='s3://rockhopper'
 VERSION='0.0.11'
 DEST="$BUCKET/rockhopper-$VERSION/"
@@ -15,5 +14,5 @@ aws() {
         >/dev/null
 }
 
-aws s3 cp --recursive "$BUILD/.rockhopper" "$DEST"
+aws s3 cp --recursive .rockhopper "$DEST"
 echo "install media uploaded to \"$DEST\""

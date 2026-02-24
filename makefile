@@ -95,22 +95,13 @@ docker-push: \
 	docker-push-ubuntu
 
 docker-push-alpine-linux:
-	tuggy \
-		-t n4jm4/rockhopper:alpine-linux \
-		-a n4jm4/rockhopper:$(VERSION)-alpine-linux-3.23,n4jm4/rockhopper:$(VERSION)-alpine-linux,n4jm4/rockhopper:alpine-linux-3.23 \
-		--push
+	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux -a n4jm4/rockhopper:$(VERSION)-alpine-linux-3.23,n4jm4/rockhopper:$(VERSION)-alpine-linux,n4jm4/rockhopper:alpine-linux-3.23 --push"
 
 docker-push-fedora:
-	tuggy \
-		-t n4jm4/rockhopper:fedora \
-		-a n4jm4/rockhopper:$(VERSION)-fedora-43,n4jm4/rockhopper:$(VERSION)-fedora,n4jm4/rockhopper:fedora-43 \
-		--push
+	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:fedora -a n4jm4/rockhopper:$(VERSION)-fedora-43,n4jm4/rockhopper:$(VERSION)-fedora,n4jm4/rockhopper:fedora-43 --push"
 
 docker-push-ubuntu:
-	tuggy \
-		-t n4jm4/rockhopper:ubuntu \
-		-a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble \
-		--push
+	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu -a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble --push"
 
 docker-test: \
 	docker-test-alpine-linux \
