@@ -1,6 +1,6 @@
 # rockhopper: metapackage generator
 
-[![CloudFlare R2 install media downloads](https://img.shields.io/badge/Cloudflare-F28220?style=for-the-badge&logo=Cloudflare&logoColor=white&style=flat)](#download) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
+[![CloudFlare R2 install media downloads](https://img.shields.io/badge/Cloudflare-F28220?style=for-the-badge&logo=Cloudflare&logoColor=white&style=flat)](#download) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![GitHub Downloads](https://img.shields.io/github/downloads/mcandre/rockhopper/total?logo=github)](https://github.com/mcandre/rockhopper/releases) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
 
 ```text
   o<  gak! gak!
@@ -19,39 +19,63 @@ Distro hoppers, enjoy~
 ```console
 $ cd example/sh
 
-$ ./demo
+$ rockhopper
 
 $ tree .rockhopper
 .rockhopper
 ├── alpine-linux
-│   └── hello-1.0.0-r1.noarch.apk
-├── arch-linux
-│   └── hello-1.0.0-1-any.pkg.tar.zst
-├── crux-x86_64
-│   └── hello#1.0.0-1.pkg.tar.gz
-...
+│   └── raygun-1.2.3-r81.noarch.apk
+├── fedora
+│   └── raygun-1.2.3-81.noarch.rpm
+└── ubuntu
+    └── raygun_1.2.3-81_all.deb
 ```
 
+See `rockhopper -h` for more options.
+
 # DOWNLOAD
+
+| Host                   | Package |
+| ---------------------- | ------- |
+| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/alpine-linux/rockhopper-0.0.9-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/alpine-linux/rockhopper-0.0.9-r1.x86_64.apk) |
+| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/fedora/rockhopper-0.0.9-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/fedora/rockhopper-0.0.9-1.x86_64.rpm) |
+| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/ubuntu/rockhopper_0.0.9-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.9/ubuntu/rockhopper_0.0.9-1_amd64.deb) |
+
+# System Requirements
+
+Host operating systems:
+
+* Alpine Linux
+* Fedora
+* Ubuntu
+* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+
+Host architectures:
+
+* 64-bit ARM
+* 64-bit Intel
+
+Additional host environments available via alternative install methods.
+
+# INSTALL (DOCKER)
+
+rockhopper images may be run individually.
 
 ```sh
 docker pull -a n4jm4/rockhopper
 ```
 
-## Docker Images
+rockhopper images use environment variables (`rocklet_`... prefix) for configuration.
+
+## Stock Images
 
 rockhopper organizes package generators by distro.
 
-| Target Distro          | Tag             |
-| ---------------------- | --------------- |
-| Alpine Linux           | alpine-linux    |
-| Arch Linux             | arch            |
-| CRUX                   | crux            |
-| Debian                 | debian          |
-| Fedora                 | fedora          |
-| Slackware Linux        | slackware-linux |
-| Ubuntu / Windows (WSL) | ubuntu          |
-| Void Linux (musl)      | void-linux-musl |
+| Target                 | Tag          |
+| ---------------------- | ------------ |
+| Alpine Linux           | alpine-linux |
+| Fedora                 | fedora       |
+| Ubuntu / Windows (WSL) | ubuntu       |
 
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
 
@@ -59,24 +83,25 @@ rockhopper organizes package generators by distro.
 
 Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
-For information on developing custom package generators, see the [rocklets interface](ROCKLETS.md).
+Stock images limited to 64-bit ARM/Intel buildx platforms.
+
+For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
 ## System Requirements
 
-Supported host environments:
+Host operating systems:
 
 * Linux
 * macOS
 * UNIX
 * Windows native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
-Prerequisites:
+Host architectures:
 
-* a [docker](https://www.docker.com/) CLI
+* 64-bit ARM
+* 64-bit Intel
 
-For more installation methods, see our [install guide](INSTALL.md).
-
-For more details on developing rockhopper itself, see our [development guide](DEVELOPMENT.md).
+For more platforms and installation methods, see our [install guide](INSTALL.md).
 
 # RUNTIME REQUIREMENTS
 
@@ -87,9 +112,7 @@ For more details on developing rockhopper itself, see our [development guide](DE
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
 * a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
 * [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
-* Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
-* [bash](https://www.gnu.org/software/bash/) 4+
-* GNU [grep](https://www.gnu.org/software/grep/)
+* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
 * GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
@@ -97,86 +120,15 @@ For more details on developing rockhopper itself, see our [development guide](DE
 
 rockhopper bundles all the tools needed to generate packages, inside Docker containers.
 
-# USAGE
-
-1. Write and test Linux applications.
-
-   ```text
-   no pain, no gain! >*
-                     (\-
-                     ^^
-   ```
-
-   Note: Fully static [Go](https://go.dev/)/[musl](https://musl.libc.org/) binaries tend to improve portability for compiled applications.
-
-   Lost? Try [Raspberry Pi for Dummies](https://www.amazon.com/Raspberry-Pi-Dummies-Sean-McManus/dp/1119796822/). *We all gotta start somewhere.*
-
-2. Inside your project, create a `rockhopper-data` subdirectory. Within `rockhopper-data`, layout all of your application's assets as they should appear on the end user's machine after installation.
-
-   Linux, and many UNIX style operating systems follow the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
-
-   Example:
-
-   ```console
-   $ tree
-   .
-   └── rockhopper-data
-       └── usr
-           └── bin
-               └── hello
-   ```
-
-   In this simple example, we've laid out the directory structure directly in git. However, most mature projects will use a combination of `mkdir` / `cp` commands to accomplish this as a dynamic build step.
-
-   Shell scripts and other interpreted executables may be checked this way into version control. For binary assets, configure `make` or another build system, to copy the files there dynamically.
-
-3. Configure target platform.
-
-   Example:
-
-   ```sh
-   export ROCKHOPPER_NAME='hello'
-   export ROCKHOPPER_VERSION='1.0.0'
-   export ROCKHOPPER_MAINTAINER='Bob Loblaw <bob@bananastand.test>'
-   export ROCKHOPPER_DESCRIPTION='hello world welcomes new developers'
-   export ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Bob'
-   export ROCKHOPPER_LICENSE='0BSD'
-   export ROCKHOPPER_IMAGE='n4jm4/rockhopper:debian'
-   export ROCKHOPPER_ARCH='all'
-   ```
-
-   Note: Customize `ROCKHOPPER_ARCH` per rocklet to match your target ISA(s).
-
-   Note: Debian and other distros often have additional optional and/or required fields.
-
-4. Generate packages and verify.
-
-   Packages write to `.rockhopper/<distro>/<package-file>`.
-
-   ```sh
-   $ rockhopper
-
-   $ tree .rockhopper
-   .rockhopper
-   └── debian
-       └── hello_1.0.0_all.deb
-   ```
-
-   With minor tweaks, it's possible to extend support for even more distributions. See [example/sh/demo](example/sh/demo).
-
-   ```text
-     o<  wowowweewow!!!
-   `/)
-    ^^
-   ```
-
-   You've gone from source code, to executables, to installers. Congratulations, you're above and beyond.
-
-   Remember to test your shiny new packages. Install them into a fresh environment. Run your apps. Kick the tires!
-
 # CONFIGURATION
 
-For more usage options, see [CONFIGURATION.md](CONFIGURATION.md).
+For information on configuring rockhopper, see our [configuration guide](CONFIGURATION.md).
+
+# TIPS
+
+Fully static [Go](https://go.dev/)/[musl](https://musl.libc.org/) binaries tend to improve portability for compiled applications.
+
+Lost? Try [Raspberry Pi for Dummies](https://www.amazon.com/Raspberry-Pi-Dummies-Sean-McManus/dp/1119796822/). *We all gotta start somewhere.*
 
 A dream of impossible colors... Let's make vendor lock a thing of the past.
 
@@ -189,10 +141,12 @@ A dream of impossible colors... Let's make vendor lock a thing of the past.
 # SEE ALSO
 
 * [alien](https://joeyh.name/code/alien/), an OS package converter
+* [cargo](https://doc.rust-lang.org/cargo/), a crossplatform package manager for Rust projects
 * [chandler](https://github.com/mcandre/chandler), an OS agnostic tar normalizer
 * [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
 * [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
 * [fpm](https://github.com/jordansissel/fpm), an older, host native package generator
+* [go mod](https://go.dev/doc/modules/gomod-ref), a crossplatform package manager for Go applications
 * [tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
 * [xgo](https://github.com/techknowlogick/xgo), an automated cGo multiplatform compiler
 

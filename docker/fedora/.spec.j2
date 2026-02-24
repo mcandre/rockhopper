@@ -1,19 +1,21 @@
-Name: {{ ROCKHOPPER_NAME }}
-Version: {{ ROCKHOPPER_VERSION }}
-Release: {{ ROCKHOPPER_REV }}
-Summary:  {{ ROCKHOPPER_SUMMARY }}
-{% if ROCKHOPPER_URL is defined %}
-URL: {{ ROCKHOPPER_URL }}
+Name: {{ rocklet_name }}
+Version: {{ rocklet_version }}
+Release: {{ rocklet_rev }}
+Summary:  {{ rocklet_summary }}
+{% if rocklet_url is defined %}
+URL: {{ rocklet_url }}
 {% endif %}
-BuildArch: {{ ROCKHOPPER_ARCH }}
-License: {{ ROCKHOPPER_LICENSE }}
-{% if ROCKHOPPER_DEPENDENCIES is defined %}
-Requires: {{ ROCKHOPPER_DEPENDENCIES }}
+BuildArch: {{ rocklet_os_arch }}
+License: {{ rocklet_license }}
+{% if rocklet_dependencies is defined %}
+Requires: {{ rocklet_dependencies }}
 {% endif %}
-Source0: {{ FEDORA_SOURCE0 }}
+Source0: {{ fedora_source0 }}
+
+%define debug_package %{nil}
 
 %description
-{{ ROCKHOPPER_DESCRIPTION }}
+{{ rocklet_description }}
 
 %prep
 %setup -q
@@ -21,13 +23,13 @@ Source0: {{ FEDORA_SOURCE0 }}
 %build
 
 %install
-mkdir -p "%{buildroot}/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
-cp "{{ FEDORA_LICENSE }}" "%{buildroot}/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE"
-{{ FEDORA_DATA }}
+mkdir -p "%{buildroot}/usr/share/licenses/{{ rocklet_name }}"
+cp "{{ fedora_license }}" "%{buildroot}/usr/share/licenses/{{ rocklet_name }}/LICENSE"
+{{ fedora_data }}
 
 %files
-/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE
-{{ FEDORA_FILES }}
+/usr/share/licenses/{{ rocklet_name }}/LICENSE
+{{ fedora_files }}
 
 %changelog
 %autochangelog

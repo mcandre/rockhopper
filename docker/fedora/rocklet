@@ -2,22 +2,23 @@
 unset IFS
 set -euo pipefail
 
-ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
-ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
-ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
-ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
-ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
-ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
-ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
-ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
-ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
-ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/fedora"}"
-ROCKHOPPER_RPM_BUILD="${ROCKHOPPER_RPM_BUILD:-/root/rpmbuild}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_data="${rocklet_data:-"$rocklet_mount_path/rockhopper-data"}"
+rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/fedora"}"
+rocklet_rpm_build="${rocklet_rpm_build:-/root/rpmbuild}"
+rocklet_os_arch="${rocklet_os_arch:-noarch}"
 
 # Forward rockhopper environment variables to Jinja
-for K in $(compgen -v | grep '^ROCKHOPPER_'); do
+for K in $(compgen -v | grep '^rocklet_'); do
     export "$K"
 done
 
@@ -38,11 +39,11 @@ while [ "$#" -ge 1 ]; do
     case "$1" in
     '--debug' | '-d')
         shift
-        ROCKHOPPER_LOG_LEVEL='debug'
+        rocklet_log_level='debug'
         ;;
     '--quiet' | 'q')
         shift
-        ROCKHOPPER_LOG_LEVEL='quiet'
+        rocklet_log_level='quiet'
         ;;
     '--help' | '-h')
         usage
@@ -59,80 +60,82 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    env | grep '^ROCKHOPPER_' | sort
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
     set -x
 fi
 
 validate() {
-    REQUIRED_ENV_VARS=(
-        ROCKHOPPER_NAME
-        ROCKHOPPER_VERSION
-        ROCKHOPPER_REV
-        ROCKHOPPER_LICENSE
-        ROCKHOPPER_MOUNT
-        ROCKHOPPER_DATA
-        ROCKHOPPER_SPECS
-        ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_RPM_BUILD
-        ROCKHOPPER_ARCH
+    required_env_vars=(
+        rocklet_artifact
+        rocklet_cache
+        rocklet_data
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_rev
+        rocklet_rpm_build
+        rocklet_specs
+        rocklet_version
     )
 
-    for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do
-        eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
 
-        if [ -z "$REQUIRED_ENV_VAL" ]; then
-            echo "error: ${ROCKHOPPER_IMAGE}: blank/missing env var: ${REQUIRED_ENV_VAR}"
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}"
             exit 1
         fi
     done
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_RPM_BUILD"
+    rm -rf "$rocklet_rpm_build"
 }
 
 validate
 clean
 
-LIC=''
+lic=''
 
-if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
-    LIC="$ROCKHOPPER_COPYRIGHT"
+if [ -n "$rocklet_copyright" ]; then
+    lic="$rocklet_copyright"
 fi
 
-LIC="${LIC}\n$ROCKHOPPER_LICENSE"
+lic="${lic}\n$rocklet_license"
 
-export FEDORA_LICENSE='/tmp/LICENSE'
-printf "$LIC\n" >"$FEDORA_LICENSE"
+export fedora_license='/tmp/LICENSE'
+printf "$lic\n" >"$fedora_license"
 
-BANNER="${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}"
-mkdir -p "$ROCKHOPPER_RPM_BUILD/RHEL"
-mkdir -p "$ROCKHOPPER_RPM_BUILD/$BANNER/data/usr/share/licenses/$ROCKHOPPER_NAME"
-cp /tmp/LICENSE "$ROCKHOPPER_RPM_BUILD/$BANNER/data/usr/share/licenses/$ROCKHOPPER_NAME/LICENSE"
-cp -r "$ROCKHOPPER_DATA"/* "$ROCKHOPPER_RPM_BUILD/$BANNER/data"
+BANNER="${rocklet_name}-${rocklet_version}"
+mkdir -p "$rocklet_rpm_build/RHEL"
+mkdir -p "$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name"
+cp /tmp/LICENSE "$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name/LICENSE"
+cp -r "$rocklet_data"/* "$rocklet_rpm_build/$BANNER/data"
 
-if [ -d "$ROCKHOPPER_MOUNT/.git" ]; then
-    cp -r "$ROCKHOPPER_DATA/.git" "$ROCKHOPPER_RPM_BUILD/$BANNER"
+if [ -d "$rocklet_mount_path/.git" ]; then
+    cp -r "$rocklet_mount_path/.git" "$rocklet_rpm_build/$BANNER"
 fi
 
-if [ -f "$ROCKHOPPER_MOUNT/changelog" ]; then
-    cp "$ROCKHOPPER_MOUNT/changelog" "$ROCKHOPPER_RPM_BUILD/$BANNER"
+if [ -f "$rocklet_mount_path/changelog" ]; then
+    cp "$rocklet_mount_path/changelog" "$rocklet_rpm_build/$BANNER"
 fi
 
-cd "$ROCKHOPPER_RPM_BUILD"
+cd "$rocklet_rpm_build"
 
 tar czf "$BANNER.tar.gz" "$BANNER"
+mkdir -p "$rocklet_rpm_build/SOURCES"
+mv "$rocklet_rpm_build/$BANNER.tar.gz" "$rocklet_rpm_build/SOURCES"
+rm -rf "${rocklet_rpm_build:?}/${BANNER:?}"
 
-mkdir -p "$ROCKHOPPER_RPM_BUILD/SOURCES"
-mv "$ROCKHOPPER_RPM_BUILD/$BANNER.tar.gz" "$ROCKHOPPER_RPM_BUILD/SOURCES"
-rm -rf "${ROCKHOPPER_RPM_BUILD:?}/${BANNER:?}"
+export fedora_source0="${rocklet_name}-${rocklet_version}.tar.gz"
 
-export FEDORA_SOURCE0="${ROCKHOPPER_NAME}-${ROCKHOPPER_VERSION}.tar.gz"
+cd "$rocklet_data"
 
-cd "$ROCKHOPPER_DATA"
-
-FEDORA_DATA=''
+fedora_data=''
 
 for f in $(find . -print); do
     f="${f#./}"
@@ -142,51 +145,51 @@ for f in $(find . -print); do
     fi
 
     if [ -d "$f" ]; then
-        FEDORA_DATA="${FEDORA_DATA}mkdir -p \"%{buildroot}/$f\"; "
+        fedora_data="${fedora_data}mkdir -p \"%{buildroot}/$f\"; "
     elif [ -f "$f" ]; then
-        FEDORA_DATA="${FEDORA_DATA}cp \"$ROCKHOPPER_DATA/$f\" \"%{buildroot}/$f\"; "
+        fedora_data="${fedora_data}cp \"$rocklet_data/$f\" \"%{buildroot}/$f\"; "
     else
-        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${ROCKHOPPER_DATA}/${f}"
+        echo "error: ${rocklet_image}: unsupported file system file type for path: ${rocklet_data}/${f}"
         exit 1
     fi
 done
 
-export FEDORA_DATA
+export fedora_data
 
-FEDORA_FILES=''
+fedora_files=''
 
 for f in $(find . -type f -print); do
     f="${f#./}"
-    FEDORA_FILES="${FEDORA_FILES}/$f "
+    fedora_files="${fedora_files}/$f "
 done
 
-export FEDORA_FILES
+export fedora_files
 
-cd "$ROCKHOPPER_RPM_BUILD"
+cd "$rocklet_rpm_build"
 
-mkdir -p "$ROCKHOPPER_RPM_BUILD/SPECS"
-SPEC_PATH="$ROCKHOPPER_RPM_BUILD/SPECS/$ROCKHOPPER_NAME.spec"
-rsubst "$ROCKHOPPER_SPECS/.spec.j2" >"$SPEC_PATH"
+mkdir -p "$rocklet_rpm_build/SPECS"
+SPEC="$rocklet_rpm_build/SPECS/$rocklet_name.spec"
+rsubst "$rocklet_specs/.spec.j2" >"$SPEC"
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
+if [ "$rocklet_log_level" = 'debug' ]; then
     echo "SPEC:"
-    cat "$SPEC_PATH"
+    cat "$SPEC"
 fi
 
 rpmbuild() {
-    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+    if [ "$rocklet_log_level" = 'quiet' ]; then
         command rpmbuild "$@" >/dev/null 2>&1
     else
         command rpmbuild "$@"
     fi
 }
 
-rpmbuild -bb "$SPEC_PATH"
+rpmbuild -bb "$SPEC"
 
-mkdir -p "$ROCKHOPPER_ARTIFACT"
+mkdir -p "$rocklet_artifact"
 
 cp \
-    "${ROCKHOPPER_RPM_BUILD}/RPMS/${ROCKHOPPER_ARCH}/${BANNER}-${ROCKHOPPER_REV}.${ROCKHOPPER_ARCH}.rpm" \
-    "${ROCKHOPPER_ARTIFACT}"
+    "${rocklet_rpm_build}/RPMS/${rocklet_os_arch}/${BANNER}-${rocklet_rev}.${rocklet_os_arch}.rpm" \
+    "${rocklet_artifact}"
 
 clean

@@ -1,6 +1,8 @@
 # DEVELOPMENT GUIDE
 
-rockhopper follows standard UNIX operations for running shell code.
+rockhopper follows standard, cargo based operations for compiling and unit testing Rust code.
+
+For advanced operations, such as linting, managing multiplatform Docker images, and so on, we further supplement with some software industry tools.
 
 # BUILDTIME REQUIREMENTS
 
@@ -8,7 +10,6 @@ rockhopper follows standard UNIX operations for running shell code.
 * [awscli](https://aws.amazon.com/cli/)
 * [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/) 28.0.1+
-* GNU [grep](https://www.gnu.org/software/grep/)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
@@ -16,13 +17,19 @@ rockhopper follows standard UNIX operations for running shell code.
 
 * a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
 * [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
-* Apply `DOCKER_DEFAULT_PLATFORM` = `linux/amd64` environment variable
+* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
 * [GNU time](https://www.gnu.org/software/time/)
 
-# BUILD
+# BUILD APP
 
 ```sh
 make
+```
+
+# BUILD IMAGES
+
+```sh
+make docker-build
 ```
 
 # TEST
@@ -31,7 +38,13 @@ make
 make test
 ```
 
-# PUSH DOCKER IMAGES
+# TEST PUSH IMAGES
+
+```sh
+make docker-test
+```
+
+# PUSH IMAGES
 
 ```sh
 make push
@@ -43,7 +56,13 @@ make push
 make port
 ```
 
-# CloudFlare R2 UPLOAD
+# PACKAGE
+
+```sh
+make package
+```
+
+# UPLOAD PACKAGES
 
 ```sh
 make upload

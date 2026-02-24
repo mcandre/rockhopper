@@ -2,154 +2,159 @@
 .SILENT:
 .PHONY: \
 	all \
+	audit \
+	build \
+	cargo-check \
 	clean \
-	clean-self-host \
+	clean-cargo \
 	clean-example \
+	clean-packages \
+	clean-ports \
+	clippy \
+	crit \
+	doc \
 	docker-build \
 	docker-build-alpine-linux \
-	docker-build-arch-linux \
-	docker-build-crux \
-	docker-build-debian \
 	docker-build-fedora \
-	docker-build-slackware-linux \
 	docker-build-ubuntu \
-	docker-build-void-linux-musl \
 	docker-push \
-	docker-tag \
-	docker-tag-alpine-linux \
-	docker-tag-arch-linux \
-	docker-tag-crux \
-	docker-tag-debian \
-	docker-tag-fedora \
-	docker-tag-slackware-linux \
-	docker-tag-ubuntu \
-	docker-tag-void-linux-musl \
+	docker-push-alpine-linux \
+	docker-push-fedora \
+	docker-push-ubuntu \
+	docker-test \
+	docker-test-alpine-linux \
+	docker-test-fedora \
+	docker-test-ubuntu \
+	install \
+	lint \
+	package \
 	port \
+	publish \
+	rustfmt \
 	test \
+	uninstall \
 	upload
 .IGNORE: \
 	clean \
-	clean-self-host \
-	clean-example
+	clean-cargo \
+	clean-example \
+	clean-packages \
+	clean-ports
 
 VERSION=0.0.9
+BANNER=rockhopper-$(VERSION)
 
 all: docker-build
 
-clean: clean-self-host clean-example
+build: lint
+	cargo build --release
 
-clean-self-host:
-	rm -rf /tmp/rockhopper
+cargo-check:
+	cargo check
+
+clean: clean-cargo clean-example clean-packages clean-ports
+
+clean-cargo:
+	cargo clean
 
 clean-example:
 	rm -rf example/sh/.rockhopper
 
+clean-packages:
+	rm -rf /tmp/rockhopper
+
+clean-ports:
+	crit -c
+
+clippy:
+	cargo clippy
+
+crit:
+	crit -b $(BANNER)
+
+doc:
+	cargo doc
+
 docker-build: \
 	docker-build-alpine-linux \
-	docker-build-arch-linux \
-	docker-build-crux \
-	docker-build-debian \
 	docker-build-fedora \
-	docker-build-slackware-linux \
-	docker-build-ubuntu \
-	docker-build-void-linux-musl
+	docker-build-ubuntu
 
 docker-build-alpine-linux:
-	sh -c "cd docker/alpine-linux && docker build -t n4jm4/rockhopper:alpine-linux . --load"
-
-docker-build-arch-linux:
-	sh -c "cd docker/arch-linux && docker build -t n4jm4/rockhopper:arch-linux . --load"
-
-docker-build-crux:
-	sh -c "cd docker/crux && docker build -t n4jm4/rockhopper:crux . --load"
-
-docker-build-debian:
-	sh -c "cd docker/debian && docker build -t n4jm4/rockhopper:debian . --load"
+	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux --load"
 
 docker-build-fedora:
-	sh -c "cd docker/fedora && docker build -t n4jm4/rockhopper:fedora . --load"
-
-docker-build-slackware-linux:
-	sh -c "cd docker/slackware-linux && docker build -t n4jm4/rockhopper:slackware-linux . --load"
+	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:fedora --load"
 
 docker-build-ubuntu:
-	sh -c "cd docker/ubuntu && docker build -t n4jm4/rockhopper:ubuntu . --load"
+	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu --load"
 
-docker-build-void-linux-musl:
-	sh -c "cd docker/void-linux-musl && docker build -t n4jm4/rockhopper:void-linux-musl . --load"
+docker-push: \
+	docker-push-alpine-linux \
+	docker-push-fedora \
+	docker-push-ubuntu
 
-docker-clean-tags:
-	docker images 2>/dev/null | \
-		grep '^n4jm4/rockhopper' | \
-		awk '{print $$1 }' | \
-		xargs -n 1 docker rmi -f
+docker-push-alpine-linux:
+	tuggy \
+		-t n4jm4/rockhopper:alpine-linux \
+		-a n4jm4/rockhopper:$(VERSION)-alpine-linux-3.23,n4jm4/rockhopper:$(VERSION)-alpine-linux,n4jm4/rockhopper:alpine-linux-3.23 \
+		--push
 
-docker-push: docker-clean-tags docker-build docker-tag
-	docker push n4jm4/rockhopper --all-tags
+docker-push-fedora:
+	tuggy \
+		-t n4jm4/rockhopper:fedora \
+		-a n4jm4/rockhopper:$(VERSION)-fedora-43,n4jm4/rockhopper:$(VERSION)-fedora,n4jm4/rockhopper:fedora-43 \
+		--push
 
-docker-tag: \
-	docker-tag-alpine-linux \
-	docker-tag-arch-linux \
-	docker-tag-crux \
-	docker-tag-debian \
-	docker-tag-fedora \
-	docker-tag-slackware-linux \
-	docker-tag-ubuntu \
-	docker-tag-void-linux-musl
+docker-push-ubuntu:
+	tuggy \
+		-t n4jm4/rockhopper:ubuntu \
+		-a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble \
+		--push
 
-docker-tag-alpine-linux:
-	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:$(VERSION)-alpine-linux3.23
-	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:$(VERSION)-alpine-linux3
-	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:$(VERSION)-alpine-linux
-	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:alpine-linux3.23
-	docker tag n4jm4/rockhopper:alpine-linux n4jm4/rockhopper:alpine-linux3
+docker-test: \
+	docker-test-alpine-linux \
+	docker-test-fedora \
+	docker-test-ubuntu
 
-docker-tag-arch-linux:
-	docker tag n4jm4/rockhopper:arch-linux n4jm4/rockhopper:$(VERSION)-arch-linux
+docker-test-alpine-linux:
+	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:test-alpine-linux --load"
+	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:test-alpine-linux --push"
 
-docker-tag-crux:
-	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux3.8
-	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux3
-	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:$(VERSION)-crux
-	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:crux3.8
-	docker tag n4jm4/rockhopper:crux n4jm4/rockhopper:crux3
+docker-test-fedora:
+	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:test-fedora --load"
+	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:test-fedora --push"
 
-docker-tag-debian:
-	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:$(VERSION)-trixie
-	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:$(VERSION)-debian13
-	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:$(VERSION)-debian
-	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:trixie
-	docker tag n4jm4/rockhopper:debian n4jm4/rockhopper:debian13
+docker-test-ubuntu:
+	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --load"
+	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --push"
 
-docker-tag-fedora:
-	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:$(VERSION)-fedora43
-	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:$(VERSION)-fedora
-	docker tag n4jm4/rockhopper:fedora n4jm4/rockhopper:fedora43
+install:
+	cargo install --force --path .
 
-docker-tag-slackware-linux:
-	docker tag n4jm4/rockhopper:slackware-linux n4jm4/rockhopper:$(VERSION)-slackware-linux15.0
-	docker tag n4jm4/rockhopper:slackware-linux n4jm4/rockhopper:$(VERSION)-slackware-linux15
-	docker tag n4jm4/rockhopper:slackware-linux n4jm4/rockhopper:$(VERSION)-slackware-linux
-	docker tag n4jm4/rockhopper:slackware-linux n4jm4/rockhopper:slackware-linux15.0
-	docker tag n4jm4/rockhopper:slackware-linux n4jm4/rockhopper:slackware-linux15
+lint: \
+	cargo-check \
+	clippy \
+	doc \
+	rustfmt
 
-docker-tag-ubuntu:
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-noble
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu24.04
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu24
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:$(VERSION)-ubuntu
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:noble
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:ubuntu24.04
-	docker tag n4jm4/rockhopper:ubuntu n4jm4/rockhopper:ubuntu24
+package:
+	rockhopper
 
-docker-tag-void-linux-musl:
-	docker tag n4jm4/rockhopper:void-linux-musl n4jm4/rockhopper:$(VERSION)-void-linux-musl
+port: crit
+	./port -C .crit/bin -a rockhopper $(BANNER)
 
-port: docker-build
-	./port
+publish:
+	cargo publish
 
-test: docker-build
-	sh -c "cd example/sh && ./demo && tree .rockhopper"
+rustfmt:
+	cargo fmt
+
+test:
+	sh -c "cd example/sh && rockhopper && tree .rockhopper"
+
+uninstall:
+	cargo uninstall rockhopper
 
 upload:
 	./upload

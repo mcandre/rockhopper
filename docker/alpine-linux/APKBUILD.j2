@@ -1,33 +1,33 @@
-{% if ROCKHOPPER_MAINTAINER is defined %}
-# Maintainer: {{ ROCKHOPPER_MAINTAINER }}
+{% if rocklet_maintainer is defined %}
+# Maintainer: {{ rocklet_maintainer }}
 {% endif %}
-pkgname="{{ ROCKHOPPER_NAME }}"
-pkgver="{{ ROCKHOPPER_VERSION }}"
-pkgrel="{{ ROCKHOPPER_REV }}"
-pkgdesc="{{ ROCKHOPPER_DESCRIPTION }}"
-url="{{ ROCKHOPPER_URL }}"
-arch="{{ ROCKHOPPER_ARCH }}"
-license="{{ ROCKHOPPER_LICENSE }}"
-depends="{{ ROCKHOPPER_DEPENDENCIES | default('') }}"
-makedepends="{{ ROCKHOPPER_APK_MAKE_DEPENDS | default('') }}"
-checkdepends="{{ ROCKHOPPER_APK_CHECK_DEPENDS | default('') }}"
+pkgname="{{ rocklet_name }}"
+pkgver="{{ rocklet_version }}"
+pkgrel="{{ rocklet_rev }}"
+pkgdesc="{{ rocklet_description }}"
+url="{{ rocklet_url }}"
+arch="{{ rocklet_os_arch }}"
+license="{{ rocklet_license }}"
+depends="{{ rocklet_dependencies | default('') }}"
+makedepends="{{ rocklet_apk_make_depends | default('') }}"
+checkdepends="{{ rocklet_apk_check_depends | default('') }}"
 install=""
 subpackages=""
-source="{{ ROCKHOPPER_APK_SOURCE | default('') }}"
+source="{{ rocklet_apk_source | default('') }}"
 builddir="$srcdir"
 options="!check"
 
 prepare() {
     default_prepare
-    cp -r "{{ ROCKHOPPER_DATA }}/"* "$builddir"
-    mkdir -p "$builddir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
-    printf "{{ APK_LICENSE }}\n" >"$builddir/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE"
+    cp -r "{{ rocklet_data }}/"* "$builddir"
+    mkdir -p "$builddir/usr/share/licenses/{{ rocklet_name }}"
+    printf "{{ apk_license }}\n" >"$builddir/usr/share/licenses/{{ rocklet_name }}/LICENSE"
 }
 
 package() {
-    mkdir -p "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
+    mkdir -p "$pkgdir/usr/share/licenses/{{ rocklet_name }}"
     cp \
-        "$srcdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}/LICENSE" \
-        "$pkgdir/usr/share/licenses/{{ ROCKHOPPER_NAME }}"
-    {{ APK_PACKAGE }}
+        "$srcdir/usr/share/licenses/{{ rocklet_name }}/LICENSE" \
+        "$pkgdir/usr/share/licenses/{{ rocklet_name }}"
+    {{ apk_package }}
 }

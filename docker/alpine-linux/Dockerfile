@@ -1,16 +1,13 @@
 FROM library/alpine:3.23
 # Includes a test keypair for signing packages
+ENV PATH=$PATH:/root/.cargo/bin
 RUN apk add -U --no-cache \
         alpine-sdk \
         atools \
         bash \
-        curl \
+        cargo \
         sudo && \
-    curl -LO https://github.com/jtdowney/rsubst/releases/download/v0.1.4/rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    tar xf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    mv rsubst /usr/bin && \
-    rm -rf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    apk del curl && \
+    cargo install rsubst@0.1.4 && \
     abuild-keygen -n -a -i && \
     mkdir /root/rockhopper-specs
 COPY APKBUILD.j2 /root/rockhopper-specs

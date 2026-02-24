@@ -2,22 +2,23 @@
 unset IFS
 set -euo pipefail
 
-ROCKHOPPER_LOG_LEVEL="${ROCKHOPPER_LOG_LEVEL:-info}"
-ROCKHOPPER_IMAGE="${ROCKHOPPER_IMAGE:-unknown image}"
-ROCKHOPPER_NAME="${ROCKHOPPER_NAME:-}"
-ROCKHOPPER_VERSION="${ROCKHOPPER_VERSION:-}"
-ROCKHOPPER_REV="${ROCKHOPPER_REV:-}"
-ROCKHOPPER_COPYRIGHT="${ROCKHOPPER_COPYRIGHT:-}"
-ROCKHOPPER_LICENSE="${ROCKHOPPER_LICENSE:-}"
-ROCKHOPPER_MOUNT="${ROCKHOPPER_MOUNT:-/mnt/rockhopper}"
-ROCKHOPPER_DATA="${ROCKHOPPER_DATA:-"$ROCKHOPPER_MOUNT/rockhopper-data"}"
-ROCKHOPPER_SPECS="${ROCKHOPPER_SPECS:-"$HOME/rockhopper-specs"}"
-ROCKHOPPER_ARTIFACT="${ROCKHOPPER_ARTIFACT:-"$ROCKHOPPER_MOUNT/.rockhopper/alpine-linux"}"
-ROCKHOPPER_APK_BUILD="${ROCKHOPPER_APK_BUILD:-/tmp/alpine-linux}"
-ROCKHOPPER_ARCH="${ROCKHOPPER_ARCH:-noarch}"
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_data="${rocklet_data:-"$rocklet_mount_path/rockhopper-data"}"
+rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/alpine-linux"}"
+rocklet_apk_build="${rocklet_apk_build:-/tmp/alpine-linux}"
+rocklet_os_arch="${rocklet_os_arch:-noarch}"
 
 # Forward rockhopper environment variables to Jinja
-for K in $(compgen -v | grep '^ROCKHOPPER_'); do
+for K in $(compgen -v | grep '^rocklet_'); do
     export "$K"
 done
 
@@ -38,11 +39,11 @@ while [ "$#" -ge 1 ]; do
     case "$1" in
     '--debug' | '-d')
         shift
-        ROCKHOPPER_LOG_LEVEL='debug'
+        rocklet_log_level='debug'
         ;;
     '--quiet' | 'q')
         shift
-        ROCKHOPPER_LOG_LEVEL='quiet'
+        rocklet_log_level='quiet'
         ;;
     '--help' | '-h')
         usage
@@ -59,53 +60,56 @@ while [ "$#" -ge 1 ]; do
     esac
 done
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
-    env | grep '^ROCKHOPPER_' | sort
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
 fi
 
 validate() {
-    REQUIRED_ENV_VARS=(
-        ROCKHOPPER_NAME
-        ROCKHOPPER_VERSION
-        ROCKHOPPER_REV
-        ROCKHOPPER_LICENSE
-        ROCKHOPPER_MOUNT
-        ROCKHOPPER_DATA
-        ROCKHOPPER_SPECS
-        ROCKHOPPER_ARTIFACT
-        ROCKHOPPER_APK_BUILD
-        ROCKHOPPER_ARCH
+    required_env_vars=(
+        rocklet_apk_build
+        rocklet_artifact
+        rocklet_cache
+        rocklet_data
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_rev
+        rocklet_specs
+        rocklet_version
     )
 
-    for REQUIRED_ENV_VAR in "${REQUIRED_ENV_VARS[@]}"; do
-        eval "REQUIRED_ENV_VAL=\$$REQUIRED_ENV_VAR"
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
 
-        if [ -z "$REQUIRED_ENV_VAL" ]; then
-            echo "error: ${ROCKHOPPER_IMAGE}: blank/missing env var: ${REQUIRED_ENV_VAR}"
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}"
             exit 1
         fi
     done
 }
 
 clean() {
-    rm -rf "$ROCKHOPPER_APK_BUILD"
+    rm -rf "$rocklet_apk_build"
 }
 
 validate
 clean
 
-APK_LICENSE=''
+apk_license=''
 
-if [ -n "$ROCKHOPPER_COPYRIGHT" ]; then
-    APK_LICENSE="$ROCKHOPPER_COPYRIGHT"
+if [ -n "$rocklet_copyright" ]; then
+    apk_license="$rocklet_copyright"
 fi
 
-APK_LICENSE="$APK_LICENSE\\n$ROCKHOPPER_LICENSE"
-export APK_LICENSE
+apk_license="$apk_license\\n$rocklet_license"
+export apk_license
 
-cd "$ROCKHOPPER_DATA"
+cd "$rocklet_data"
 
-APK_PACKAGE=''
+apk_package=''
 
 for f in $(find . -print); do
     f="${f#./}"
@@ -115,33 +119,33 @@ for f in $(find . -print); do
     fi
 
     if [ -d "$f" ]; then
-        APK_PACKAGE="${APK_PACKAGE}mkdir -p \"\$pkgdir/$f\"; "
+        apk_package="${apk_package}mkdir -p \"\$pkgdir/$f\"; "
     elif [ -f "$f" ]; then
-        APK_PACKAGE="${APK_PACKAGE}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
+        apk_package="${apk_package}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
-        echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${ROCKHOPPER_DATA}/${f}"
+        echo "error: ${rocklet_image}: unsupported file system file type for path: ${rocklet_data}/${f}"
         exit 1
     fi
 done
 
-export APK_PACKAGE
+export apk_package
 
-mkdir -p "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
-APKBUILD="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/APKBUILD"
-rsubst "$ROCKHOPPER_SPECS/APKBUILD.j2" >"$APKBUILD"
+mkdir -p "$rocklet_apk_build/$rocklet_name"
+APKBUILD="$rocklet_apk_build/$rocklet_name/APKBUILD"
+rsubst "$rocklet_specs/APKBUILD.j2" >"$APKBUILD"
 
-if [ "$ROCKHOPPER_LOG_LEVEL" = 'debug' ]; then
+if [ "$rocklet_log_level" = 'debug' ]; then
     echo "APKBUILD:"
     cat "$APKBUILD"
 fi
 
-SRC="$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME/src"
-mkdir -p "$SRC"
+src="$rocklet_apk_build/$rocklet_name/src"
+mkdir -p "$src"
 
-cd "$ROCKHOPPER_APK_BUILD/$ROCKHOPPER_NAME"
+cd "$rocklet_apk_build/$rocklet_name"
 
 abuild() {
-    if [ "$ROCKHOPPER_LOG_LEVEL" = 'quiet' ]; then
+    if [ "$rocklet_log_level" = 'quiet' ]; then
         command abuild "$@" 2>/dev/null 1>&2
     else
         command abuild "$@"
@@ -151,10 +155,10 @@ abuild() {
 abuild -F checksum
 abuild -F -r
 
-mkdir -p "$ROCKHOPPER_ARTIFACT"
+mkdir -p "$rocklet_artifact"
 
 cp \
-    "/root/packages/alpine-linux/$(uname -m)/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.apk" \
-    "$ROCKHOPPER_ARTIFACT/$ROCKHOPPER_NAME-$ROCKHOPPER_VERSION-r$ROCKHOPPER_REV.$ROCKHOPPER_ARCH.apk"
+    "/root/packages/alpine-linux/$(uname -m)/$rocklet_name-$rocklet_version-r$rocklet_rev.apk" \
+    "$rocklet_artifact/$rocklet_name-$rocklet_version-r$rocklet_rev.$rocklet_os_arch.apk"
 
 clean

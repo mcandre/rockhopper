@@ -1,0 +1,13 @@
+# debug = true
+
+# https://fedoraproject.org/wiki/Architectures
+# https://github.com/tonistiigi/binfmt
+# https://hub.docker.com/_/fedora
+
+# Work around buildx quirks
+platforms = [
+    "linux/amd64",
+    "linux/arm64/v8",
+    # "linux/ppc64le",
+    # "linux/s390x",
+]

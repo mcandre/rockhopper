@@ -1,11 +1,10 @@
 FROM library/fedora:43
+ENV PATH=$PATH:/root/.cargo/bin
 RUN dnf install -y \
+        cargo \
         rpmdevtools \
         rpmlint && \
-    curl -LO https://github.com/jtdowney/rsubst/releases/download/v0.1.4/rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    tar xf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    mv rsubst /usr/bin && \
-    rm -rf rsubst-x86_64-unknown-linux-musl.tar.gz && \
+    cargo install rsubst@0.1.4 && \
     mkdir /root/rockhopper-specs
 COPY .spec.j2 /root/rockhopper-specs
 COPY rocklet /usr/local/bin

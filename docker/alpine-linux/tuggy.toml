@@ -1,0 +1,18 @@
+# debug = true
+
+# https://wiki.alpinelinux.org/wiki/Architecture
+# https://github.com/tonistiigi/binfmt
+# https://hub.docker.com/_/alpine
+
+# Drop 32-bit support
+# Work around buildx quirks
+platforms = [
+    # "linux/386",
+    "linux/amd64",
+    # "linux/arm/v6",
+    # "linux/arm/v7",
+    "linux/arm64/v8",
+    # "linux/ppc64le",
+    # "linux/riscv64",
+    # "linux/s390x",
+]

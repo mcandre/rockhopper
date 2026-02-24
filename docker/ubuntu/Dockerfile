@@ -1,13 +1,11 @@
 FROM library/ubuntu:24.04
+ENV PATH=$PATH:/root/.cargo/bin
 RUN apt update && \
-    apt install -y curl && \
-    curl -LO https://github.com/jtdowney/rsubst/releases/download/v0.1.4/rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    tar xf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    mv rsubst /usr/bin && \
-    rm -rf rsubst-x86_64-unknown-linux-musl.tar.gz && \
-    apt remove -y --autoremove --purge curl && \
-    apt clean && \
-    rm -rf /var/lib/apt/lists/* && \
+    apt install -y \
+        build-essential \
+        curl && \
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && \
+    cargo install rsubst@0.1.4 && \
     mkdir /root/rockhopper-specs
 COPY control.j2 /root/rockhopper-specs
 COPY rocklet /usr/local/bin

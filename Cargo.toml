@@ -1,0 +1,21 @@
+[package]
+name = "rockhopper"
+description = "metapackage generator"
+version = "0.0.9"
+edition = "2024"
+authors = ["Andrew Pennebaker <n4jm4@pm.me>"]
+license = "0BSD"
+repository = "https://github.com/mcandre/rockhopper"
+
+[dependencies]
+die = "0.2.0"
+getopts = "0.2.24"
+serde = { version = "1.0.228", features = ["derive"] }
+toml = "0.9.8"
+
+[lib]
+name = "rockhopper"
+
+[[bin]]
+name = "rockhopper"
+path = "src/rockhopper.rs"

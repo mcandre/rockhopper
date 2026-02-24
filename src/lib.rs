@@ -1,0 +1,223 @@
+//! rockhopper provides predicates for generating software packages.
+
+extern crate toml;
+
+use serde::{Deserialize, Serialize};
+
+use std::collections::BTreeMap;
+use std::fmt;
+use std::fs;
+use std::io::{self, Write};
+use std::path;
+use std::process;
+
+/// CONFIGURATION_FILENAME denotes the file path to an optional TOML configuration file,
+/// relative to the current working directory.
+pub static CONFIGURATION_FILENAME: &str = "rockhopper.toml";
+
+/// ARTIFACT_DIR denotes the directory root for install media artifacts.
+pub static ARTIFACT_DIR: &str = ".rockhopper";
+
+/// DEFAULT_DOCKER_MOUNT_PATH denotes the default location of the Docker mount directory,
+/// where the current working directory gets loaded into containers.
+pub static DEFAULT_DOCKER_MOUNT_PATH: &str = "/mnt/rockhopper";
+
+#[derive(Debug)]
+pub enum RockhopperError {
+    IOError(String),
+    TOMLParseError(String),
+}
+
+impl fmt::Display for RockhopperError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            RockhopperError::IOError(e) => write!(f, "{e}"),
+            RockhopperError::TOMLParseError(e) => write!(f, "{e}"),
+        }
+    }
+}
+
+impl die::PrintExit for RockhopperError {
+    fn print_exit(&self) -> ! {
+        eprintln!("{}", self);
+        process::exit(die::DEFAULT_EXIT_CODE);
+    }
+}
+
+/// LogLevel modules log noise.
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum LogLevel {
+    /// Info propagates child process stdout/stderr.
+    #[default]
+    Info,
+
+    /// Quiet elides most logs, especially non-error logs.
+    Quiet,
+
+    /// Debug enables additional logs.
+    Debug,
+}
+
+impl fmt::Display for LogLevel {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                LogLevel::Info => "info",
+                LogLevel::Quiet => "quiet",
+                LogLevel::Debug => "debug",
+            },
+        )
+    }
+}
+
+/// Pkg generates install media.
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Pkg {
+    /// image denotes a Docker image.
+    pub image: String,
+
+    /// rocklet overrides global rocklet entries.
+    pub rocklet: Option<BTreeMap<String, String>>,
+}
+
+/// Rockhopper builds software packages.
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Rockhopper {
+    /// log_level modulates log noise (optional).
+    pub log_level: Option<LogLevel>,
+
+    /// rocklet supplies additional build configuration to rocklets (requirements vary by distro).
+    pub rocklet: Option<BTreeMap<String, String>>,
+
+    /// docker_env supplies custom environment variables to rocklets.
+    pub docker_env: Option<BTreeMap<String, String>>,
+
+    /// docker_args supplies additional CLI arguments to `docker run`... commands (optional).
+    pub docker_args: Option<Vec<String>>,
+
+    /// pkg collects the packages to be built (required, nonempty).
+    pub pkg: Vec<Pkg>,
+
+    /// rocklet_args supplies additional CLI arguments to rocklets (optional).
+    #[serde(skip)]
+    pub rocklet_args: Vec<String>,
+}
+
+impl Rockhopper {
+    /// load generates a Rockhopper.
+    pub fn load(pth: &str) -> Result<Self, RockhopperError> {
+        let toml_string = fs::read_to_string(pth)
+            .map_err(|_| RockhopperError::IOError(format!("unable to read file: {pth}")))?;
+        let rh: Rockhopper = toml::from_str(&toml_string)
+            .map_err(|e| RockhopperError::TOMLParseError(e.message().to_string()))?;
+        Ok(rh)
+    }
+
+    /// build_package generates install media.
+    pub fn build_package(&self, pkg: &Pkg) -> Result<(), RockhopperError> {
+        let log_level: LogLevel = self.log_level.clone().unwrap_or_default();
+        let mut cmd = process::Command::new("docker");
+        let mut args: Vec<String> = vec!["run".to_string()];
+        let oci_arch = match &pkg.rocklet {
+            Some(e) => e.get("oci_arch"),
+            _ => None,
+        };
+
+        if let Some(platform) = &oci_arch {
+            args.extend(["--platform".to_string(), platform.to_string()]);
+        }
+
+        if let Some(docker_args) = self.docker_args.clone() {
+            args.extend(docker_args);
+        }
+
+        let rocklet = self.rocklet.clone().unwrap_or_default();
+        let default_docker_mount_path = &DEFAULT_DOCKER_MOUNT_PATH.to_string();
+        let mount_path = rocklet
+            .get("mount_path")
+            .unwrap_or(default_docker_mount_path);
+        args.extend(["-v".to_string(), format!(".:{mount_path}")]);
+        args.extend(["-e".to_string(), format!("rocklet_log_level={log_level}")]);
+
+        for (k, v) in rocklet {
+            args.extend(["-e".to_string(), format!("rocklet_{k}={v}")]);
+        }
+
+        for (k, v) in self.docker_env.clone().unwrap_or_default() {
+            args.extend(["-e".to_string(), format!("{k}={v}")]);
+        }
+
+        for (k, v) in pkg.rocklet.clone().unwrap_or_default() {
+            args.extend(["-e".to_string(), format!("rocklet_{k}={v}")]);
+        }
+
+        let image = &pkg.image;
+
+        if image.is_empty() {
+            return Err(RockhopperError::IOError("missing/blank image".to_string()));
+        }
+
+        args.push(image.to_string());
+        args.extend(self.rocklet_args.clone());
+        cmd.args(args);
+        cmd.stderr(process::Stdio::piped());
+        cmd.stdout(process::Stdio::inherit());
+
+        let mut target = String::new();
+        target.push_str(image);
+
+        if let Some(platform) = oci_arch {
+            target.push_str(&format!(" platform={platform}"));
+        }
+
+        if let Some(arch) = pkg.rocklet.clone().unwrap_or_default().get("os_arch") {
+            target.push_str(&format!(" os_arch={arch}"));
+        }
+
+        println!("building {target}");
+
+        if log_level == LogLevel::Debug {
+            eprintln!("debug: running command: {:?}", cmd);
+        }
+
+        let output = cmd
+            .output()
+            .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+
+        if !output.status.success() {
+            io::stderr()
+                .write_all(&output.stderr)
+                .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+
+            return Err(RockhopperError::IOError(
+                "unable to build package".to_string(),
+            ));
+        }
+
+        Ok(())
+    }
+
+    /// build generates packages.
+    pub fn build(&self) -> Result<(), RockhopperError> {
+        for p in self.pkg.clone() {
+            self.build_package(&p)?;
+        }
+
+        Ok(())
+    }
+}
+
+/// clean removes artifacts.
+pub fn clean() -> Result<(), RockhopperError> {
+    if path::Path::new(ARTIFACT_DIR).exists() {
+        return fs::remove_dir_all(ARTIFACT_DIR)
+            .map_err(|e| RockhopperError::IOError(e.to_string()));
+    }
+
+    Ok(())
+}

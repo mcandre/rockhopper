@@ -1,10 +1,10 @@
-# CONFIGURATION
+# CONFIGURATION GUIDE
 
 # FLAGS
 
 ## `--debug`, `-d`
 
-Overrides `ROCKHOPPER_LOG_LEVEL`.
+Overrides `log_level`.
 
 Enables debug mode. Show additional logs.
 
@@ -12,7 +12,7 @@ In the event a problem, debug mode provides context for common resources, such a
 
 ## `--quiet`, `-q`
 
-Overrides `ROCKHOPPER_LOG_LEVEL`.
+Overrides `log_level`.
 
 Enables quiet mode. Elide most console logs.
 
@@ -28,191 +28,371 @@ Show version banner.
 
 ## `-- [<ROCKLET OPTIONS>]`
 
-Forward `<ROCKLET OPTIONS>` from `rockhopper` to individual `rocklet` containers.
+Forward `<ROCKLET OPTIONS>` from `rockhopper` to individual [rocklet](ROCKLETS.md) containers.
 
-# ENVIRONMENT VARIABLES
+See `rockhopper -h` for more detail.
 
-rockhopper uses environment variables as the primary configuration mechanism.
+# TOML
 
-## `ROCKHOPPER_DOCKER_FLAGS`
+rockhopper looks for a configuration file `rockhopper.toml` in the current working directory.
 
-Default: (blank)
-
-Optional.
-
-Adds the given flags to `docker run` commands.
-
-## `ROCKHOPPER_LOG_LEVEL`
+## `log_level`
 
 Default: `info`
 
-Optional.
+Also accepts `quiet` (less logs) or `debug` (more logs).
 
-When `info`, propagate logs from package building commands.
+Example:
 
-When `quiet`, enables quiet mode.
+```toml
+log_level = "debug"
+```
 
-When `debug`, enables debug mode.
+## `rocklet`
 
-See also `--quiet, -q`, `--debug, -d`.
+Required fields vary by distribution.
 
-## `ROCKHOPPER_IMAGE`
+Package attribute table.
 
-Required, nonblank.
+Example:
 
-A Docker image implementing the [ROCKLET](ROCKLETS.md) interface for package generation.
+```toml
+[rocklet]
+name = "raygun"
+version = "1.2.3"
+```
 
-Example: `"n4jm4/rockhopper:debian"`
+### `name`
 
-## `ROCKHOPPER_DATA`
+Nonblank.
 
-Default: `"/mnt/rockhopper/rockhopper-data"`
+Commonly required across package managers.
 
-Optional.
+Example:
 
-A directory path relative to `ROCKHOPPER_MOUNT`, which lays out application files according to the [Filesystem Hierarchy Standard](https://specifications.freedesktop.org/fhs/latest/).
+```toml
+[rocklet]
+name = "raygun"
+```
 
-## `ROCKHOPPER_SPECS`
+### `version`
 
-Default: `"$HOME/rockhopper-specs"`
+Commonly required across package managers.
 
-Optional.
+Example:
 
-A directory containing package configuration [Jinja](https://jinja.palletsprojects.com/en/stable/) templates.
+```toml
+[rocklet]
+name = "raygun"
+version = "1.2.3"
+```
 
-## `ROCKHOPPER_NAME`
+### `rev`
 
-Required, nonblank.
+Often required by package managers.
 
-A unique, memorable name for a package.
+Release increment, relative to an upstream `version`.
 
-Example: `"hello"`
+Example:
 
-Search databases for any existing names:
+```toml
+[rocklet]
+name = "raygun"
+version = "1.2.3"
+rev = "81"
+```
 
-* https://linux.die.net/
-* https://man.freebsd.org/cgi/man.cgi
-* https://pkgs.org/
-* https://brew.sh/
-* https://hub.docker.com/
-* https://github.com/
-* https://snapcraft.io/
-* https://launchpad.net/ubuntu/+ppas
-* https://ss64.com/mac/
-* https://chocolatey.org/
-* https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands
+### `maintainer`
 
-## `ROCKHOPPER_VERSION`
+Often required by package managers.
 
-Required, nonblank.
+Contact information for developer managing packages.
 
-A release version for a package.
+Format: RFC822.
 
-Example: `"1.0.0"`
+Example:
 
-[SemVer](https://semver.org/)
+```toml
+[rocklet]
+name = "raygun"
+maintainer = "Marvin the Martian <marvin@mars.test>"
+```
 
-## `ROCKHOPPER_ARCH`
+### `summary`
 
-Commonly required, relative to distribution.
+Often required by package managers.
 
-Target architecture.
+A concise description of the package.
 
-Syntax relative to distribution.
+Example:
 
-Examples:
+```toml
+[rocklet]
+name = "raygun"
+summary = "Where's the kaboom?"
+```
 
-* `"i386"` (Debian 32-bit Intel/AMD)
-* `"i686"` (RHEL 32-bit Intel/AMD)
-* `"all"` (Debian, architecture independent)
-* `"noarch"` (RHEL, architecture independent)
+### `description`
 
-## `ROCKHOPPER_REV`
+Often required by package managers.
 
-Commonly required, relative to distribution.
+A brief description of the package.
 
-A revision increment, for patches between upstream versions.
+Example:
 
-Example: `"1"`
+```toml
+[rocklet]
+name = "raygun"
+description = "There was supposed to be an earth-shattering kaboom!"
+```
 
-## `ROCKHOPPER_MAINTAINER`
+### `copyright`
 
-Commonly required, relative to distribution.
+Generally recommended.
 
-Email contact information for a package maintainer. RFC882 format.
+A Copyright identifier.
 
-Example: `"Bob Loblaw <bob@bananastand.test>"`
+Example:
 
-## `ROCKHOPPER_DEPENDENCIES`
+```toml
+[rocklet]
+name = "raygun"
+copyright = "Copyright (C) 1948 Marvin the Martian"
+```
 
-Optional.
+### `license`
 
-Prerequisite package constraints.
+Often required by package managers.
 
-Syntax relative to distribution.
+A software license identifier. Format: [SPDX](https://spdx.org/licenses/).
 
-Example: `"curl"`
+Example:
 
-## `ROCKHOPPER_SUMMARY`
+```toml
+[rocklet]
+name = "raygun"
+license = "0BSD"
+```
 
-Commonly required, relative to distribution.
+### `url`
 
-A terse explanation of a package.
+Often required by package managers.
 
-Example: `"greeter"`
+Software homepage.
 
-## `ROCKHOPPER_DESCRIPTION`
+Example:
 
-Commonly required, relative to distribution.
+```toml
+[rocklet]
+url = "https://mars.test/"
+```
 
-A brief explanation of a package.
-
-Example: `"hello world welcomes new developers"`
-
-## `ROCKHOPPER_COPYRIGHT`
-
-Recommended.
-
-A copyright notice of ownership.
-
-Example: `"Copyright (C) 2026 Bob"`
-
-## `ROCKHOPPER_LICENSE`
-
-Commonly required, relative to distribution.
-
-Recommended.
-
-Commonly [SPDX](https://spdx.org/licenses/), though syntax often relative to distribution.
-
-Example: `"0BSD"`
-
-## `ROCKHOPPER_CHANGELOG`
-
-Required for RHEL family distributions.
-
-File path of a changelog document. Path is relative to a `rockhopper-data` root directory.
-
-Syntax relative to distribution. See [Fedora Manual Changelog](https://docs.fedoraproject.org/en-US/packaging-guidelines/manual-changelog/).
-
-Example: `"CHANGELOG.txt"`
-
-## `ROCKHOPPER_URL`
-
-Commonly required, relative to distribution.
-
-A homepage for a package.
-
-Example: `"https://bobslawblog.test/"`
-
-## `ROCKHOPPER_MOUNT`
+### `mount_path`
 
 Default: `/mnt/rockhopper`
 
+Customize the location of the container directory where the host current working directory loads.
+
+Example:
+
+```toml
+[rocklet]
+mount_path = "/mnt/source-media"
+```
+
+### `data`
+
+Default: `/mnt/rockhopper/rockhopper-data`
+
+Customize the directory location of source media, relative to mount path.
+
+Example:
+
+```toml
+[rocklet]
+mount_path = "/mnt/source-media"
+data = "/mnt/source-media/bin"
+```
+
+### `specs`
+
+Default: `<container-home>/rockhopper-specs`
+
+Customize the location of the template specification directory, relative to mount path.
+
+Example:
+
+```toml
+[rocklet]
+mount_path = "/mnt/rockhopper"
+specs = "/mnt/rockhopper/templates"
+```
+
+### `cache`
+
+Default: `/mnt/rockhopper/.rockhopper`
+
+Customize the location of the artifact directory root, relative to mount path.
+
+Example:
+
+```toml
+[rocklet]
+mount_path = "/mnt/rockhopper"
+cache = "/mnt/rockhopper/install-media"
+```
+
+## `docker_env`
+
 Optional.
 
-Customize the directory used to copy assets from the host environment into rocklet containers.
+Default: (empty)
 
-## Other
+Supply additional Docker environment variables as key value pairs.
 
-Individual distribution images may require additional parameters.
+Example:
+
+```toml
+[docker_env]
+VERBOSE = "1"
+```
+
+## `docker_args`
+
+Default: (empty)
+
+Supply additional CLI arguments to `docker run`... commands.
+
+Example:
+
+```toml
+docker_args = ["--privilieged"]
+```
+
+## `pkg`
+
+An array of package specifications.
+
+Required, nonempty.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:alpine-linux"
+
+[[pkg]]
+image = "n4jm4/rockhopper:fedora"
+
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+
+# ...
+```
+
+### `image`
+
+Required, nonblank.
+
+Docker image tag.
+
+Example:
+
+```toml
+image = "n4jm4/rockhopper:ubuntu
+```
+
+### `rocklet`
+
+Default: (empty)
+
+Per-package attribute table.
+
+Overrides the global rocklet attribute table.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "amd64"
+rocklet.dependencies = "curl"
+# ...
+```
+
+#### `oci_arch`
+
+Default: (`DOCKER_DEFAULT_PLATFORM` environment variable)
+
+Package Docker buildx architecture.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.oci_arch = "linux/amd64"
+```
+
+Note: `oci_arch` often uses different syntax (buildx) than `os_arch` (distro relative).
+
+Pro tip: Crosscompilation toolchains enable more flexibility for `oci_arch`.
+
+#### `os_arch`
+
+Commonly required by most distributions.
+
+OS target architecture identifier. Syntax OS relative.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.os_arch = "amd64"
+```
+
+##### Prominent OS Architectures
+
+| OS           | ISA                   | Identifier |
+| ------------ | --------------------- | ---------- |
+| Alpine Linux | 64-bit ARM            | aarch64    |
+| Alpine Linux | 64-bit Intel          | x86_64     |
+| Alpine Linux | (chipset independent) | noarch     |
+| Fedora       | 64-bit ARM            | aarch64    |
+| Fedora       | 64-bit Intel          | x86_64     |
+| Fedora       | (chipset indepdendet) | noarch     |
+| Ubuntu       | 64-bit ARM            | arm64      |
+| Ubuntu       | 64-bit Intel          | amd64      |
+| Ubuntu       | (chipset independent) | all        |
+
+#### `dependencies`
+
+Default: (empty)
+
+Commonly required for applications large and small.
+
+Syntax may vary by distro.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.dependencies = "bash"
+```
+
+#### `artifact`
+
+Default: `/mnt/rockhopper/.rockhopper/<distro>`
+
+Customize package output directory.
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.artifact = "/mnt/rockhopper/.rockhopper/webuntu"
+```

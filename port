@@ -1,55 +1,78 @@
 #!/bin/bash
 unset IFS
-set -eufo pipefail
+set -euo pipefail
 
-# ROCKHOPPER_LOG_LEVEL='debug'
-ROCKHOPPER_LOG_LEVEL='quiet'
-ROCKHOPPER_NAME='rockhopper'
-ROCKHOPPER_VERSION='0.0.9'
-ROCKHOPPER_REV='1'
-ROCKHOPPER_MAINTAINER='Andrew Pennebaker <n4jm4@bpm.me>'
-ROCKHOPPER_SUMMARY='metapackage generator'
-ROCKHOPPER_DESCRIPTION='rockhopper generates installer packages for a wide variety of platforms'
-ROCKHOPPER_COPYRIGHT='Copyright (C) 2026 Andrew Pennebaker'
-ROCKHOPPER_LICENSE='0BSD'
-ROCKHOPPER_URL='https://github.com/mcandre/rockhopper'
-ROCKHOPPER_DEPENDENCIES='bash'
-
-for K in $(compgen -v | grep '^ROCKHOPPER_'); do
-    export "$K"
-done
-
-PLATFORMS=(
-    'n4jm4/rockhopper:alpine-linux#noarch'
-    'n4jm4/rockhopper:arch-linux#any'
-    'n4jm4/rockhopper:crux#'
-    'n4jm4/rockhopper:debian#all'
-    'n4jm4/rockhopper:fedora#noarch'
-    'n4jm4/rockhopper:slackware-linux#noarch'
-    'n4jm4/rockhopper:ubuntu#all'
-    'n4jm4/rockhopper:void-linux-musl#x86_64'
-)
-
-BUILD='/tmp/rockhopper'
-BIN="$BUILD/rockhopper-data/usr/bin"
-
-clean() {
-    rm -rf "$BUILD"
+usage() {
+    printf "Usage: %s <OPTIONS> <source>\n" "$0"
+    printf "\n"
+    printf -- "-C <dir>\tChange directory (default: .)\n"
+    printf -- "-a <app>\tCustomize app name (required)\n"
+    printf -- "-h\t\tShow usage menu\n"
 }
 
-clean
+DIR='.'
+APP=''
 
-mkdir -p "$BIN"
-cp bin/rockhopper "$BIN"
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '-C')
+        shift
 
-cd "$BUILD"
+        if [ "$#" -eq 0 ]; then
+            usage
+        fi
 
-for PLATFORM in "${PLATFORMS[@]}"; do
-    IMAGE="${PLATFORM%%#*}"
-    ARCH="${PLATFORM#*#}"
+        DIR="$1"
+        shift
+        ;;
+    '-a')
+        shift
 
-    echo "building $PLATFORM"
-    env ROCKHOPPER_IMAGE="$IMAGE" ROCKHOPPER_ARCH="$ARCH" rockhopper
+        if [ "$#" -eq 0 ]; then
+            usage
+        fi
+
+        APP="$1"
+        shift
+        ;;
+    '-h')
+        usage
+        exit
+        ;;
+    *)
+        break
+        ;;
+    esac
 done
 
-echo "install media copied to \"$BUILD/.rockhopper\""
+if [ "$#" != '1' ]; then
+    usage
+    exit 1
+fi
+
+SOURCE="$1"
+
+if [ -z "$APP" ]; then
+    usage
+    exit 1
+fi
+
+SOURCE_ABS="$(readlink -f "$DIR/$SOURCE")"
+PORTS="$DIR/$APP-ports"
+mkdir -p "$PORTS"
+PORTS_ABS="$(readlink -f "$PORTS")"
+
+find "$SOURCE_ABS" -type d -depth 1 -print0 | while IFS= read -r -d '' D; do
+    D="${D#"$SOURCE_ABS"/}"
+    MODE='--mode=0755'
+
+    if [ "$(find "$SOURCE_ABS/$D" -type f -name '*.*')" != '' ]; then
+        MODE='--mode=0644'
+    fi
+
+    cd "$SOURCE_ABS/$D"
+    tar "$MODE" -czf "$PORTS_ABS/$APP-$D.tgz" -- *
+    cd "$SOURCE_ABS"
+done
+
+echo "tarballs copied to \"$PORTS\""
