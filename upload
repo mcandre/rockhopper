@@ -3,7 +3,7 @@ unset IFS
 set -eufo pipefail
 BUILD='/tmp/rockhopper'
 BUCKET='s3://rockhopper'
-VERSION='0.0.9'
+VERSION='0.0.10'
 DEST="$BUCKET/rockhopper-$VERSION/"
 
 # Accelerate connection timeouts

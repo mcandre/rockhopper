@@ -3,7 +3,7 @@ log_level = "quiet"
 
 [rocklet]
 name = "rockhopper"
-version = "0.0.9"
+version = "0.0.10"
 rev = "1"
 maintainer = "Andrew Pennebaker <n4jm4@pm.me>"
 summary = "metapackage generator"
@@ -16,34 +16,34 @@ url = "https://github.com/mcandre/rockhopper"
 image = "n4jm4/rockhopper:test-alpine-linux"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/x86_64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "aarch64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/aarch64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/x86_64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "aarch64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/aarch64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "amd64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/x86_64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "arm64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.9/aarch64-unknown-linux-musl"
+rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.10/aarch64-unknown-linux-musl"
