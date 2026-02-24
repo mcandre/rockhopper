@@ -56,8 +56,8 @@ Host Operating Systems:
 
 Host Architectures:
 
-* 64-bit ARM
-* 64-bit Intel
+* ARM
+* Intel
 
 Additional host environments available via alternative install methods.
 
@@ -93,17 +93,17 @@ For information on developing custom rockhopper images, see the [rocklets interf
 
 ## System Requirements
 
-Host operating systems:
+Host Operating Systems:
 
 * Linux
 * macOS
 * UNIX
 * Windows native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
-Host architectures:
+Host Architectures:
 
-* 64-bit ARM
-* 64-bit Intel
+* ARM
+* Intel
 
 For more platforms and installation methods, see our [install guide](INSTALL.md).
 
