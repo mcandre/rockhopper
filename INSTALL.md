@@ -16,6 +16,8 @@ Prerequisites:
 
 # INSTALL (CURL)
 
+curl based installs automatically download and extract precompiled binaries.
+
 ```sh
 curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/install-rockhopper | sh
 ```
@@ -86,6 +88,8 @@ Hosts:
 * Windows (ARM, Intel) native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 # INSTALL (COMPILE FROM SOURCE)
+
+rockhopper may be compiled from source.
 
 ```sh
 git clone https://github.com/mcandre/rockhopper.git
