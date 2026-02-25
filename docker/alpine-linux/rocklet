@@ -98,15 +98,6 @@ clean() {
 validate
 clean
 
-apk_license=''
-
-if [ -n "$rocklet_copyright" ]; then
-    apk_license="$rocklet_copyright"
-fi
-
-apk_license="$apk_license\\n$rocklet_license"
-export apk_license
-
 cd "$rocklet_data"
 
 apk_package=''
@@ -131,6 +122,17 @@ done
 export apk_package
 
 mkdir -p "$rocklet_apk_build/$rocklet_name"
+
+if [ -n "$rocklet_copyright" ]; then
+    COPYING="$rocklet_apk_build/$rocklet_name/COPYING"
+    rsubst "$rocklet_specs/COPYING.j2" >"$COPYING"
+
+    if [ "$rocklet_log_level" = 'debug' ]; then
+        echo "COPYING:"
+        cat "$COPYING"
+    fi
+fi
+
 APKBUILD="$rocklet_apk_build/$rocklet_name/APKBUILD"
 rsubst "$rocklet_specs/APKBUILD.j2" >"$APKBUILD"
 

@@ -23,12 +23,9 @@ Source0: {{ fedora_source0 }}
 %build
 
 %install
-mkdir -p "%{buildroot}/usr/share/licenses/{{ rocklet_name }}"
-cp "{{ fedora_license }}" "%{buildroot}/usr/share/licenses/{{ rocklet_name }}/LICENSE"
 {{ fedora_data }}
 
 %files
-/usr/share/licenses/{{ rocklet_name }}/LICENSE
 {{ fedora_files }}
 
 %changelog

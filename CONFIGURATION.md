@@ -148,7 +148,7 @@ description = "There was supposed to be an earth-shattering kaboom!"
 
 ### `copyright`
 
-Generally recommended.
+Optional.
 
 A Copyright identifier.
 
@@ -164,7 +164,7 @@ copyright = "Copyright (C) 1948 Marvin the Martian"
 
 Often required by package managers.
 
-A software license identifier. Format: [SPDX](https://spdx.org/licenses/).
+A concise software license identifier. Format: [SPDX](https://spdx.org/licenses/).
 
 Example:
 
@@ -173,6 +173,8 @@ Example:
 name = "raygun"
 license = "0BSD"
 ```
+
+Operating systems often have separate conventions to manage longer license documentation.
 
 ### `url`
 

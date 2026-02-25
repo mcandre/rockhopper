@@ -99,6 +99,17 @@ validate
 clean
 
 mkdir -p "$rocklet_apt_build/DEBIAN"
+
+if [ -n "$rocklet_copyright" ]; then
+    COPYRIGHT="$rocklet_apt_build/DEBIAN/copyright"
+    rsubst "$rocklet_specs/copyright.j2" >"$COPYRIGHT"
+
+    if [ "$rocklet_log_level" = 'debug' ]; then
+        echo "copyright:"
+        cat "$COPYRIGHT"
+    fi
+fi
+
 CONTROL="$rocklet_apt_build/DEBIAN/control"
 rsubst "$rocklet_specs/control.j2" >"$CONTROL"
 
@@ -106,15 +117,6 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     echo "control:"
     cat "$CONTROL"
 fi
-
-lic='Files: *'
-
-if [ -n "$rocklet_copyright" ]; then
-    lic="${lic}\nCopyright: $rocklet_copyright"
-fi
-
-lic="${lic}\nLicense: $rocklet_license"
-printf "$lic\n" >"$rocklet_apt_build/DEBIAN/copyright"
 
 cp -r "$rocklet_data/"* "$rocklet_apt_build"
 mkdir -p "$rocklet_artifact"

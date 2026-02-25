@@ -8,5 +8,6 @@ RUN apt update && \
     cargo install rsubst@0.1.4 && \
     mkdir /root/rockhopper-specs
 COPY control.j2 /root/rockhopper-specs
+COPY copyright.j2 /root/rockhopper-specs
 COPY rocklet /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/rocklet"]

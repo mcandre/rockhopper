@@ -19,15 +19,15 @@ options="!check"
 
 prepare() {
     default_prepare
+
+    if [ -f "{{ rocklet_apk_build }}/{{ rocklet_name }}/COPYING" ]; then
+        mkdir -p "$builddir/usr/share/licenses/$pkgname"
+        cp "{{ rocklet_apk_build }}/{{ rocklet_name }}/COPYING" "$builddir/usr/share/licenses/$pkgname"
+    fi
+
     cp -r "{{ rocklet_data }}/"* "$builddir"
-    mkdir -p "$builddir/usr/share/licenses/{{ rocklet_name }}"
-    printf "{{ apk_license }}\n" >"$builddir/usr/share/licenses/{{ rocklet_name }}/LICENSE"
 }
 
 package() {
-    mkdir -p "$pkgdir/usr/share/licenses/{{ rocklet_name }}"
-    cp \
-        "$srcdir/usr/share/licenses/{{ rocklet_name }}/LICENSE" \
-        "$pkgdir/usr/share/licenses/{{ rocklet_name }}"
     {{ apk_package }}
 }
