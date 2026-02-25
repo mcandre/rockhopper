@@ -24,17 +24,17 @@ url = "https://mars.test/"
 [[pkg]]
 image = "n4jm4/rockhopper:alpine-linux"
 # rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "noarch"
+rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
 
 [[pkg]]
 image = "n4jm4/rockhopper:fedora"
 # rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "noarch"
+rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
 
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 # rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "all"
+rocklet.os_arch = "all"
 # rocklet.dependencies = "bash"

@@ -273,7 +273,7 @@ docker_args = ["--privilieged"]
 
 An array of package specifications.
 
-Required, nonempty.
+Default: (empty)
 
 Example:
 
@@ -341,9 +341,11 @@ Pro tip: Crosscompilation toolchains enable more flexibility for `oci_arch`.
 
 #### `os_arch`
 
-Commonly required by most distributions.
+Nonblank.
 
-OS target architecture identifier. Syntax OS relative.
+Default: `<image-architecture>`
+
+OS target architecture identifier. Syntax relative to package manager.
 
 Example:
 

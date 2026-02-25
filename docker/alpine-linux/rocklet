@@ -15,7 +15,7 @@ rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/alpine-linux"}"
 rocklet_apk_build="${rocklet_apk_build:-/tmp/alpine-linux}"
-rocklet_os_arch="${rocklet_os_arch:-noarch}"
+rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do

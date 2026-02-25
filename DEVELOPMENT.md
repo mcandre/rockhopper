@@ -50,7 +50,13 @@ make docker-test
 make push
 ```
 
-# PORT
+# COMPILE BINARIES
+
+```sh
+make crit
+```
+
+# ARCHIVE BINARIES
 
 ```sh
 make port

@@ -132,7 +132,7 @@ lint: \
 package:
 	rockhopper
 
-port: crit
+port:
 	./port -C .crit/bin -a rockhopper $(BANNER)
 
 publish:

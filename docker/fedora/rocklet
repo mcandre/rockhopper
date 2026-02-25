@@ -15,7 +15,7 @@ rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/fedora"}"
 rocklet_rpm_build="${rocklet_rpm_build:-/root/rpmbuild}"
-rocklet_os_arch="${rocklet_os_arch:-noarch}"
+rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
