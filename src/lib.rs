@@ -100,8 +100,8 @@ pub struct Rockhopper {
     /// docker_args supplies additional CLI arguments to `docker run`... commands (optional).
     pub docker_args: Option<Vec<String>>,
 
-    /// pkg collects the packages to be built (required, nonempty).
-    pub pkg: Vec<Pkg>,
+    /// pkg collects the packages to be built.
+    pub pkg: Option<Vec<Pkg>>,
 
     /// rocklet_args supplies additional CLI arguments to rocklets (optional).
     #[serde(skip)]
@@ -204,7 +204,13 @@ impl Rockhopper {
 
     /// build generates packages.
     pub fn build(&self) -> Result<(), RockhopperError> {
-        for p in self.pkg.clone() {
+        let pkg = self.pkg.clone().unwrap_or_default();
+
+        if pkg.is_empty() {
+            eprintln!("warning: missing/empty pkg array");
+        }
+
+        for p in pkg {
             self.build_package(&p)?;
         }
 
