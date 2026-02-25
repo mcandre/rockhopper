@@ -55,11 +55,13 @@ rockhopper organizes package generators by distro.
 
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
 
-`<rockhopper version>-<distro>`.
+`<rockhopper version>-<distro>`
+
+Multiplatform images available. Supported platforms may vary by distro.
 
 Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
 
-Stock images limited to 64-bit ARM/Intel buildx platforms.
+Note: Our stock images emphasize build binary based packages.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
