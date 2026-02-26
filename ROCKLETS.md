@@ -46,7 +46,7 @@ rocklets read template files from a `$rocklet_specs` directory, default `$HOME/r
 
 ### Warning
 
-rsubst silently treats missing/unset/unexported environment variables as blank strings in Jinja templates.
+Jinja2 implementations normally default to silently treating any missing/unset/unexported environment variables as blank strings. This is hazardous. Enable strict mode, such as with a `--strict` CLI flag.
 
 ## Configuration
 

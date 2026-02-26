@@ -1,17 +1,17 @@
-Name: {{ rocklet_name }}
-Version: {{ rocklet_version }}
-Release: {{ rocklet_rev }}
-Summary:  {{ rocklet_summary }}
-{% if rocklet_url is defined %}URL: {{ rocklet_url }}{% endif %}
-BuildArch: {{ rocklet_os_arch }}
-License: {{ rocklet_license }}
-{% if rocklet_dependencies is defined %}Requires: {{ rocklet_dependencies }}{% endif %}
-Source0: {{ fedora_source0 }}
+Name: {{ ENV.rocklet_name }}
+Version: {{ ENV.rocklet_version }}
+Release: {{ ENV.rocklet_rev }}
+Summary:  {{ ENV.rocklet_summary }}
+{% if ENV.rocklet_url != '' %}URL: {{ ENV.rocklet_url }}{% endif %}
+BuildArch: {{ ENV.rocklet_os_arch }}
+License: {{ ENV.rocklet_license }}
+{% if ENV.rocklet_dependencies != '' %}Requires: {{ ENV.rocklet_dependencies }}{% endif %}
+Source0: {{ ENV.fedora_source0 }}
 
 %define debug_package %{nil}
 
 %description
-{{ rocklet_description }}
+{{ ENV.rocklet_description }}
 
 %prep
 %setup -q
@@ -19,10 +19,10 @@ Source0: {{ fedora_source0 }}
 %build
 
 %install
-{{ fedora_data }}
+{{ ENV.fedora_data }}
 
 %files
-{{ fedora_files }}
+{{ ENV.fedora_files }}
 
 %changelog
 %autochangelog

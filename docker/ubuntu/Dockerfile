@@ -5,7 +5,7 @@ RUN apt update && \
         build-essential \
         curl && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path && \
-    cargo install rsubst@0.1.4 && \
+    cargo install minijinja-cli@2.16.0 && \
     mkdir /root/rockhopper-specs
 COPY control.j2 /root/rockhopper-specs
 COPY copyright.j2 /root/rockhopper-specs

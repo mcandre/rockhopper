@@ -7,7 +7,7 @@ RUN apk add -U --no-cache \
         bash \
         cargo \
         sudo && \
-    cargo install rsubst@0.1.4 && \
+    cargo install minijinja-cli@2.16.0 && \
     abuild-keygen -n -a -i && \
     mkdir /root/rockhopper-specs
 COPY APKBUILD.j2 /root/rockhopper-specs

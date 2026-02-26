@@ -15,6 +15,7 @@ rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/fedora"}"
 rocklet_rpm_build="${rocklet_rpm_build:-/root/rpmbuild}"
 rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
+rocklet_dependencies="${rocklet_dependencies:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
@@ -104,7 +105,7 @@ mkdir -p "$rocklet_rpm_build/$BANNER/data"
 if [ -n "$rocklet_copyright" ]; then
     mkdir -p "$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name"
     COPYING="$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name/COPYING"
-    rsubst "$rocklet_specs/COPYING.j2" >"$COPYING"
+    minijinja-cli --strict --env "$rocklet_specs/COPYING.j2" >"$COPYING"
 
     if [ "$rocklet_log_level" = 'debug' ]; then
         echo "COPYING:"
@@ -169,7 +170,7 @@ cd "$rocklet_rpm_build"
 
 mkdir -p "$rocklet_rpm_build/SPECS"
 SPEC="$rocklet_rpm_build/SPECS/$rocklet_name.spec"
-rsubst "$rocklet_specs/.spec.j2" >"$SPEC"
+minijinja-cli --strict --env "$rocklet_specs/.spec.j2" >"$SPEC"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo "SPEC:"

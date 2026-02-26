@@ -15,6 +15,8 @@ rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/ubuntu"}"
 rocklet_apt_build="${rocklet_apt_build:-/tmp/ubuntu}"
 rocklet_os_arch="${rocklet_os_arch:-"$(dpkg-architecture -qDEB_HOST_ARCH)"}"
+rocklet_priority="${rocklet_priority:-optional}"
+rocklet_dependencies="${rocklet_dependencies:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
@@ -100,7 +102,7 @@ mkdir -p "$rocklet_apt_build/DEBIAN"
 
 if [ -n "$rocklet_copyright" ]; then
     COPYRIGHT="$rocklet_apt_build/DEBIAN/copyright"
-    rsubst "$rocklet_specs/copyright.j2" >"$COPYRIGHT"
+    minijinja-cli --strict --env "$rocklet_specs/copyright.j2" >"$COPYRIGHT"
 
     if [ "$rocklet_log_level" = 'debug' ]; then
         echo "copyright:"
@@ -109,7 +111,7 @@ if [ -n "$rocklet_copyright" ]; then
 fi
 
 CONTROL="$rocklet_apt_build/DEBIAN/control"
-rsubst "$rocklet_specs/control.j2" >"$CONTROL"
+minijinja-cli --strict --env "$rocklet_specs/control.j2" >"$CONTROL"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo "control:"
