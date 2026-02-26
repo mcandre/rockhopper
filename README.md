@@ -59,19 +59,9 @@ Host Architectures:
 * ARM
 * Intel
 
-Additional host environments available via alternative install methods.
+For more host platforms and installation methods, see our [install guide](INSTALL.md).
 
-# INSTALL (DOCKER)
-
-rockhopper images may be run individually.
-
-```sh
-docker pull -a n4jm4/rockhopper
-```
-
-rockhopper images use environment variables (`rocklet_`... prefix) for configuration.
-
-## Stock Images
+# STOCK IMAGES
 
 rockhopper organizes package generators by distro.
 
@@ -92,22 +82,6 @@ Pro tip: A happy consequence of building Ubuntu packages, is that Windows users 
 Note: Our stock images emphasize build binary based packages.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
-
-## System Requirements
-
-Host Operating Systems:
-
-* Linux
-* macOS
-* UNIX
-* Windows native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
-
-Host Architectures:
-
-* ARM
-* Intel
-
-For more platforms and installation methods, see our [install guide](INSTALL.md).
 
 # RUNTIME REQUIREMENTS
 
