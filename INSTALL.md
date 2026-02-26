@@ -10,7 +10,7 @@ rockhopper is packaged as a Rust crate.
 cargo install rockhopper
 ```
 
-Prerequisites:
+## Prerequisites
 
 * [cargo](https://doc.rust-lang.org/cargo/)
 
@@ -34,9 +34,11 @@ curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uni
 
 ## System Requirements
 
-Bitness: 64
+### Bitness
 
-Hosts:
+64
+
+### Hosts
 
 * FreeBSD (Intel)
 * Illumos (Intel)
@@ -45,7 +47,7 @@ Hosts:
 * NetBSD (Intel)
 * Windows (ARM, Intel) via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
-Prerequisites:
+### Prerequisites
 
 * [bash](https://www.gnu.org/software/bash/) 4+
 * [curl](https://curl.se/)
@@ -76,9 +78,11 @@ Remove the application executables from the selected directory.
 
 ## System Requirements
 
-Bitness: 64
+### Bitness
 
-Hosts:
+64
+
+### Hosts
 
 * FreeBSD (Intel)
 * Illumos (Intel)
@@ -97,10 +101,9 @@ cd rockhopper
 cargo install --force --path .
 ```
 
-## System Requirements
-
-Prerequisites:
+## Prerequisites
 
 * [cargo](https://doc.rust-lang.org/cargo/)
+* [git](https://git-scm.com/)
 
 For more details on developing rockhopper itself, see our [development guide](DEVELOPMENT.md).
