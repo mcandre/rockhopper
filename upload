@@ -3,7 +3,7 @@ unset IFS
 set -eufo pipefail
 
 BUCKET='s3://rockhopper'
-VERSION='0.0.13'
+VERSION='0.0.14'
 DEST="$BUCKET/rockhopper-$VERSION/"
 ARTIFACTS='.rockhopper/artifacts'
 

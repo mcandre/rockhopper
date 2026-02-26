@@ -41,7 +41,7 @@
 	clean-packages \
 	clean-ports
 
-VERSION=0.0.13
+VERSION=0.0.14
 BANNER=rockhopper-$(VERSION)
 
 all: docker-build
