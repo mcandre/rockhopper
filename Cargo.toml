@@ -20,3 +20,6 @@ name = "rockhopper"
 [[bin]]
 name = "rockhopper"
 path = "src/rockhopper.rs"
+
+[profile.release]
+strip = "symbols"

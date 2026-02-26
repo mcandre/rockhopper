@@ -10,6 +10,9 @@ RUN apt update && \
     cargo install rsubst@0.2.0
 
 FROM library/ubuntu:24.04
+RUN apt update && \
+    apt install --no-install-recommends -y build-essential && \
+    rm -rf /var/lib/apt/lists/*
 COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
 COPY templates /root/templates
 COPY rocklet /usr/local/bin
