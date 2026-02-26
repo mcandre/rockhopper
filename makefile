@@ -44,7 +44,7 @@
 VERSION=0.0.14
 BANNER=rockhopper-$(VERSION)
 
-all: docker-build
+all: install
 
 build: lint
 	cargo build --release
