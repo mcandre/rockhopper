@@ -37,9 +37,9 @@ See `rockhopper -h` for more options.
 
 | Host                   | Package |
 | ---------------------- | ------- |
-| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/alpine-linux/rockhopper-0.0.11-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/alpine-linux/rockhopper-0.0.11-r1.x86_64.apk) |
-| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/fedora/rockhopper-0.0.11-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/fedora/rockhopper-0.0.11-1.x86_64.rpm) |
-| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/ubuntu/rockhopper_0.0.11-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/ubuntu/rockhopper_0.0.11-1_amd64.deb) |
+| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/alpine-linux/rockhopper-0.0.12-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/alpine-linux/rockhopper-0.0.12-r1.x86_64.apk) |
+| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/fedora/rockhopper-0.0.12-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/fedora/rockhopper-0.0.12-1.x86_64.rpm) |
+| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/ubuntu/rockhopper_0.0.12-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.12/ubuntu/rockhopper_0.0.12-1_amd64.deb) |
 
 # System Requirements
 
