@@ -1,6 +1,6 @@
 # rockhopper: metapackage generator
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![GitHub Downloads](https://img.shields.io/github/downloads/mcandre/rockhopper/total?logo=github)](https://github.com/mcandre/rockhopper/releases) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
+[![CloudFlare R2 install media downloads](https://img.shields.io/badge/Cloudflare-F28220?style=for-the-badge&logo=Cloudflare&logoColor=white&style=flat)](#download) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![GitHub Downloads](https://img.shields.io/github/downloads/mcandre/rockhopper/total?logo=github)](https://github.com/mcandre/rockhopper/releases) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/-any?logo=gumroad&label=Donate&color=grey)](https://mcandre.gumroad.com/)
 
 ```text
   o<  gak! gak!
@@ -34,6 +34,34 @@ $ tree .rockhopper/artifacts
 See `rockhopper -h` for more options.
 
 # DOWNLOAD
+
+| Host                   | Package |
+| ---------------------- | ------- |
+| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/alpine-linux/rockhopper-0.0.11-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/alpine-linux/rockhopper-0.0.11-r1.x86_64.apk) |
+| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/fedora/rockhopper-0.0.11-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/fedora/rockhopper-0.0.11-1.x86_64.rpm) |
+| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/ubuntu/rockhopper_0.0.11-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.11/ubuntu/rockhopper_0.0.11-1_amd64.deb) |
+
+# System Requirements
+
+Bitness: 64
+
+As a Docker utility, rockhopper relies on 64-bit hosts.
+
+Host Operating Systems:
+
+* Alpine Linux
+* Fedora
+* Ubuntu
+* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+
+Host Architectures:
+
+* ARM
+* Intel
+
+Additional host environments available via alternative install methods.
+
+# INSTALL (DOCKER)
 
 rockhopper images may be run individually.
 
