@@ -42,7 +42,7 @@ Create directories like idempotently (e.g. `mkdir -p "$rocklet_artifact"`).
 
 rocklets may use [Jinja](https://jinja.palletsprojects.com/en/stable/) format template files, in order to wire together user settings with the configuration files that control package builds.
 
-rocklets read template files from a `$rocklet_specs` directory, default `$HOME/rockhopper-specs`.
+rocklets read template files from a `$rocklet_templates` directory, default `$HOME/templates`.
 
 ### Warning
 

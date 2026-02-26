@@ -1,8 +1,0 @@
-Package: {{ ENV.rocklet_name }}
-Version: {{ ENV.rocklet_version }}{% if ENV.rocklet_rev != '' %}-{{ ENV.rocklet_rev }}{% endif %}
-Maintainer: {{ ENV.rocklet_maintainer }}
-Architecture: {{ ENV.rocklet_os_arch }}
-Priority: {{ ENV.rocklet_priority }}
-Description: {{ ENV.rocklet_description }}
-Depends: {{ ENV.rocklet_dependencies}}
-{% if ENV.rocklet_url != '' %}Homepage: {{ ENV.rocklet_url }}{% endif %}

@@ -1,0 +1,28 @@
+Name: {{ rocklet_name }}
+Version: {{ rocklet_version }}
+Release: {{ rocklet_rev }}
+Summary:  {{ rocklet_summary }}
+{% if rocklet_url != '' %}URL: {{ rocklet_url }}{% endif %}
+BuildArch: {{ rocklet_os_arch }}
+License: {{ rocklet_license }}
+{% if rocklet_dependencies != '' %}Requires: {{ rocklet_dependencies }}{% endif %}
+Source0: {{ fedora_source0 }}
+
+%define debug_package %{nil}
+
+%description
+{{ rocklet_description }}
+
+%prep
+%setup -q
+
+%build
+
+%install
+{{ fedora_data }}
+
+%files
+{{ fedora_files }}
+
+%changelog
+%autochangelog

@@ -1,12 +1,12 @@
+FROM library/fedora:43 AS build
+RUN dnf install -y cargo && \
+    cargo install rsubst@0.2.0
+
 FROM library/fedora:43
-ENV PATH=$PATH:/root/.cargo/bin
 RUN dnf install -y \
-        cargo \
         rpmdevtools \
-        rpmlint && \
-    cargo install minijinja-cli@2.16.0 && \
-    mkdir /root/rockhopper-specs
-COPY .spec.j2 /root/rockhopper-specs
-COPY COPYING.j2 /root/rockhopper-specs
+        rpmlint
+COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
+COPY templates /root/templates
 COPY rocklet /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/rocklet"]

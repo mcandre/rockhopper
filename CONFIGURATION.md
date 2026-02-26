@@ -214,11 +214,11 @@ Example:
 mount_path = "/mnt/source-media"
 ```
 
-### `specs`
+### `templates`
 
 Template specification directory.
 
-Default: `<container-home>/rockhopper-specs`
+Default: `<container-home>/templates`
 
 Relative to mount path.
 
@@ -227,7 +227,7 @@ Example:
 ```toml
 [rocklet]
 mount_path = "/mnt/rockhopper"
-specs = "/mnt/rockhopper/templates"
+templates = "/mnt/rockhopper/templates"
 ```
 
 ### `cache`

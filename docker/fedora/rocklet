@@ -10,7 +10,7 @@ rocklet_version="${rocklet_version:-}"
 rocklet_rev="${rocklet_rev:-}"
 rocklet_copyright="${rocklet_copyright:-}"
 rocklet_license="${rocklet_license:-}"
-rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
+rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/fedora"}"
 rocklet_rpm_build="${rocklet_rpm_build:-/root/rpmbuild}"
@@ -77,7 +77,7 @@ validate() {
         rocklet_os_arch
         rocklet_rev
         rocklet_rpm_build
-        rocklet_specs
+        rocklet_templates
         rocklet_version
     )
 
@@ -105,7 +105,7 @@ mkdir -p "$rocklet_rpm_build/$BANNER/data"
 if [ -n "$rocklet_copyright" ]; then
     mkdir -p "$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name"
     COPYING="$rocklet_rpm_build/$BANNER/data/usr/share/licenses/$rocklet_name/COPYING"
-    minijinja-cli --strict --env "$rocklet_specs/COPYING.j2" >"$COPYING"
+    rsubst --strict "$rocklet_templates/COPYING.j2" >"$COPYING"
 
     if [ "$rocklet_log_level" = 'debug' ]; then
         echo "COPYING:"
@@ -170,7 +170,7 @@ cd "$rocklet_rpm_build"
 
 mkdir -p "$rocklet_rpm_build/SPECS"
 SPEC="$rocklet_rpm_build/SPECS/$rocklet_name.spec"
-minijinja-cli --strict --env "$rocklet_specs/.spec.j2" >"$SPEC"
+rsubst --strict "$rocklet_templates/.spec.j2" >"$SPEC"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo "SPEC:"

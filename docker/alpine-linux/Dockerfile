@@ -1,16 +1,16 @@
+FROM library/alpine:3.23 AS build
+RUN apk add -U cargo && \
+    cargo install rsubst@0.2.0
+
 FROM library/alpine:3.23
-# Includes a test keypair for signing packages
-ENV PATH=$PATH:/root/.cargo/bin
+# Include a test keypair for signing packages
 RUN apk add -U --no-cache \
         alpine-sdk \
         atools \
         bash \
-        cargo \
         sudo && \
-    cargo install minijinja-cli@2.16.0 && \
-    abuild-keygen -n -a -i && \
-    mkdir /root/rockhopper-specs
-COPY APKBUILD.j2 /root/rockhopper-specs
-COPY COPYING.j2 /root/rockhopper-specs
+    abuild-keygen -n -a -i
+COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
+COPY templates /root/templates
 COPY rocklet /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/rocklet"]
