@@ -1,5 +1,6 @@
 //! rockhopper provides predicates for generating software packages.
 
+extern crate fs_extra;
 extern crate toml;
 
 use serde::{Deserialize, Serialize};
@@ -7,7 +8,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fmt;
 use std::fs;
-use std::io::{self, Write};
 use std::path;
 use std::process;
 
@@ -15,8 +15,11 @@ use std::process;
 /// relative to the current working directory.
 pub static CONFIGURATION_FILENAME: &str = "rockhopper.toml";
 
-/// ARTIFACT_DIR denotes the directory root for install media artifacts.
-pub static ARTIFACT_DIR: &str = ".rockhopper";
+/// DEFAULT_CACHE denotes the default directory root for rockhopper managed data.
+pub static DEFAULT_CACHE: &str = ".rockhopper";
+
+/// DATA denotes the directory root for source media files, relative to rocklet cache.
+pub static DATA: &str = "source-media";
 
 /// DEFAULT_DOCKER_MOUNT_PATH denotes the default location of the Docker mount directory,
 /// where the current working directory gets loaded into containers.
@@ -73,6 +76,9 @@ impl fmt::Display for LogLevel {
     }
 }
 
+/// Dest maps destination file paths to source media file paths.
+pub type Dest = BTreeMap<String, String>;
+
 /// Pkg generates install media.
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -82,6 +88,9 @@ pub struct Pkg {
 
     /// rocklet overrides global rocklet entries.
     pub rocklet: Option<BTreeMap<String, String>>,
+
+    /// dest overrides global dest entries.
+    pub dest: Option<Dest>,
 }
 
 /// Rockhopper builds software packages.
@@ -93,6 +102,9 @@ pub struct Rockhopper {
 
     /// rocklet supplies additional build configuration to rocklets (requirements vary by distro).
     pub rocklet: Option<BTreeMap<String, String>>,
+
+    /// dest maps destination file paths to source file paths.
+    pub dest: Option<Dest>,
 
     /// docker_env supplies custom environment variables to rocklets.
     pub docker_env: Option<BTreeMap<String, String>>,
@@ -121,6 +133,65 @@ impl Rockhopper {
     /// build_package generates install media.
     pub fn build_package(&self, pkg: &Pkg) -> Result<(), RockhopperError> {
         let log_level: LogLevel = self.log_level.clone().unwrap_or_default();
+        let rocklet = self.rocklet.clone().unwrap_or_default();
+        let default_cache = DEFAULT_CACHE.to_string();
+        let cache = path::Path::new(rocklet.get("cache").unwrap_or(&default_cache));
+        let dest: BTreeMap<String, String> = self
+            .dest
+            .clone()
+            .unwrap_or_default()
+            .into_iter()
+            .chain(pkg.dest.clone().unwrap_or_default())
+            .collect();
+
+        if !dest.is_empty() {
+            let source_media = cache.join(DATA);
+
+            if source_media.exists() {
+                if log_level == LogLevel::Debug {
+                    eprintln!("debug: cleaning {:?}", source_media);
+                }
+
+                fs::remove_dir_all(&source_media)
+                    .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+            }
+
+            fs::create_dir_all(&source_media)
+                .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+
+            for (k, v) in dest {
+                let source_media_k = source_media.join(k);
+                let metadata =
+                    fs::metadata(&v).map_err(|e| RockhopperError::IOError(e.to_string()))?;
+
+                if metadata.is_dir() {
+                    let mut options = fs_extra::dir::CopyOptions::new();
+                    options.content_only = true;
+                    fs::create_dir_all(&source_media_k)
+                        .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                    fs_extra::dir::copy(v, source_media_k, &options)
+                        .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                } else if metadata.is_file() {
+                    let source_media_p =
+                        source_media_k
+                            .parent()
+                            .ok_or(RockhopperError::IOError(format!(
+                                "unable to retrieve parent directory for path: {:?}",
+                                &source_media_k
+                            )))?;
+
+                    fs::create_dir_all(source_media_p)
+                        .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                    fs::copy(v, source_media_k)
+                        .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                } else {
+                    return Err(RockhopperError::IOError(format!(
+                        "unsupported file system file type for path: {v}"
+                    )));
+                }
+            }
+        }
+
         let mut cmd = process::Command::new("docker");
         let mut args: Vec<String> = vec!["run".to_string()];
         let oci_arch = match &pkg.rocklet {
@@ -136,7 +207,6 @@ impl Rockhopper {
             args.extend(docker_args);
         }
 
-        let rocklet = self.rocklet.clone().unwrap_or_default();
         let default_docker_mount_path = &DEFAULT_DOCKER_MOUNT_PATH.to_string();
         let mount_path = rocklet
             .get("mount_path")
@@ -165,7 +235,7 @@ impl Rockhopper {
         args.push(image.to_string());
         args.extend(self.rocklet_args.clone());
         cmd.args(args);
-        cmd.stderr(process::Stdio::piped());
+        cmd.stderr(process::Stdio::inherit());
         cmd.stdout(process::Stdio::inherit());
 
         let mut target = String::new();
@@ -185,15 +255,11 @@ impl Rockhopper {
             eprintln!("debug: running command: {:?}", cmd);
         }
 
-        let output = cmd
-            .output()
+        let status = cmd
+            .status()
             .map_err(|e| RockhopperError::IOError(e.to_string()))?;
 
-        if !output.status.success() {
-            io::stderr()
-                .write_all(&output.stderr)
-                .map_err(|e| RockhopperError::IOError(e.to_string()))?;
-
+        if !status.success() {
             return Err(RockhopperError::IOError(
                 "unable to build package".to_string(),
             ));
@@ -204,26 +270,36 @@ impl Rockhopper {
 
     /// build generates packages.
     pub fn build(&self) -> Result<(), RockhopperError> {
+        let rocklet = self.rocklet.clone().unwrap_or_default();
+        let default_cache = DEFAULT_CACHE.to_string();
+        let cache = path::Path::new(rocklet.get("cache").unwrap_or(&default_cache));
         let pkg = self.pkg.clone().unwrap_or_default();
 
         if pkg.is_empty() {
             eprintln!("warning: missing/empty pkg array");
-        }
+        } else {
+            for p in pkg {
+                self.build_package(&p)?;
+            }
 
-        for p in pkg {
-            self.build_package(&p)?;
+            let artifacts = cache.join("artifacts");
+            println!("packages written to {:?}", artifacts);
         }
 
         Ok(())
     }
-}
 
-/// clean removes artifacts.
-pub fn clean() -> Result<(), RockhopperError> {
-    if path::Path::new(ARTIFACT_DIR).exists() {
-        return fs::remove_dir_all(ARTIFACT_DIR)
-            .map_err(|e| RockhopperError::IOError(e.to_string()));
+    /// clean removes artifacts.
+    pub fn clean(&self) -> Result<(), RockhopperError> {
+        let rocklet = self.rocklet.clone().unwrap_or_default();
+        let default_cache_dir = DEFAULT_CACHE.to_string();
+        let cache_dir = rocklet.get("cache").unwrap_or(&default_cache_dir);
+
+        if path::Path::new(cache_dir).exists() {
+            return fs::remove_dir_all(cache_dir)
+                .map_err(|e| RockhopperError::IOError(e.to_string()));
+        }
+
+        Ok(())
     }
-
-    Ok(())
 }

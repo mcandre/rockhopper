@@ -1,6 +1,4 @@
-{% if rocklet_maintainer is defined %}
-# Maintainer: {{ rocklet_maintainer }}
-{% endif %}
+{% if rocklet_maintainer is defined %}# Maintainer: {{ rocklet_maintainer }}{% endif %}
 pkgname="{{ rocklet_name }}"
 pkgver="{{ rocklet_version }}"
 pkgrel="{{ rocklet_rev }}"
@@ -25,7 +23,7 @@ prepare() {
         cp "{{ rocklet_apk_build }}/{{ rocklet_name }}/COPYING" "$builddir/usr/share/licenses/$pkgname"
     fi
 
-    cp -r "{{ rocklet_data }}/"* "$builddir"
+    cp -r "{{ source_media }}/"* "$builddir"
 }
 
 package() {

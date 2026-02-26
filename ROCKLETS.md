@@ -24,7 +24,7 @@ Docker conveniently abstracts many components which otherwise would require host
 
 Rocklets mount the current working directory to `$rocklet_mount_path`, default `/mnt/rockhopper`.
 
-Rocklets read assets from `$rocklet_data`, default `/mnt/rockhopper/rockhopper-data`.
+Rocklets read assets from `$rocklet_cache/source-media`, default `/mnt/rockhopper/.rockhopper/source-media`.
 
 Rocklets validate package configuration, such as missing or blank variables.
 
@@ -43,6 +43,10 @@ Create directories like idempotently (e.g. `mkdir -p "$rocklet_artifact"`).
 rocklets may use [Jinja](https://jinja.palletsprojects.com/en/stable/) format template files, in order to wire together user settings with the configuration files that control package builds.
 
 rocklets read template files from a `$rocklet_specs` directory, default `$HOME/rockhopper-specs`.
+
+### Warning
+
+rsubst silently treats missing/unset/unexported environment variables as blank strings in Jinja templates.
 
 ## Configuration
 

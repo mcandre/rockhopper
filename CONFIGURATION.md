@@ -48,6 +48,18 @@ Example:
 log_level = "debug"
 ```
 
+## `docker_args`
+
+Default: (empty)
+
+Supply additional CLI arguments to `docker run`... commands.
+
+Example:
+
+```toml
+docker_args = ["--privilieged"]
+```
+
 ## `rocklet`
 
 Required fields vary by distribution.
@@ -129,7 +141,7 @@ Example:
 ```toml
 [rocklet]
 name = "raygun"
-summary = "Where's the kaboom?"
+summary = "Space modulator"
 ```
 
 ### `description`
@@ -143,12 +155,12 @@ Example:
 ```toml
 [rocklet]
 name = "raygun"
-description = "There was supposed to be an earth-shattering kaboom!"
+description = "Illudium Q-36 explosive space modulator"
 ```
 
 ### `copyright`
 
-Optional.
+Generally recommended.
 
 A Copyright identifier.
 
@@ -202,25 +214,13 @@ Example:
 mount_path = "/mnt/source-media"
 ```
 
-### `data`
-
-Default: `/mnt/rockhopper/rockhopper-data`
-
-Customize the directory location of source media, relative to mount path.
-
-Example:
-
-```toml
-[rocklet]
-mount_path = "/mnt/source-media"
-data = "/mnt/source-media/bin"
-```
-
 ### `specs`
+
+Template specification directory.
 
 Default: `<container-home>/rockhopper-specs`
 
-Customize the location of the template specification directory, relative to mount path.
+Relative to mount path.
 
 Example:
 
@@ -232,9 +232,11 @@ specs = "/mnt/rockhopper/templates"
 
 ### `cache`
 
+Artifact directory root.
+
 Default: `/mnt/rockhopper/.rockhopper`
 
-Customize the location of the artifact directory root, relative to mount path.
+Relative to mount path.
 
 Example:
 
@@ -244,31 +246,43 @@ mount_path = "/mnt/rockhopper"
 cache = "/mnt/rockhopper/install-media"
 ```
 
+## `dest`
+
+Optional.
+
+Map of destination file path to source media file path.
+
+Destination file path relative to `<rocklet-cache>/source-media`.
+
+Default: (empty)
+
+Example:
+
+```toml
+[dest]
+"usr/bin" = "bin"
+"etc/nginx/nginx.conf" = "nginx.conf"
+# ...
+```
+
+Recommended for binary based package builds.
+
 ## `docker_env`
 
 Optional.
 
-Default: (empty)
+Additional Docker environment variables.
 
-Supply additional Docker environment variables as key value pairs.
+Default: (empty)
 
 Example:
 
 ```toml
 [docker_env]
-VERBOSE = "1"
-```
-
-## `docker_args`
-
-Default: (empty)
-
-Supply additional CLI arguments to `docker run`... commands.
-
-Example:
-
-```toml
-docker_args = ["--privilieged"]
+APPLES = "1"
+BANANAS = "2"
+CARROTS = "3"
+# ...
 ```
 
 ## `pkg`
@@ -319,7 +333,7 @@ Example:
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "amd64"
-rocklet.dependencies = "curl"
+rocklet.dependencies = "bash"
 # ...
 ```
 
@@ -389,14 +403,33 @@ rocklet.dependencies = "bash"
 
 #### `artifact`
 
-Default: `/mnt/rockhopper/.rockhopper/<distro>`
+Package output directory root.
 
-Customize package output directory.
+Default: `/mnt/rockhopper/.rockhopper/artifacts/<distro>`
 
 Example:
 
 ```toml
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
-rocklet.artifact = "/mnt/rockhopper/.rockhopper/webuntu"
+rocklet.artifact = "/mnt/rockhopper/.rockhopper/artifacts/webuntu"
 ```
+
+### `dest`
+
+Optional.
+
+Override global rocklet dest file path map.
+
+Default: (empty)
+
+Example:
+
+```toml
+[[pkg]]
+image = "n4jm4/rockhopper:ubuntu"
+rocklet.oci_arch = "linux/amd64"
+dest."usr/bin/raygun" = "bin/x86_64-unknown-linux-musl/raygun"
+```
+
+Recommended for binary based package builds.

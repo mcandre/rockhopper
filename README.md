@@ -21,8 +21,8 @@ $ cd example/sh
 
 $ rockhopper
 
-$ tree .rockhopper
-.rockhopper
+$ tree .rockhopper/artifacts
+.rockhopper/artifacts
 ├── alpine-linux
 │   └── raygun-1.2.3-r81.noarch.apk
 ├── fedora

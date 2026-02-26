@@ -36,12 +36,6 @@ fn main() {
         die!(0; format!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION")));
     }
 
-    if optmatches.opt_present("c")
-        && let Err(e) = rockhopper::clean()
-    {
-        die!(1; format!("error: {e}"));
-    }
-
     let mut rh = match rockhopper::Rockhopper::load(rockhopper::CONFIGURATION_FILENAME) {
         Err(e) => die!(1; format!("error: {e}")),
         Ok(e) => e,
@@ -55,10 +49,16 @@ fn main() {
         rh.log_level = Some(rockhopper::LogLevel::Debug);
     }
 
-    rh.rocklet_args = optmatches.free;
+    rh.rocklet_args = optmatches.free.clone();
 
     if let Some(rockhopper::LogLevel::Debug) = rh.log_level {
         eprintln!("debug: configuration: {:?}", rh);
+    }
+
+    if optmatches.opt_present("c")
+        && let Err(e) = rh.clean()
+    {
+        die!(1; format!("error: {e}"));
     }
 
     if let Err(e) = rh.build() {

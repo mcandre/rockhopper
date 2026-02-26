@@ -142,7 +142,7 @@ rustfmt:
 	cargo fmt
 
 test:
-	sh -c "cd example/sh && rockhopper && tree .rockhopper"
+	sh -c "cd example/sh && rockhopper && tree .rockhopper/artifacts"
 
 uninstall:
 	cargo uninstall rockhopper

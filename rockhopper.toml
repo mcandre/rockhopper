@@ -12,32 +12,32 @@ copyright = "Copyright (C) 2026 Andrew Pennebaker"
 license = "0BSD"
 url = "https://github.com/mcandre/rockhopper"
 
-[[pkg]]
-image = "n4jm4/rockhopper:test-alpine-linux"
-rocklet.oci_arch = "linux/amd64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/x86_64-unknown-linux-musl"
+[dest]
+"usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.11/x86_64-unknown-linux-musl/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
-rocklet.oci_arch = "linux/arm64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl"
+rocklet.oci_arch = "linux/amd64"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/amd64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/x86_64-unknown-linux-musl"
-
-[[pkg]]
-image = "n4jm4/rockhopper:test-fedora"
-rocklet.oci_arch = "linux/arm64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/amd64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/x86_64-unknown-linux-musl"
+
+[[pkg]]
+image = "n4jm4/rockhopper:test-alpine-linux"
+rocklet.oci_arch = "linux/arm64"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl/rockhopper"
+
+[[pkg]]
+image = "n4jm4/rockhopper:test-fedora"
+rocklet.oci_arch = "linux/arm64"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/arm64"
-rocklet.data = "/mnt/rockhopper/.crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.11/aarch64-unknown-linux-musl/rockhopper"

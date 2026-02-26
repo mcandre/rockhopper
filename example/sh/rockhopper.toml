@@ -1,25 +1,24 @@
 # log_level = "debug"
 log_level = "quiet"
 
+# docker_args = []
+
 [rocklet]
 name = "raygun"
 version = "1.2.3"
 rev = "81"
 maintainer = "Marvin the Martian <marvin@mars.test>"
-summary = "Where's the kaboom?"
-description = "There was supposed to be an earth-shattering kaboom!"
+summary = "Space modulator"
+description = "Illudium Q-36 explosive space modulator"
 # copyright = "Copyright (C) 1948 Marvin the Martian"
 license = "0BSD"
 url = "https://mars.test/"
-# mount_path = "/mnt/rockhopper"
-# data = "/mnt/rockhopper/rockhopper-data"
-# specs = "/mnt/rockhopper/rockhopper-specs"
-# cache = "/mnt/rockhopper/.rockhopper"
+
+[dest]
+"usr/bin" = "bin"
 
 # [docker_env]
 # key = "value"
-
-# docker_args = []
 
 [[pkg]]
 image = "n4jm4/rockhopper:alpine-linux"

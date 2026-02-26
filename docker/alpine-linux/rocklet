@@ -10,10 +10,9 @@ rocklet_version="${rocklet_version:-}"
 rocklet_rev="${rocklet_rev:-}"
 rocklet_copyright="${rocklet_copyright:-}"
 rocklet_license="${rocklet_license:-}"
-rocklet_data="${rocklet_data:-"$rocklet_mount_path/rockhopper-data"}"
 rocklet_specs="${rocklet_specs:-"$HOME/rockhopper-specs"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
-rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/alpine-linux"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/alpine-linux"}"
 rocklet_apk_build="${rocklet_apk_build:-/tmp/alpine-linux}"
 rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
 
@@ -62,6 +61,7 @@ done
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     env | grep '^rocklet_' | sort
+    set -x
 fi
 
 validate() {
@@ -69,7 +69,6 @@ validate() {
         rocklet_apk_build
         rocklet_artifact
         rocklet_cache
-        rocklet_data
         rocklet_image
         rocklet_license
         rocklet_log_level
@@ -98,7 +97,9 @@ clean() {
 validate
 clean
 
-cd "$rocklet_data"
+export source_media="$rocklet_cache/source-media"
+mkdir -p "$source_media"
+cd "$source_media"
 
 apk_package=''
 
@@ -114,7 +115,7 @@ for f in $(find . -print); do
     elif [ -f "$f" ]; then
         apk_package="${apk_package}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
-        echo "error: ${rocklet_image}: unsupported file system file type for path: ${rocklet_data}/${f}"
+        echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}"
         exit 1
     fi
 done
@@ -148,7 +149,9 @@ cd "$rocklet_apk_build/$rocklet_name"
 
 abuild() {
     if [ "$rocklet_log_level" = 'quiet' ]; then
-        command abuild "$@" 2>/dev/null 1>&2
+        command abuild -q "$@" 2>/dev/null 1>&2
+    elif [ "$rocklet_log_level" = 'debug' ]; then
+        command abuild -v "$@"
     else
         command abuild "$@"
     fi
