@@ -131,7 +131,7 @@ Prior art, personal plugs, and tools for developing portable applications (inclu
 * [mcandre/crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
 * [mcandre/factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
 * [mcandre/tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
-* [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os), a Docker base image for Raspberry Pi
+* [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os), a Docker base image for Raspberry Pi OS
 * [xgo](https://github.com/techknowlogick/xgo), an automated cGo multiplatform compiler
 
 🐧
