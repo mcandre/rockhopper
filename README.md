@@ -119,16 +119,19 @@ A dream of impossible colors... Let's make vendor lock a thing of the past.
  ^^
 ```
 
-# SEE ALSO
+# RESOURCES
+
+Prior art, personal plugs, and tools for developing portable applications (including non-Rust projects)!
 
 * [alien](https://joeyh.name/code/alien/), an OS package converter
 * [cargo](https://doc.rust-lang.org/cargo/), a crossplatform package manager for Rust projects
-* [chandler](https://github.com/mcandre/chandler), an OS agnostic tar normalizer
-* [crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
-* [factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
 * [fpm](https://github.com/jordansissel/fpm), an older, host native package generator
 * [go mod](https://go.dev/doc/modules/gomod-ref), a crossplatform package manager for Go applications
-* [tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
+* [mcandre/chandler](https://github.com/mcandre/chandler), an OS agnostic tar normalizer
+* [mcandre/crit](https://github.com/mcandre/crit), an automated Rust multiplatform compiler
+* [mcandre/factorio](https://github.com/mcandre/factorio), an automated Go multiplatform compiler
+* [mcandre/tuggy](https://github.com/mcandre/tuggy), an automated Docker multiplatform image builder
+* [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os), a Docker base image for Raspberry Pi
 * [xgo](https://github.com/techknowlogick/xgo), an automated cGo multiplatform compiler
 
 🐧
