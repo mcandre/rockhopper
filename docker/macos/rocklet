@@ -1,0 +1,165 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_identifier="${rocklet_identifier:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/macos"}"
+rocklet_pkg_build="${rocklet_pkg_build:-/tmp/macos}"
+rocklet_os_arch="${rocklet_os_arch:-"$(mename)"}"
+rocklet_dependencies="${rocklet_dependencies:-}"
+rocklet_uid="${rocklet_uid:-0}"
+rocklet_gid="${rocklet_gid:-0}"
+
+# Forward rockhopper environment variables to Jinja
+for K in $(compgen -v | grep '^rocklet_'); do
+    export "$K"
+done
+
+usage() {
+    printf "Usage: %s [<OPTION>]\n" "$0"
+    printf "\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+banner() {
+    echo "$0 0.0.14"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--debug' | '-d')
+        shift
+        rocklet_log_level='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        rocklet_log_level='quiet'
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
+    set -x
+fi
+
+validate() {
+    required_env_vars=(
+        rocklet_artifact
+        rocklet_cache
+        rocklet_gid
+        rocklet_identifier
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_pkg_build
+        rocklet_templates
+        rocklet_uid
+        rocklet_version
+    )
+
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
+
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}"
+            exit 1
+        fi
+    done
+}
+
+clean() {
+    rm -rf "$rocklet_pkg_build"
+}
+
+validate
+clean
+
+source_media="$rocklet_cache/source-media"
+mkdir -p "$source_media"
+
+cd "$source_media"
+
+export metrics_files="$(find . | wc -l)"
+export metrics_kb="$(BLOCKSIZE=1k du -s | awk '{ print $1 }')"
+
+BASE_PKG="$rocklet_pkg_build/base.pkg"
+mkdir -p "$BASE_PKG"
+
+if [ -n "$rocklet_copyright" ] || [ -n "$rocklet_license" ]; then
+    RESOURCES="$rocklet_pkg_build/Resources"
+    mkdir -p "$RESOURCES"
+
+    LICENSE_HTML="$RESOURCES/license.html"
+    rsubst --strict "$rocklet_templates/license.html.j2" >"$LICENSE_HTML"
+
+    if [ "$rocklet_log_level" = 'debug' ]; then
+        echo "license.html:"
+        cat "$LICENSE_HTML"
+    fi
+fi
+
+PACKAGEINFO="$BASE_PKG/PackageInfo"
+rsubst --strict "$rocklet_templates/PackageInfo.j2" >"$PACKAGEINFO"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo "PackageInfo:"
+    cat "$PACKAGEINFO"
+fi
+
+BOM="$BASE_PKG/Bom"
+mkbom -u "$rocklet_uid" -g "$rocklet_gid" . "$BOM"
+
+PAYLOAD="$BASE_PKG/Payload"
+bsdtar --format=odc --uid "$rocklet_uid" --gid "$rocklet_gid" -czf "$PAYLOAD" .
+
+DISTRIBUTION="$rocklet_pkg_build/Distribution"
+rsubst --strict "$rocklet_templates/Distribution.j2" >"$DISTRIBUTION"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo "Distribution:"
+    cat "$DISTRIBUTION"
+fi
+
+cd "$rocklet_pkg_build"
+
+artifact="$rocklet_artifact/${rocklet_name}-${rocklet_os_arch}-${rocklet_version}"
+
+if [ -n "$rocklet_rev" ]; then
+    artifact="${artifact}-${rocklet_rev}"
+fi
+
+artifact="$artifact.pkg"
+
+mkdir -p "$rocklet_artifact"
+xar --compression none -cf "$artifact" .
+
+clean

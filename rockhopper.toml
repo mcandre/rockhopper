@@ -3,6 +3,7 @@ log_level = "quiet"
 
 [rocklet]
 name = "rockhopper"
+identifier = "com.github.mcandre.rockhopper"
 version = "0.0.14"
 rev = "1"
 maintainer = "Andrew Pennebaker <n4jm4@pm.me>"
@@ -12,20 +13,26 @@ copyright = "Copyright (C) 2026 Andrew Pennebaker"
 license = "0BSD"
 url = "https://github.com/mcandre/rockhopper"
 
-[dest]
-"usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/x86_64-unknown-linux-musl/rockhopper"
-
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
 rocklet.oci_arch = "linux/amd64"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/x86_64-unknown-linux-musl/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/amd64"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/x86_64-unknown-linux-musl/rockhopper"
+
+[[pkg]]
+image = "n4jm4/rockhopper:test-macos"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "x86_64"
+dest."usr/local/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/x86_64-apple-darwin/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/amd64"
+dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/x86_64-unknown-linux-musl/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
@@ -36,6 +43,12 @@ dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/aarch64-unknown-linux-m
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/arm64"
 dest."usr/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/aarch64-unknown-linux-musl/rockhopper"
+
+[[pkg]]
+image = "n4jm4/rockhopper:test-macos"
+rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "arm64"
+dest."usr/local/bin/rockhopper" = ".crit/bin/rockhopper-0.0.14/aarch64-apple-darwin/rockhopper"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"

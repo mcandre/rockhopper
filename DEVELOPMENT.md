@@ -13,6 +13,7 @@ For advanced operations, such as linting, managing multiplatform Docker images, 
 * POSIX compliant [findutils](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [Rust](https://www.rust-lang.org/en-US/)
+* GNU [tar](https://www.gnu.org/software/tar/) as `gtar`
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 * Provision additional dev tools with `make -f install.mk`
 

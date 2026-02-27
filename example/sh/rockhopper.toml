@@ -1,3 +1,4 @@
+# log_level = "info"
 # log_level = "debug"
 log_level = "quiet"
 
@@ -5,17 +6,15 @@ log_level = "quiet"
 
 [rocklet]
 name = "raygun"
+identifier = "test.mars.raygun"
 version = "1.2.3"
 rev = "81"
 maintainer = "Marvin the Martian <marvin@mars.test>"
 summary = "Space modulator"
 description = "Illudium Q-36 explosive space modulator"
-# copyright = "Copyright (C) 1948 Marvin the Martian"
+copyright = "Copyright (C) 1948 Marvin the Martian"
 license = "0BSD"
 url = "https://mars.test/"
-
-[dest]
-"usr/bin" = "bin"
 
 # [docker_env]
 # key = "value"
@@ -25,15 +24,36 @@ image = "n4jm4/rockhopper:alpine-linux"
 # rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
+dest."usr/bin" = "bin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:fedora"
 # rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
+dest."usr/bin" = "bin"
+
+[[pkg]]
+image = "n4jm4/rockhopper:macos"
+# rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "universal"
+# rocklet.dependencies = "bash"
+#
+# macOS user:staff
+#
+# rocklet.uid = "501"
+# rocklet.gid = "20"
+# dest."Applications/raygun.app" = "raygun.app"
+#
+# macOS root:wheel
+#
+# rocklet.uid = "0"
+# rocklet.gid = "0"
+dest."usr/local/bin" = "bin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 # rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "all"
 # rocklet.dependencies = "bash"
+dest."usr/bin" = "bin"

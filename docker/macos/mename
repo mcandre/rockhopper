@@ -1,0 +1,21 @@
+#!/bin/sh
+unset IFS
+set -euf
+
+#
+# Transform chipsets of various distros to macOS notation
+#
+
+UNAME="$(uname -m)"
+
+case "$UNAME" in
+    'aarch64')
+        echo 'arm64'
+        ;;
+    'amd64')
+        echo 'x86_64'
+        ;;
+    *)
+        echo "$UNAME"
+        ;;
+esac

@@ -16,14 +16,17 @@
 	docker-build \
 	docker-build-alpine-linux \
 	docker-build-fedora \
+	docker-build-macos \
 	docker-build-ubuntu \
 	docker-push \
 	docker-push-alpine-linux \
 	docker-push-fedora \
+	docker-push-macos \
 	docker-push-ubuntu \
 	docker-test \
 	docker-test-alpine-linux \
 	docker-test-fedora \
+	docker-test-macos \
 	docker-test-ubuntu \
 	install \
 	lint \
@@ -61,7 +64,7 @@ clean-example:
 	rm -rf example/sh/.rockhopper
 
 clean-packages:
-	rm -rf /tmp/rockhopper
+	rm -rf .rockhopper
 
 clean-ports:
 	crit -c
@@ -78,6 +81,7 @@ doc:
 docker-build: \
 	docker-build-alpine-linux \
 	docker-build-fedora \
+	docker-build-macos \
 	docker-build-ubuntu
 
 docker-build-alpine-linux:
@@ -86,12 +90,16 @@ docker-build-alpine-linux:
 docker-build-fedora:
 	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:fedora --load"
 
+docker-build-macos:
+	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:macos --load"
+
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu --load"
 
 docker-push: \
 	docker-push-alpine-linux \
 	docker-push-fedora \
+	docker-push-macos \
 	docker-push-ubuntu
 
 docker-push-alpine-linux:
@@ -100,12 +108,16 @@ docker-push-alpine-linux:
 docker-push-fedora:
 	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:fedora -a n4jm4/rockhopper:$(VERSION)-fedora-43,n4jm4/rockhopper:$(VERSION)-fedora,n4jm4/rockhopper:fedora-43 --push"
 
+docker-push-macos:
+	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:macos -a n4jm4/rockhopper:$(VERSION)-macos --push"
+
 docker-push-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu -a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble --push"
 
 docker-test: \
 	docker-test-alpine-linux \
 	docker-test-fedora \
+	docker-test-macos \
 	docker-test-ubuntu
 
 docker-test-alpine-linux:
@@ -115,6 +127,10 @@ docker-test-alpine-linux:
 docker-test-fedora:
 	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:test-fedora --load"
 	sh -c "cd docker/fedora && tuggy -t n4jm4/rockhopper:test-fedora --push"
+
+docker-test-macos:
+	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:test-macos --load"
+	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:test-macos --push"
 
 docker-test-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --load"

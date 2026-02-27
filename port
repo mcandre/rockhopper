@@ -71,7 +71,7 @@ find "$SOURCE_ABS" -type d -depth 1 -print0 | while IFS= read -r -d '' D; do
     fi
 
     cd "$SOURCE_ABS/$D"
-    tar "$MODE" -czf "$PORTS_ABS/$APP-$D.tgz" -- *
+    gtar "$MODE" -czf "$PORTS_ABS/$APP-$D.tgz" -- *
     cd "$SOURCE_ABS"
 done
 

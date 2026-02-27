@@ -27,6 +27,8 @@ $ tree .rockhopper/artifacts
 │   └── raygun-1.2.3-r81.noarch.apk
 ├── fedora
 │   └── raygun-1.2.3-81.noarch.rpm
+├── macos
+│   └── raygun-universal-1.2.3-81.pkg
 └── ubuntu
     └── raygun_1.2.3-81_all.deb
 ```
@@ -39,6 +41,7 @@ See `rockhopper -h` for more options.
 | ---------------------- | ------- |
 | Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/alpine-linux/rockhopper-0.0.14-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/alpine-linux/rockhopper-0.0.14-r1.x86_64.apk) |
 | Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/fedora/rockhopper-0.0.14-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/fedora/rockhopper-0.0.14-1.x86_64.rpm) |
+| macOS | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/macos/rockhopper-arm64-0.0.14-1.pkg) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/macos/rockhopper-x86_64-0.0.14-1.pkg) |
 | Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/ubuntu/rockhopper_0.0.14-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.14/ubuntu/rockhopper_0.0.14-1_amd64.deb) |
 
 # System Requirements
@@ -47,6 +50,7 @@ See `rockhopper -h` for more options.
 
 * Alpine Linux
 * Fedora
+* macOS
 * Ubuntu
 * Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
@@ -65,6 +69,7 @@ rockhopper organizes package generators by distro.
 | ---------------------- | ------------ |
 | Alpine Linux           | alpine-linux |
 | Fedora                 | fedora       |
+| macOS                  | macos        |
 | Ubuntu / Windows (WSL) | ubuntu       |
 
 [Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
