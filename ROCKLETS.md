@@ -2,11 +2,9 @@
 
 The ROCKLET interface provides a unified framework for developers to generate basic installer packages for a diverse set of distributions.
 
-The stock rockhopper rocklets span common package managers (apk, dpkg, rpm, etc.) in the Linux ecosystem. This design balances portability, with practical needs developing the rockhopper system itself.
+The stock rockhopper rocklets span common package managers (apk, dpkg, pkg, rpm, etc.) in the software ecosystem. This design balances portability, with practical needs developing the rockhopper system itself.
 
-For other target platforms, including non-Linux platforms, rockhopper is designed extensibly. We anticipate custom rocklets to account for other targets, and to help keep up with emerging needs.
-
-Note: FreeBSD hosts enable FreeBSD containers, but may break alternative libc Linux containers (musl, uClibC, etc.)
+rockhopper is designed extensibly. We anticipate custom rocklets to account for new and emerging targets, to match the evolving needs of software users.
 
 ## Easy Mode
 
