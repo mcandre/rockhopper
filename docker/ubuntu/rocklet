@@ -30,7 +30,7 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
-ROCKHOPPER_VERSION='0.0.15'
+ROCKHOPPER_VERSION='0.0.16'
 ROCKHOPPER_REV='1'
 
 banner() {

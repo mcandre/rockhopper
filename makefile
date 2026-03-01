@@ -44,7 +44,7 @@
 	clean-packages \
 	clean-ports
 
-VERSION=0.0.15
+VERSION=0.0.16
 BANNER=rockhopper-$(VERSION)
 
 all: install

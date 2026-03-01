@@ -39,10 +39,10 @@ See `rockhopper -h` for more options.
 
 | Host                   | Package |
 | ---------------------- | ------- |
-| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/alpine-linux/rockhopper-0.0.15-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/alpine-linux/rockhopper-0.0.15-r1.x86_64.apk) |
-| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/fedora/rockhopper-0.0.15-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/fedora/rockhopper-0.0.15-1.x86_64.rpm) |
-| macOS | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/macos/rockhopper-arm64-0.0.15-1.pkg) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/macos/rockhopper-x86_64-0.0.15-1.pkg) |
-| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/ubuntu/rockhopper_0.0.15-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.15/ubuntu/rockhopper_0.0.15-1_amd64.deb) |
+| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/alpine-linux/rockhopper-0.0.16-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/alpine-linux/rockhopper-0.0.16-r1.x86_64.apk) |
+| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/fedora/rockhopper-0.0.16-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/fedora/rockhopper-0.0.16-1.x86_64.rpm) |
+| macOS | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/macos/rockhopper-arm64-0.0.16-1.pkg) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/macos/rockhopper-x86_64-0.0.16-1.pkg) |
+| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/ubuntu/rockhopper_0.0.16-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.16/ubuntu/rockhopper_0.0.16-1_amd64.deb) |
 
 # System Requirements
 
