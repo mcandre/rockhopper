@@ -24,6 +24,8 @@ image = "n4jm4/rockhopper:alpine-linux"
 # rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
+# rocklet.apk_makedepends = "gcc"
+# rocklet.apk_checkdepends = "diff"
 dest."usr/bin" = "bin"
 
 [[pkg]]

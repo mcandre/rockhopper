@@ -34,8 +34,11 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
+ROCKHOPPER_VERSION='0.0.15'
+ROCKHOPPER_REV='1'
+
 banner() {
-    echo "$0 0.0.15"
+    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -75,7 +78,6 @@ validate() {
         rocklet_gid
         rocklet_identifier
         rocklet_image
-        rocklet_license
         rocklet_log_level
         rocklet_mount_path
         rocklet_name
@@ -141,6 +143,9 @@ mkbom -u "$rocklet_uid" -g "$rocklet_gid" . "$BOM"
 PAYLOAD="$BASE_PKG/Payload"
 bsdtar --format=odc --uid "$rocklet_uid" --gid "$rocklet_gid" -czf "$PAYLOAD" .
 
+export authoring_tool="com.github.mcandre.rockhopper"
+export authoring_tool_version="$ROCKHOPPER_VERSION"
+export authoring_tool_build="$ROCKHOPPER_REV"
 DISTRIBUTION="$rocklet_pkg_build/Distribution"
 rsubst --strict "$rocklet_templates/Distribution.j2" >"$DISTRIBUTION"
 

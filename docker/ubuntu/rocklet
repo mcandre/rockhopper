@@ -15,8 +15,6 @@ rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/ubuntu"}"
 rocklet_apt_build="${rocklet_apt_build:-/tmp/ubuntu}"
 rocklet_os_arch="${rocklet_os_arch:-"$(dpkg-architecture -qDEB_HOST_ARCH)"}"
-rocklet_priority="${rocklet_priority:-optional}"
-rocklet_dependencies="${rocklet_dependencies:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
@@ -32,8 +30,11 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
+ROCKHOPPER_VERSION='0.0.15'
+ROCKHOPPER_REV='1'
+
 banner() {
-    echo "$0 0.0.15"
+    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -71,6 +72,7 @@ validate() {
         rocklet_apt_build
         rocklet_artifact
         rocklet_cache
+        rocklet_copyright
         rocklet_image
         rocklet_license
         rocklet_log_level
@@ -99,15 +101,12 @@ validate
 clean
 
 mkdir -p "$rocklet_apt_build/DEBIAN"
+COPYRIGHT="$rocklet_apt_build/DEBIAN/copyright"
+rsubst --strict "$rocklet_templates/copyright.j2" >"$COPYRIGHT"
 
-if [ -n "$rocklet_copyright" ]; then
-    COPYRIGHT="$rocklet_apt_build/DEBIAN/copyright"
-    rsubst --strict "$rocklet_templates/copyright.j2" >"$COPYRIGHT"
-
-    if [ "$rocklet_log_level" = 'debug' ]; then
-        echo "copyright:"
-        cat "$COPYRIGHT"
-    fi
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo "copyright:"
+    cat "$COPYRIGHT"
 fi
 
 CONTROL="$rocklet_apt_build/DEBIAN/control"

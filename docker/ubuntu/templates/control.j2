@@ -1,8 +1,8 @@
 Package: {{ rocklet_name }}
-Version: {{ rocklet_version }}{% if rocklet_rev != '' %}-{{ rocklet_rev }}{% endif %}
+Version: {{ rocklet_version }}{% if (rocklet_rev is defined) and (rocklet_rev != '') %}-{{ rocklet_rev }}{% endif %}
 Maintainer: {{ rocklet_maintainer }}
 Architecture: {{ rocklet_os_arch }}
-Priority: {{ rocklet_priority }}
+Priority: {{ rocklet_priority | default('optional') }}
 Description: {{ rocklet_description }}
-Depends: {{ rocklet_dependencies}}
-{% if rocklet_url != '' %}Homepage: {{ rocklet_url }}{% endif %}
+Depends: {{ rocklet_dependencies | default('') }}
+{% if (rocklet_url is defined) and (rocklet_url != '') %}Homepage: {{ rocklet_url }}{% endif %}

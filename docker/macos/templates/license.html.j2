@@ -6,7 +6,7 @@
     <title>License</title>
 </head>
 <body>
-{% if rocklet_copyright != '' %}<p>{{ rocklet_copyright }}</p>{% endif %}
-{% if rocklet_license != '' %}<p>{{ rocklet_license }}</p>{% endif %}
+{% if (rocklet_copyright is defined) and (rocklet_copyright != '') %}<p>{{ rocklet_copyright }}</p>{% endif %}
+{% if (rocklet_license is defined) and (rocklet_license != '') %}<p>{{ rocklet_license }}</p>{% endif %}
 </body>
 </html>

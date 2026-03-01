@@ -7,7 +7,7 @@ RUN apt update && \
         curl && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
         sh -s -- --no-modify-path -y && \
-    cargo install rsubst@0.2.0
+    cargo install rsubst@0.2.1
 
 FROM library/ubuntu:24.04
 RUN apt update && \

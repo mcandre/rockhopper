@@ -5,17 +5,16 @@ set -euo pipefail
 rocklet_log_level="${rocklet_log_level:-info}"
 rocklet_image="${rocklet_image:-unknown image}"
 rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_maintainer="${rocklet_maintainer:-}"
 rocklet_name="${rocklet_name:-}"
 rocklet_version="${rocklet_version:-}"
 rocklet_rev="${rocklet_rev:-}"
-rocklet_copyright="${rocklet_copyright:-}"
 rocklet_license="${rocklet_license:-}"
 rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/alpine-linux"}"
 rocklet_apk_build="${rocklet_apk_build:-/tmp/alpine-linux}"
 rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
-rocklet_dependencies="${rocklet_dependencies:-}"
 rocklet_apk_make_depends="${rocklet_apk_make_depends:-}"
 rocklet_apk_check_depends="${rocklet_apk_check_depends:-}"
 rocklet_apk_source="${rocklet_apk_source:-}"
@@ -34,8 +33,11 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
+ROCKHOPPER_VERSION='0.0.15'
+ROCKHOPPER_REV='1'
+
 banner() {
-    echo "$0 0.0.15"
+    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -103,6 +105,20 @@ clean
 
 export source_media="$rocklet_cache/source-media"
 mkdir -p "$source_media"
+
+src="$rocklet_apk_build/src"
+mkdir -p "$src/usr/share/licenses/$rocklet_name"
+
+COPYING="$src/usr/share/licenses/$rocklet_name/COPYING"
+rsubst --strict "$rocklet_templates/COPYING.j2" >"$COPYING"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo "COPYING:"
+    cat "$COPYING"
+fi
+
+cp -r "$source_media"/* "$src"
+
 cd "$source_media"
 
 apk_package=''
@@ -127,17 +143,6 @@ done
 export apk_package
 
 mkdir -p "$rocklet_apk_build/$rocklet_name"
-
-if [ -n "$rocklet_copyright" ]; then
-    COPYING="$rocklet_apk_build/$rocklet_name/COPYING"
-    rsubst --strict "$rocklet_templates/COPYING.j2" >"$COPYING"
-
-    if [ "$rocklet_log_level" = 'debug' ]; then
-        echo "COPYING:"
-        cat "$COPYING"
-    fi
-fi
-
 APKBUILD="$rocklet_apk_build/$rocklet_name/APKBUILD"
 rsubst --strict "$rocklet_templates/APKBUILD.j2" >"$APKBUILD"
 
@@ -146,8 +151,7 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     cat "$APKBUILD"
 fi
 
-src="$rocklet_apk_build/$rocklet_name/src"
-mkdir -p "$src"
+mkdir -p "$rocklet_apk_build/$rocklet_name/src"
 
 cd "$rocklet_apk_build/$rocklet_name"
 

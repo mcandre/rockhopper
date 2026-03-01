@@ -1,6 +1,6 @@
 FROM library/alpine:3.23 AS build
 RUN apk add -U cargo && \
-    cargo install rsubst@0.2.0
+    cargo install rsubst@0.2.1
 
 FROM library/alpine:3.23
 # Include a test keypair for signing packages

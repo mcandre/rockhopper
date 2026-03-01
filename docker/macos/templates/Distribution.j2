@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<installer-script minSpecVersion="1.000000" authoringTool="com.apple.PackageMaker" authoringToolVersion="3.0.3" authoringToolBuild="174">
+<installer-script minSpecVersion="1.000000" authoringTool="{{ authoring_tool }}" authoringToolVersion="{{ authoring_tool_version }}" authoringToolBuild="{{ authoring_tool_build }}">
     <title>{{ rocklet_name }}</title>
-{% if rocklet_copyright != '' or rocklet_license != '' %}    <license file="license.html" mime-type="text/html" />{% endif %}
+{% if ((rocklet_copyright is defined) and rocklet_copyright != '') or ((rocklet_license is defined) and (rocklet_license != '')) %}    <license file="license.html" mime-type="text/html" />{% endif %}
     <options customize="never" allow-external-scripts="no" />
     <domains enable_anywhere="true" />
     <domains enable_localSystem="true" />

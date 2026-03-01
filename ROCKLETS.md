@@ -6,19 +6,19 @@ The stock rockhopper rocklets span common package managers (apk, dpkg, pkg, rpm,
 
 rockhopper is designed extensibly. We anticipate custom rocklets to account for new and emerging targets, to match the evolving needs of software users.
 
-## Easy Mode
+# EASY MODE
 
 In a pinch, copy one of the Dockerfile setups for [stock](README.md#stock-images) rockhopper images.
 
 This method can quickly derive new rocklets. For example, Fedora -> RHEL, Ubuntu -> Debian, etc.
 
-## Docker Image
+# DOCKER IMAGE
 
 The Docker image is the fundamental unit of package generation.
 
 Docker conveniently abstracts many components which otherwise would require host native, even physical hardware to access.
 
-## Behavior
+# BEHAVIOR
 
 Rocklets mount the current working directory to `$rocklet_mount_path`, default `/mnt/rockhopper`.
 
@@ -36,17 +36,7 @@ Select a unique, short, intuitive `<distro>` name to represent the kind of packa
 
 Create directories like idempotently (e.g. `mkdir -p "$rocklet_artifact"`).
 
-## Templates
-
-rocklets may use [Jinja](https://jinja.palletsprojects.com/en/stable/) format template files, in order to wire together user settings with the configuration files that control package builds.
-
-rocklets read template files from a `$rocklet_templates` directory, default `$HOME/templates`.
-
-### Warning
-
-Jinja2 implementations normally default to silently treating any missing/unset/unexported environment variables as blank strings. This is hazardous. Enable strict mode, such as with a `--strict` CLI flag.
-
-## Configuration
+# CONFIGURATION
 
 Configuration for a rocklet uses some combination of the following mechanisms:
 
@@ -55,7 +45,7 @@ Configuration for a rocklet uses some combination of the following mechanisms:
 * Files loaded through `/mnt/rockhopper`
 * CLI Flags
 
-## Entrypoint
+# ENTRYPOINT
 
 A rocklet registers a Docker `ENTRYPOINT` executable.
 
@@ -63,7 +53,7 @@ The executable has basename `rocklet`.
 
 Reduce nonerror console logs.
 
-## CLI Flags
+# CLI FLAGS
 
 * `--debug`, `-d`: Enable debug mode. Provide more context as package is being built.
 * `--quiet`, `-q`: Enable quiet mode. Elide all rocklet console logs from stdout and from stderr, except in the event of an error.
@@ -78,11 +68,11 @@ Rocklets may implement new CLI flags.
 
 Rocklets validate CLI flags (`rocklet --nosuchflag` should fail).
 
-## Environment Variables
+# ENVIRONMENT VARIABLES
 
 rocklets use environment variables as the primary configuration mechanism, with a `rocklet_` prefix.
 
-### `rocklet_log_level`
+## `rocklet_log_level`
 
 rocklets support both minimal and verbose logging modes.
 
@@ -95,3 +85,51 @@ When `quiet`, enables quiet mode.
 When `debug`, enables debug mode.
 
 See also `--quiet, -q`, `--debug, -d`.
+
+# TEMPLATES
+
+rocklets may use [Jinja](https://jinja.palletsprojects.com/en/stable/) format template files, in order to wire together user settings with the configuration files that control package builds.
+
+rocklets read template files from a `$rocklet_templates` directory, default `$HOME/templates`.
+
+## Warning
+
+The Jinja ecosystem has many quirks.
+
+### Environment Variable Syntax
+
+The Jinja specification uses `environ('<name>')` to query environment variables. However, popular Jinja implementations use different syntaxes. rsubst uses `<name>`. Other implementations may use yet other syntaxes, or fail to support environment variable lookup.
+
+### Undefined/Missing/Blank Variable Semantics
+
+Most Jinja implementations silent treat undefined variables as blank strings. rsubst provides a `--strict` flag to catch problems with undefined variables earlier in development.
+
+Depending on the application, some variables are expected to default to blank strings when undefined. The safest, most portable way to do this is to enable strict mode, then apply the pipe style (`|`) Jinja syntax for defaulting to a given value:
+
+```jinja
+{{ rocklet_dependencies | default('') }}
+```
+
+However, some variables may not have a meaningful default value to choose.
+
+```jinja
+{{ rocklet_name }}
+```
+
+This problem is complicated by the fact that Jinja implementations may obscure the name of the undefined variable in error messages.
+
+To account for ambiguous templating error messages, and in case of forgetting to enable strict mode in every templating command, be advised to separately validate all required variables and required nonblank variables in rocklets (e.g. shell scripts).
+
+```sh
+#!/bin/sh
+set -eu
+
+rocklet_name="${rocklet_name:-}"
+
+eval "k=\$$rocklet_name"
+
+if [ -z "$k" ]; then
+    echo "error: blank/missing env var: rocklet_name"
+    exit 1
+fi
+```

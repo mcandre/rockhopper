@@ -1,6 +1,6 @@
 FROM library/fedora:43 AS build
 RUN dnf install -y cargo && \
-    cargo install rsubst@0.2.0
+    cargo install rsubst@0.2.1
 
 FROM library/fedora:43
 RUN dnf install -y \

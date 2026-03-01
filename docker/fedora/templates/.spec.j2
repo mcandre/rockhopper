@@ -2,10 +2,10 @@ Name: {{ rocklet_name }}
 Version: {{ rocklet_version }}
 Release: {{ rocklet_rev }}
 Summary:  {{ rocklet_summary }}
-{% if rocklet_url != '' %}URL: {{ rocklet_url }}{% endif %}
+{% if (rocklet_url is defined) and (rocklet_url != '') %}URL: {{ rocklet_url }}{% endif %}
 BuildArch: {{ rocklet_os_arch }}
 License: {{ rocklet_license }}
-{% if rocklet_dependencies != '' %}Requires: {{ rocklet_dependencies }}{% endif %}
+{% if (rocklet_dependencies is defined) and (rocklet_dependencies != '') %}Requires: {{ rocklet_dependencies }}{% endif %}
 Source0: {{ fedora_source0 }}
 
 %define debug_package %{nil}

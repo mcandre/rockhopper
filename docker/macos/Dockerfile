@@ -8,7 +8,7 @@ RUN apt update && \
         git && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
         sh -s -- --no-modify-path -y && \
-    cargo install rsubst@0.2.0 && \
+    cargo install rsubst@0.2.1 && \
     git clone --depth 1 https://github.com/hogliux/bomutils.git && \
     cd bomutils && \
     make all

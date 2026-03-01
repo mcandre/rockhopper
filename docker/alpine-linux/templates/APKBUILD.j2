@@ -1,4 +1,4 @@
-{% if rocklet_maintainer != '' %}# Maintainer: {{ rocklet_maintainer }}{% endif %}
+{% if (rocklet_maintainer is defined) and (rocklet_maintainer != '') %}# Maintainer: {{ rocklet_maintainer }}{% endif %}
 pkgname="{{ rocklet_name }}"
 pkgver="{{ rocklet_version }}"
 pkgrel="{{ rocklet_rev }}"
@@ -6,9 +6,9 @@ pkgdesc="{{ rocklet_description }}"
 url="{{ rocklet_url }}"
 arch="{{ rocklet_os_arch }}"
 license="{{ rocklet_license }}"
-depends="{{ rocklet_dependencies }}"
-makedepends="{{ rocklet_apk_make_depends }}"
-checkdepends="{{ rocklet_apk_check_depends }}"
+depends="{{ rocklet_dependencies | default('') }}"
+makedepends="{{ rocklet_apk_makedepends | default('') }}"
+checkdepends="{{ rocklet_apk_checkdepends | default('') }}"
 install=""
 subpackages=""
 source="{{ rocklet_apk_source }}"
@@ -17,12 +17,6 @@ options="!check"
 
 prepare() {
     default_prepare
-
-    if [ -f "{{ rocklet_apk_build }}/{{ rocklet_name }}/COPYING" ]; then
-        mkdir -p "$builddir/usr/share/licenses/$pkgname"
-        cp "{{ rocklet_apk_build }}/{{ rocklet_name }}/COPYING" "$builddir/usr/share/licenses/$pkgname"
-    fi
-
     cp -r "{{ source_media }}/"* "$builddir"
 }
 

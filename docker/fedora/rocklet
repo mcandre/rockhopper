@@ -15,7 +15,6 @@ rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/fedora"}"
 rocklet_rpm_build="${rocklet_rpm_build:-/root/rpmbuild}"
 rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
-rocklet_dependencies="${rocklet_dependencies:-}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
@@ -31,8 +30,11 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
+ROCKHOPPER_VERSION='0.0.15'
+ROCKHOPPER_REV='1'
+
 banner() {
-    echo "$0 0.0.15"
+    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
 }
 
 while [ "$#" -ge 1 ]; do
