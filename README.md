@@ -39,28 +39,19 @@ See `rockhopper -h` for more options.
 
 # DOWNLOAD
 
-| Host                   | Package |
-| ---------------------- | ------- |
-| Alpine Linux           | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/alpine-linux/rockhopper-0.0.17-r1.aarch64.apk) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/alpine-linux/rockhopper-0.0.17-r1.x86_64.apk) |
-| Fedora                 | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/fedora/rockhopper-0.0.17-1.aarch64.rpm) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/fedora/rockhopper-0.0.17-1.x86_64.rpm) |
-| FreeBSD                | [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/freebsd-amd64/rockhopper-0.0.17_1.pkg) |
-| macOS | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/macos/rockhopper-arm64-0.0.17-1.pkg) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/macos/rockhopper-x86_64-0.0.17-1.pkg) |
-| Ubuntu / Windows (WSL) | [ARM](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_arm64.deb) / [Intel](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_amd64.deb) |
+| Host                   | Intel | ARM     |
+| ---------------------- | ----- | ------- |
+| Alpine Linux           | [rockhopper-0.0.17-r1.x86_64.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/alpine-linux/rockhopper-0.0.17-r1.x86_64.apk) | [rockhopper-0.0.17-r1.aarch64.apk](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/alpine-linux/rockhopper-0.0.17-r1.aarch64.apk) |
+| Fedora                 | [rockhopper-0.0.17-1.x86_64.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/fedora/rockhopper-0.0.17-1.x86_64.rpm) | [rockhopper-0.0.17-1.aarch64.rpm](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/fedora/rockhopper-0.0.17-1.aarch64.rpm) |
+| FreeBSD                | [rockhopper-0.0.17_1.pkg](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/freebsd-amd64/rockhopper-0.0.17_1.pkg) | |
+| macOS                  | [rockhopper-x86_64-0.0.17-1.pkg](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/macos/rockhopper-x86_64-0.0.17-1.pkg) | [rockhopper-arm64-0.0.17-1.pkg](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/macos/rockhopper-arm64-0.0.17-1.pkg) |
+| Ubuntu / Windows (WSL) | [rockhopper_0.0.17-1_amd64.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_amd64.deb) | [rockhopper_0.0.17-1_arm64.deb](https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_arm64.deb) |
 
 # System Requirements
 
 ## Bitness
 
 64
-
-## Hosts
-
-* Alpine Linux (ARM, Intel)
-* Fedora (ARM, Intel)
-* FreeBSD (Intel)
-* macOS (ARM, Intel)
-* Ubuntu (ARM, Intel)
-* Windows (ARM, Intel) via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 
