@@ -18,18 +18,21 @@
 	docker-build-fedora \
 	docker-build-freebsd \
 	docker-build-macos \
+	docker-build-netbsd \
 	docker-build-ubuntu \
 	docker-push \
 	docker-push-alpine-linux \
 	docker-push-fedora \
 	docker-push-freebsd \
 	docker-push-macos \
+	docker-push-netbsd \
 	docker-push-ubuntu \
 	docker-test \
 	docker-test-alpine-linux \
 	docker-test-fedora \
 	docker-test-freebsd \
 	docker-test-macos \
+	docker-test-netbsd \
 	docker-test-ubuntu \
 	install \
 	lint \
@@ -86,6 +89,7 @@ docker-build: \
 	docker-build-fedora \
 	docker-build-freebsd \
 	docker-build-macos \
+	docker-build-netbsd \
 	docker-build-ubuntu
 
 docker-build-alpine-linux:
@@ -100,6 +104,9 @@ docker-build-freebsd:
 docker-build-macos:
 	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:macos --load"
 
+docker-build-netbsd:
+	sh -c "cd docker/netbsd && tuggy -t n4jm4/rockhopper:netbsd --load"
+
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu --load"
 
@@ -108,6 +115,7 @@ docker-push: \
 	docker-push-fedora \
 	docker-push-freebsd \
 	docker-push-macos \
+	docker-push-netbsd \
 	docker-push-ubuntu
 
 docker-push-alpine-linux:
@@ -122,6 +130,9 @@ docker-push-freebsd:
 docker-push-macos:
 	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:macos -a n4jm4/rockhopper:$(VERSION)-macos --push"
 
+docker-push-netbsd:
+	sh -c "cd docker/netbsd && tuggy -t n4jm4/rockhopper:netbsd -a n4jm4/rockhopper:$(VERSION)-netbsd --push"
+
 docker-push-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu -a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble --push"
 
@@ -130,6 +141,7 @@ docker-test: \
 	docker-test-fedora \
 	docker-test-freebsd \
 	docker-test-macos \
+	docker-test-netbsd \
 	docker-test-ubuntu
 
 docker-test-alpine-linux:
@@ -147,6 +159,10 @@ docker-test-freebsd:
 docker-test-macos:
 	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:test-macos --load"
 	sh -c "cd docker/macos && tuggy -t n4jm4/rockhopper:test-macos --push"
+
+docker-test-netbsd:
+	sh -c "cd docker/netbsd && tuggy -t n4jm4/rockhopper:test-netbsd --load"
+	sh -c "cd docker/netbsd && tuggy -t n4jm4/rockhopper:test-netbsd --push"
 
 docker-test-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --load"

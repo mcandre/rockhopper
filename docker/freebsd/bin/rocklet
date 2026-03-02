@@ -131,8 +131,7 @@ cp -r "$source_media"/* "$rocklet_pkg_build"
 IFS=',' read -r -a lics <<<"$rocklet_license"
 licenses=''
 
-for i in "${!lics[@]}"; do
-    license="\"${lics[$i]}\""
+for license in "${lics[@]}"; do
     licenses="${licenses}${license},"
 done
 

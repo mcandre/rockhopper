@@ -22,6 +22,5 @@ RUN apt update && \
 COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
 COPY --from=build /bomutils/build/bin /usr/local/bin
 COPY templates /root/templates
-COPY mename /usr/local/bin
-COPY rocklet /usr/local/bin
+COPY bin /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/rocklet"]

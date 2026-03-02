@@ -8,5 +8,5 @@ RUN dnf install -y \
         rpmlint
 COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
 COPY templates /root/templates
-COPY rocklet /usr/local/bin
+COPY bin /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/rocklet"]

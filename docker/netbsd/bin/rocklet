@@ -1,0 +1,245 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_maintainer="${rocklet_maintainer:-}"
+rocklet_dependencies="${rocklet_dependencies:-}"
+rocklet_pkg_blddep="${rocklet_pkg_blddep:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_summary="${rocklet_summary:-}"
+rocklet_description="${rocklet_description:-}"
+rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_pkg_build="${rocklet_pkg_build:-/tmp/netbsd}"
+rocklet_os_arch="${rocklet_os_arch:-"$(mename)"}"
+
+default_artifact="$rocklet_cache/artifacts/netbsd"
+
+if [ "$rocklet_os_arch" != 'all' ]; then
+    default_artifact="$default_artifact-$rocklet_os_arch"
+fi
+
+rocklet_artifact="${rocklet_artifact:-"$default_artifact"}"
+
+# Forward rockhopper environment variables to Jinja
+for K in $(compgen -v | grep '^rocklet_'); do
+    export "$K"
+done
+
+usage() {
+    printf "Usage: %s [<OPTION>]\n" "$0"
+    printf "\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+ROCKHOPPER_VERSION='0.0.17'
+ROCKHOPPER_REV='1'
+
+banner() {
+    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--debug' | '-d')
+        shift
+        rocklet_log_level='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        rocklet_log_level='quiet'
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
+    set -x
+fi
+
+validate() {
+    required_env_vars=(
+        rocklet_artifact
+        rocklet_cache
+        rocklet_description
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_maintainer
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_pkg_build
+        rocklet_summary
+        rocklet_templates
+        rocklet_version
+    )
+
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
+
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}" >&2
+            exit 1
+        fi
+    done
+}
+
+clean() {
+    rm -rf "$rocklet_pkg_build"
+}
+
+validate
+clean
+
+source_media="$rocklet_cache/source-media"
+mkdir -p "$source_media"
+
+mkdir -p "$rocklet_pkg_build/share/doc/$rocklet_name"
+LICENSE="$rocklet_pkg_build/share/doc/$rocklet_name/LICENSE"
+rsubst --strict "$rocklet_templates/LICENSE.j2" >"$LICENSE"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'LICENSE':
+    cat "$LICENSE"
+fi
+
+cp -r "$source_media"/* "$rocklet_pkg_build"
+
+BUILD_INFO="$rocklet_pkg_build/+BUILD_INFO"
+rsubst --strict "$rocklet_templates/+BUILD_INFO.j2" >"$BUILD_INFO"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo '+BUILD_INFO':
+    cat "$BUILD_INFO"
+fi
+
+COMMENT="$rocklet_pkg_build/+COMMENT"
+rsubst --strict "$rocklet_templates/+COMMENT.j2" >"$COMMENT"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo '+COMMENT':
+    cat "$COMMENT"
+fi
+
+CONTENTS="$rocklet_pkg_build/+CONTENTS"
+rsubst --strict "$rocklet_templates/+CONTENTS.j2" >"$CONTENTS"
+
+IFS=',' read -r -a dependencies <<<"$rocklet_dependencies"
+
+for dependency in "${dependencies[@]}"; do
+    echo "@pkgdep $dependency" >>"$CONTENTS"
+done
+
+IFS=',' read -r -a build_dependencies <<<"$rocklet_pkg_blddep"
+
+for dependency in "${build_dependencies[@]}"; do
+    echo "@blddep $dependency" >>"$CONTENTS"
+done
+
+DESC="$rocklet_pkg_build/+DESC"
+rsubst --strict "$rocklet_templates/+DESC.j2" >"$DESC"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo '+DESC':
+    cat "$DESC"
+fi
+
+cd "$rocklet_pkg_build"
+
+find . \
+    -name '+*' -prune -o \
+    -type f \
+    -mindepth 1 \
+    -exec \
+        sh -c "printf \"%s\n@comment MD5:%s\n\" \"\${0#./}\" \"\$(md5sum \"\$0\" | awk '{ print \$1 }')\"" "{}" >>"$CONTENTS" \
+    \;
+
+find . \
+    -type f \
+    -name '+*' \
+    -mindepth 1 \
+    -exec \
+        sh -c "printf \"@ignore\n%s\n\" \"\${0#./}\"" "{}" >>"$CONTENTS" \
+    \;
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo '+CONTENTS':
+    cat "$CONTENTS"
+fi
+
+artifact="$rocklet_artifact/${rocklet_name}-${rocklet_version}"
+
+if [ -n "$rocklet_rev" ]; then
+    artifact="${artifact}nb${rocklet_rev}"
+fi
+
+artifact="$artifact.tgz"
+
+cd "$rocklet_pkg_build"
+
+tar_paths='/tmp/tar_paths.txt'
+echo '+CONTENTS' >"$tar_paths"
+echo '+COMMENT' >>"$tar_paths"
+echo '+DESC' >>"$tar_paths"
+# echo '+BUILD_VERSION' >>"$tar_paths"
+echo '+BUILD_INFO' >>"$tar_paths"
+# echo '+SIZE_PKG' >>"$tar_paths"
+# echo '+SIZE_ALL' >>"$tar_paths"
+
+# find . \
+#     -type f \
+#     -name '+*' \
+#     -mindepth 1 \
+#     -exec \
+#         sh -c 'echo ${0#./}' "{}" >>"$tar_paths" \
+#     \;
+
+find . \
+    -name '+*' -prune -o \
+    -type f \
+    -exec \
+        echo "{}" >>"$tar_paths" \
+    \;
+
+# for f in $(find . -name '+*' -prune -o -type f | sort); do
+#     echo "${f#./}" >>"$tar_paths"
+# done
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'tar_paths.txt:'
+    cat "$tar_paths"
+fi
+
+mkdir -p "$rocklet_artifact"
+
+bsdtar \
+    -c \
+    -z \
+    -f "$artifact" \
+    -s "#^\\.##" \
+    -T "$tar_paths"
+
+clean

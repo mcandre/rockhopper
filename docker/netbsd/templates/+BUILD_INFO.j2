@@ -1,0 +1,6 @@
+{% if (rocklet_url is defined) and (rocklet_url != '') %}HOMEPAGE=https://curl.se/{% endif %}
+LICENSE={{ rocklet_license }}
+LOCALBASE={{ rocklet_pkg_localbase | default('/usr/pkg') }}
+MACHINE_ARCH={{ rocklet_os_arch }}
+MAINTAINER={{ rocklet_maintainer }}
+OPSYS={{ rocklet_opsys | default('NetBSD') }}
