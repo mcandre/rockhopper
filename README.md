@@ -49,18 +49,18 @@ See `rockhopper -h` for more options.
 
 # System Requirements
 
-## Host Operating Systems
+## Bitness
 
-* Alpine Linux
-* Fedora
-* macOS
-* Ubuntu
-* Windows via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+64
 
-## Host Architectures
+## Hosts
 
-* 64-bit ARM
-* 64-bit Intel
+* Alpine Linux (ARM, Intel)
+* Fedora (ARM, Intel)
+* FreeBSD (Intel)
+* macOS (ARM, Intel)
+* Ubuntu (ARM, Intel)
+* Windows (ARM, Intel) via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 
