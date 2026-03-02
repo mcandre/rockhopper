@@ -21,15 +21,8 @@ rocklet_pkg_build="${rocklet_pkg_build:-/tmp/netbsd}"
 rocklet_pkg_os_version="${rocklet_pkg_os_version:-}"
 rocklet_pkg_pkgtools_version="${rocklet_pkg_pkgtools_version:-20091115}"
 rocklet_pkg_size_all="${rocklet_pkg_size_all:-}"
-rocklet_os_arch="${rocklet_os_arch:-"$(mename)"}"
-
-default_artifact="$rocklet_cache/artifacts/netbsd"
-
-if [ "$rocklet_os_arch" != 'all' ]; then
-    default_artifact="$default_artifact-$rocklet_os_arch"
-fi
-
-rocklet_artifact="${rocklet_artifact:-"$default_artifact"}"
+rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/netbsd-$rocklet_os_arch"}"
 
 # Forward rockhopper environment variables to Jinja
 for K in $(compgen -v | grep '^rocklet_'); do
@@ -142,7 +135,9 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     cat "$BUILD_VERSION"
 fi
 
-export metrics_b="$(du -sb | awk '{ print $1 }')"
+cd "$rocklet_pkg_build"
+
+export metrics_b="$(du -sb . | awk '{ print $1 }')"
 SIZE_PKG="$rocklet_pkg_build/+SIZE_PKG"
 rsubst --strict "$rocklet_templates/+SIZE_PKG.j2" >"$SIZE_PKG"
 
@@ -221,14 +216,6 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     cat "$CONTENTS"
 fi
 
-artifact="$rocklet_artifact/${rocklet_name}-${rocklet_version}"
-
-if [ -n "$rocklet_rev" ]; then
-    artifact="${artifact}nb${rocklet_rev}"
-fi
-
-artifact="$artifact.tgz"
-
 cd "$rocklet_pkg_build"
 
 tar_paths='/tmp/tar_paths.txt'
@@ -257,6 +244,14 @@ if [ "$rocklet_log_level" = 'debug' ]; then
 fi
 
 mkdir -p "$rocklet_artifact"
+
+artifact="$rocklet_artifact/${rocklet_name}-${rocklet_version}"
+
+if [ -n "$rocklet_rev" ]; then
+    artifact="${artifact}nb${rocklet_rev}"
+fi
+
+artifact="$artifact.tgz"
 
 bsdtar \
     -c \
