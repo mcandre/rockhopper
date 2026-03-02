@@ -91,6 +91,7 @@ rockhopper organizes package generators by distro.
 | ---------------------- | ------------ |
 | Alpine Linux           | alpine-linux |
 | Fedora                 | fedora       |
+| FreeBSD                | freebsd      |
 | macOS                  | macos        |
 | Ubuntu / Windows (WSL) | ubuntu       |
 
