@@ -4,3 +4,5 @@ LOCALBASE={{ rocklet_pkg_localbase | default('/usr/pkg') }}
 MACHINE_ARCH={{ rocklet_os_arch }}
 MAINTAINER={{ rocklet_maintainer }}
 OPSYS={{ rocklet_opsys | default('NetBSD') }}
+OS_VERSION={{ rocklet_pkg_os_version }}
+PKGTOOLS_VERSION={{ rocklet_pkg_pkgtools_version | default('20091115') }}

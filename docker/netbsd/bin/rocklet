@@ -18,6 +18,8 @@ rocklet_description="${rocklet_description:-}"
 rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_pkg_build="${rocklet_pkg_build:-/tmp/netbsd}"
+rocklet_pkg_os_version="${rocklet_pkg_os_version:-}"
+rocklet_pkg_pkgtools_version="${rocklet_pkg_pkgtools_version:-20091115}"
 rocklet_pkg_size_all="${rocklet_pkg_size_all:-}"
 rocklet_os_arch="${rocklet_os_arch:-"$(mename)"}"
 
@@ -93,6 +95,8 @@ validate() {
         rocklet_name
         rocklet_os_arch
         rocklet_pkg_build
+        rocklet_pkg_os_version
+        rocklet_pkg_pkgtools_version
         rocklet_pkg_size_all
         rocklet_summary
         rocklet_templates

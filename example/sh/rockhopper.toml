@@ -75,6 +75,7 @@ rocklet.os_arch = "all"
 # rocklet.pkg_localbase = "/usr/pkg"
 # rocklet_opsys = "NetBSD"
 # rocklet.dependencies = "bash"
+rocklet.pkg_os_version = "10.1"
 rocklet.pkg_size_all = "1000" # bytes
 dest."bin" = "bin"
 
