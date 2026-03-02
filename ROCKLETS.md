@@ -129,7 +129,11 @@ rocklet_name="${rocklet_name:-}"
 eval "k=\$$rocklet_name"
 
 if [ -z "$k" ]; then
-    echo "error: blank/missing env var: rocklet_name"
+    echo "error: blank/missing env var: rocklet_name" >&2
     exit 1
 fi
 ```
+
+### Line Terminators
+
+Jinja implementations tend to treat line terminators like `\n` as literals, corrupting multiline input. Design templated fields with other delimiters such as semicolon (`;`), comma (`,`), etc.

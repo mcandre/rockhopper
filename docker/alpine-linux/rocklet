@@ -90,7 +90,7 @@ validate() {
         eval "required_env_val=\$$required_env_var"
 
         if [ -z "$required_env_val" ]; then
-            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}"
+            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}" >&2
             exit 1
         fi
     done
@@ -113,7 +113,7 @@ COPYING="$src/usr/share/licenses/$rocklet_name/COPYING"
 rsubst --strict "$rocklet_templates/COPYING.j2" >"$COPYING"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "COPYING:"
+    echo 'COPYING:'
     cat "$COPYING"
 fi
 
@@ -135,7 +135,7 @@ for f in $(find . -print); do
     elif [ -f "$f" ]; then
         apk_package="${apk_package}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
     else
-        echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}"
+        echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}" >&2
         exit 1
     fi
 done
@@ -147,7 +147,7 @@ APKBUILD="$rocklet_apk_build/$rocklet_name/APKBUILD"
 rsubst --strict "$rocklet_templates/APKBUILD.j2" >"$APKBUILD"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "APKBUILD:"
+    echo 'APKBUILD:'
     cat "$APKBUILD"
 fi
 

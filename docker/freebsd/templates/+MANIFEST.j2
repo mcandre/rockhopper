@@ -1,0 +1,17 @@
+name: "{{ rocklet_name }}"
+version: "{{ rocklet_version }}"
+{% if (rocklet_rev is defined) and (rocklet_rev != '') %}revision: "{{ rocklet_rev }}"{% endif %}
+maintainer: "{{ rocklet_maintainer }}"
+origin: "{{ rocklet_origin }}"
+comment: "{{ rocklet_summary }}"
+desc: "{{ rocklet_description }}"
+arch: "{{ rocklet_os_arch }}"
+prefix: "{{ rocklet_pkg_prefix | default('/usr/local') }}"
+{% if is_no_arch == '1' %}NO_ARCH: yes{% endif %}
+{% if (rocklet_dependencies is defined) and (rocklet_dependencies != '')%}deps: { {{ rocklet_dependencies }} }{% endif %}
+licenselogic: "{{ rocklet_pkg_licenselogic | default('single') }}"
+licenses: [{{ licenses }}]
+flatsize: {{ metrics_b }}
+directories: { {{ directories }} }
+files: { {{ checksums }} }
+{% if (rocklet_url is defined) and (rocklet_url != '') %}www: "{{ rocklet_url }}"{% endif %}

@@ -16,7 +16,6 @@ rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/macos"}"
 rocklet_pkg_build="${rocklet_pkg_build:-/tmp/macos}"
 rocklet_os_arch="${rocklet_os_arch:-"$(mename)"}"
-rocklet_dependencies="${rocklet_dependencies:-}"
 rocklet_uid="${rocklet_uid:-0}"
 rocklet_gid="${rocklet_gid:-0}"
 
@@ -92,7 +91,7 @@ validate() {
         eval "required_env_val=\$$required_env_var"
 
         if [ -z "$required_env_val" ]; then
-            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}"
+            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}" >&2
             exit 1
         fi
     done
@@ -124,7 +123,7 @@ if [ -n "$rocklet_copyright" ] || [ -n "$rocklet_license" ]; then
     rsubst --strict "$rocklet_templates/license.html.j2" >"$LICENSE_HTML"
 
     if [ "$rocklet_log_level" = 'debug' ]; then
-        echo "license.html:"
+        echo 'license.html:'
         cat "$LICENSE_HTML"
     fi
 fi
@@ -133,7 +132,7 @@ PACKAGEINFO="$BASE_PKG/PackageInfo"
 rsubst --strict "$rocklet_templates/PackageInfo.j2" >"$PACKAGEINFO"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "PackageInfo:"
+    echo 'PackageInfo:'
     cat "$PACKAGEINFO"
 fi
 
@@ -150,7 +149,7 @@ DISTRIBUTION="$rocklet_pkg_build/Distribution"
 rsubst --strict "$rocklet_templates/Distribution.j2" >"$DISTRIBUTION"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "Distribution:"
+    echo 'Distribution:'
     cat "$DISTRIBUTION"
 fi
 

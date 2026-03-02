@@ -87,7 +87,7 @@ validate() {
         eval "required_env_val=\$$required_env_var"
 
         if [ -z "$required_env_val" ]; then
-            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}"
+            echo "error: ${rocklet_image}: blank/missing env var: ${required_env_var}" >&2
             exit 1
         fi
     done
@@ -110,7 +110,7 @@ if [ -n "$rocklet_copyright" ]; then
     rsubst --strict "$rocklet_templates/COPYING.j2" >"$COPYING"
 
     if [ "$rocklet_log_level" = 'debug' ]; then
-        echo "COPYING:"
+        echo 'COPYING:'
         cat "$COPYING"
     fi
 fi
@@ -152,7 +152,7 @@ for f in $(find . -print); do
     elif [ -f "$f" ]; then
         fedora_data="${fedora_data}cp \"$source_media/$f\" \"%{buildroot}/$f\"; "
     else
-        echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}"
+        echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}" >&2
         exit 1
     fi
 done
@@ -175,7 +175,7 @@ SPEC="$rocklet_rpm_build/SPECS/$rocklet_name.spec"
 rsubst --strict "$rocklet_templates/.spec.j2" >"$SPEC"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "SPEC:"
+    echo 'SPEC:'
     cat "$SPEC"
 fi
 

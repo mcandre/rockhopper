@@ -105,7 +105,7 @@ COPYRIGHT="$rocklet_apt_build/DEBIAN/copyright"
 rsubst --strict "$rocklet_templates/copyright.j2" >"$COPYRIGHT"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "copyright:"
+    echo 'copyright:'
     cat "$COPYRIGHT"
 fi
 
@@ -113,7 +113,7 @@ CONTROL="$rocklet_apt_build/DEBIAN/control"
 rsubst --strict "$rocklet_templates/control.j2" >"$CONTROL"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
-    echo "control:"
+    echo 'control:'
     cat "$CONTROL"
 fi
 

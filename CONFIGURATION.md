@@ -230,6 +230,10 @@ mount_path = "/mnt/rockhopper"
 templates = "/mnt/rockhopper/templates"
 ```
 
+#### Warning
+
+Jinja templated fields treat line feeds (`\n`) as literals.
+
 ### `cache`
 
 Artifact directory root.
@@ -373,17 +377,25 @@ rocklet.os_arch = "amd64"
 
 ##### Prominent OS Architectures
 
-| OS           | ISA                   | Identifier |
-| ------------ | --------------------- | ---------- |
-| Alpine Linux | 64-bit ARM            | aarch64    |
-| Alpine Linux | 64-bit Intel          | x86_64     |
-| Alpine Linux | (chipset independent) | noarch     |
-| Fedora       | 64-bit ARM            | aarch64    |
-| Fedora       | 64-bit Intel          | x86_64     |
-| Fedora       | (chipset indepdendet) | noarch     |
-| Ubuntu       | 64-bit ARM            | arm64      |
-| Ubuntu       | 64-bit Intel          | amd64      |
-| Ubuntu       | (chipset independent) | all        |
+| OS           | ISA                   | Identifier                   |
+| ------------ | --------------------- | ---------------------------- |
+| Alpine Linux | 64-bit ARM            | `aarch64`                    |
+| Alpine Linux | 64-bit Intel          | `x86_64`                     |
+| Alpine Linux | (chipset independent) | `noarch`                     |
+| Fedora       | 64-bit ARM            | `aarch64`                    |
+| Fedora       | 64-bit Intel          | `x86_64`                     |
+| Fedora       | (chipset indepdendet) | `noarch`                     |
+| FreeBSD      | 64-bit ARM            | `freebsd:<os-version>:arm64` |
+| FreeBSD      | 64-bit Intel          | `freebsd:<os-version>:amd64` |
+| FreeBSD      | (chipset independent) | `freebsd:<os-version>:*`     |
+| macOS        | 64-bit ARM            | `arm64`                      |
+| macOS        | 64-bit Intel          | `x86_64`                     |
+| macOS        | (chipset independent) | `universal`                  |
+| Ubuntu       | 64-bit ARM            | `arm64`                      |
+| Ubuntu       | 64-bit Intel          | `amd64`                      |
+| Ubuntu       | (chipset independent) | `all`                        |
+
+Note: FreeBSD `<os-version>` may take an asterisk (`*`), for OS version independent packages.
 
 #### `dependencies`
 
