@@ -43,7 +43,7 @@ See `rockhopper -h` for more options.
   <thead>
     <tr>
       <th>Host</th>
-      <th colspan=2><center>Package</center></th>
+      <th colspan=2>Package</th>
     </tr>
   </thead>
   <tbody>
