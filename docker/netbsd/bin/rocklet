@@ -234,10 +234,6 @@ find . \
         echo "{}" >>"$tar_paths" \
     \;
 
-# for f in $(find . -name '+*' -prune -o -type f | sort); do
-#     echo "${f#./}" >>"$tar_paths"
-# done
-
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo 'tar_paths.txt:'
     cat "$tar_paths"
