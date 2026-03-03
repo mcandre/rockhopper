@@ -214,6 +214,10 @@ Example:
 mount_path = "/mnt/source-media"
 ```
 
+### Other distro relative fields
+
+A distro may have additional optional and/or required fields.
+
 ### `templates`
 
 Template specification directory.
@@ -355,9 +359,12 @@ image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
 ```
 
-Note: `oci_arch` often uses different syntax (buildx) than `os_arch` (distro relative).
+##### Common Docker Architectures
 
-Pro tip: Crosscompilation toolchains enable more flexibility for `oci_arch`.
+| ISA          | oci_arch           |
+| ------------ | ------------------ |
+| 64-bit ARM   | `linux/arm64[/v8]` |
+| 64-bit Intel | `linux/amd64`      |
 
 #### `os_arch`
 
@@ -375,27 +382,27 @@ image = "n4jm4/rockhopper:ubuntu"
 rocklet.os_arch = "amd64"
 ```
 
-##### Prominent OS Architectures
+##### Common OS Architectures
 
-| OS           | ISA                   | Identifier                   |
-| ------------ | --------------------- | ---------------------------- |
-| Alpine Linux | 64-bit ARM            | `aarch64`                    |
-| Alpine Linux | 64-bit Intel          | `x86_64`                     |
-| Alpine Linux | (chipset independent) | `noarch`                     |
-| Fedora       | 64-bit ARM            | `aarch64`                    |
-| Fedora       | 64-bit Intel          | `x86_64`                     |
-| Fedora       | (chipset indepdendet) | `noarch`                     |
-| FreeBSD      | 64-bit ARM            | `freebsd:<os-version>:arm64` |
-| FreeBSD      | 64-bit Intel          | `freebsd:<os-version>:amd64` |
-| FreeBSD      | (chipset independent) | `freebsd:<os-version>:*`     |
-| macOS        | 64-bit ARM            | `arm64`                      |
-| macOS        | 64-bit Intel          | `x86_64`                     |
-| macOS        | (chipset independent) | `universal`                  |
-| Ubuntu       | 64-bit ARM            | `arm64`                      |
-| Ubuntu       | 64-bit Intel          | `amd64`                      |
-| Ubuntu       | (chipset independent) | `all`                        |
-
-Note: FreeBSD `<os-version>` may take an asterisk (`*`), for OS version independent packages.
+| Distro Family | ISA                   | os_arch                      |
+| ------------- | --------------------- | ---------------------------- |
+| Alpine Linux  | 64-bit ARM            | `aarch64`                    |
+| Alpine Linux  | 64-bit Intel          | `x86_64`                     |
+| Alpine Linux  | (chipset independent) | `noarch`                     |
+| Fedora        | 64-bit ARM            | `aarch64`                    |
+| Fedora        | 64-bit Intel          | `x86_64`                     |
+| Fedora        | (chipset indepdendet) | `noarch`                     |
+| FreeBSD       | 64-bit ARM            | `freebsd:<os-version>:arm64` |
+| FreeBSD       | 64-bit Intel          | `freebsd:<os-version>:amd64` |
+| FreeBSD       | (chipset independent) | `freebsd:<os-version>:*`     |
+| macOS         | 64-bit ARM            | `arm64`                      |
+| macOS         | 64-bit Intel          | `x86_64`                     |
+| macOS         | (chipset independent) | `universal`                  |
+| NetBSD        | 64-bit ARM            | `aarch64`                    |
+| NetBSD        | 64-bit Intel          | `x86_64`                     |
+| Ubuntu        | 64-bit ARM            | `arm64`                      |
+| Ubuntu        | 64-bit Intel          | `amd64`                      |
+| Ubuntu        | (chipset independent) | `all`                        |
 
 #### `dependencies`
 

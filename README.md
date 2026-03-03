@@ -10,9 +10,9 @@
 
 # SUMMARY
 
-rockhopper generates installer packages for a wide variety of platforms.
+rockhopper provides a unified framework for building binary based OS packages across many kinds of platforms.
 
-Distro hoppers, enjoy~
+BYOB (Bring Your Own Binaries).
 
 # EXAMPLE
 
@@ -29,10 +29,7 @@ $ tree .rockhopper/artifacts
 │   └── raygun-1.2.3-81.noarch.rpm
 ├── freebsd
 │   └── raygun-1.2.3_81.pkg
-├── macos
-│   └── raygun-universal-1.2.3-81.pkg
-└── ubuntu
-    └── raygun_1.2.3-81_all.deb
+...
 ```
 
 See `rockhopper -h` for more options.
@@ -68,6 +65,11 @@ See `rockhopper -h` for more options.
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/macos/rockhopper-arm64-0.0.17-1.pkg">ARM</a></td>
     </tr>
     <tr>
+      <td>NetBSD</td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/netbsd-x86_64/rockhopper-0.0.17nb1.pkg">Intel</a></td>
+      <td></td>
+    </tr>
+    <tr>
       <td>Ubuntu / Windows (WSL)</td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_amd64.deb">Intel</a></td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/ubuntu/rockhopper_0.0.17-1_arm64.deb">ARM</a></td>
@@ -83,27 +85,28 @@ See `rockhopper -h` for more options.
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 
-# STOCK IMAGES
+# DOCKER IMAGES
 
-rockhopper organizes package generators by distro.
+Where other package generators rely on host native tools, rockhopper abstracts package generation as Docker images. This abstraction simplifies the setup process, and reduces the impact of vendor lock for each of the host and target platforms involved.
 
-| Target                 | Tag          |
-| ---------------------- | ------------ |
-| Alpine Linux           | alpine-linux |
-| Fedora                 | fedora       |
-| FreeBSD                | freebsd      |
-| macOS                  | macos        |
-| Ubuntu / Windows (WSL) | ubuntu       |
+Image Pattern: `n4jm4/rockhopper:<tag>`
 
-[Version pin tags](https://hub.docker.com/r/n4jm4/rockhopper/tags) also available, of the form:
+## Stock Images
 
-`<rockhopper version>-<distro>`
+| Package Manager | Distro Primary | Distro Tag     |
+| --------------- | -------------- | -------------- |
+| apk             | Alpine Linux   | `alpine-linux` |
+| apt             | Ubuntu         | `ubuntu`       |
+| dnf             | Fedora         | `fedora`       |
+| installer       | macOS          | `macos`        |
+| pkg             | FreeBSD        | `freebsd`      |
+| pkg_add         | NetBSD         | `netbsd`       |
 
-Multiplatform images available. Supported platforms may vary by distro.
+Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
-Pro tip: A happy consequence of building Ubuntu packages, is that Windows users can then access your applications via [WSL](https://learn.microsoft.com/en-us/windows/wsl/).
+`[<rockhopper-version>-]<distro>[-<release-nickname]`
 
-Note: Our stock images emphasize build binary based packages.
+Distro primaries exemplify entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
@@ -119,10 +122,6 @@ For information on developing custom rockhopper images, see the [rocklets interf
 * Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
 * GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
-
-# ABOUT
-
-rockhopper bundles all the tools needed to generate packages, inside Docker containers.
 
 # CONFIGURATION
 

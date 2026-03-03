@@ -127,14 +127,6 @@ fi
 
 cp -r "$source_media"/* "$rocklet_pkg_build"
 
-BUILD_VERSION="$rocklet_pkg_build/+BUILD_VERSION"
-rsubst --strict "$rocklet_templates/+BUILD_VERSION.j2" >"$BUILD_VERSION"
-
-if [ "$rocklet_log_level" = 'debug' ]; then
-    echo '+BUILD_VERSION'
-    cat "$BUILD_VERSION"
-fi
-
 cd "$rocklet_pkg_build"
 
 export metrics_b="$(du -sb . | awk '{ print $1 }')"
@@ -193,8 +185,6 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     cat "$DESC"
 fi
 
-cd "$rocklet_pkg_build"
-
 find . \
     -name '+*' -prune -o \
     -type f \
@@ -222,7 +212,6 @@ tar_paths='/tmp/tar_paths.txt'
 echo '+CONTENTS' >"$tar_paths"
 echo '+COMMENT' >>"$tar_paths"
 echo '+DESC' >>"$tar_paths"
-echo '+BUILD_VERSION' >>"$tar_paths"
 echo '+BUILD_INFO' >>"$tar_paths"
 echo '+SIZE_PKG' >>"$tar_paths"
 echo '+SIZE_ALL' >>"$tar_paths"
@@ -248,6 +237,14 @@ if [ -n "$rocklet_rev" ]; then
 fi
 
 artifact="$artifact.tgz"
+
+bsdtar() {
+    if [ "$rocklet_log_level" = 'quiet' ]; then
+        command bsdtar "$@" 2>/dev/null
+    else
+        command bsdtar "$@"
+    fi
+}
 
 bsdtar \
     -c \
