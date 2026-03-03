@@ -87,13 +87,11 @@ For more host platforms and installation methods, see our [install guide](INSTAL
 
 # DOCKER IMAGES
 
+[Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
+
 Where other package generators rely on host native tools, rockhopper abstracts package generation as Docker images. This abstraction simplifies the setup process, and reduces the impact of vendor lock for each of the host and target platforms involved.
 
 ## Stock Images
-
-[Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
-
-Image Pattern: `n4jm4/rockhopper:<tag>`
 
 | Package Manager | Distro Primary | Docker Tag     |
 | --------------- | -------------- | -------------- |
@@ -103,6 +101,8 @@ Image Pattern: `n4jm4/rockhopper:<tag>`
 | installer       | macOS          | `macos`        |
 | pkg             | FreeBSD        | `freebsd`      |
 | pkg_add         | NetBSD         | `netbsd`       |
+
+Image Pattern: `n4jm4/rockhopper:<tag>`
 
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
