@@ -87,6 +87,8 @@ For more host platforms and installation methods, see our [install guide](INSTAL
 
 # DOCKER IMAGES
 
+[Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
+
 Where other package generators rely on host native tools, rockhopper abstracts package generation as Docker images. This abstraction simplifies the setup process, and reduces the impact of vendor lock for each of the host and target platforms involved.
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
@@ -117,10 +119,7 @@ For information on developing custom rockhopper images, see the [rocklets interf
 ## Recommended
 
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
-* a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
-* [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
 * Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
-* GNU [time](https://www.gnu.org/software/time/)
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 # CONFIGURATION
