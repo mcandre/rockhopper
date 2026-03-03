@@ -4,7 +4,7 @@ log_level = "quiet"
 [rocklet]
 name = "rockhopper"
 identifier = "com.github.mcandre.rockhopper"
-version = "0.0.17"
+version = "0.0.18"
 rev = "1"
 maintainer = "Andrew Pennebaker <n4jm4@pm.me>"
 summary = "metapackage generator"
@@ -16,25 +16,25 @@ url = "https://github.com/mcandre/rockhopper"
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-freebsd"
 rocklet.origin = "local/rockhopper"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "freebsd:*:amd64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-freebsd"
+dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.18/x86_64-unknown-freebsd"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-macos"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.17/x86_64-apple-darwin"
+dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.18/x86_64-apple-darwin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-netbsd"
@@ -43,30 +43,30 @@ rocklet.os_arch = "x86_64"
 rocklet.pkg_os_version = "10.1"
 # byte estimate, including dependencies
 rocklet.pkg_size_all = "1000000"
-dest."bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-netbsd"
+dest."bin" = ".crit/bin/rockhopper-0.0.18/x86_64-unknown-netbsd"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-alpine-linux"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-fedora"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-macos"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "arm64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.17/aarch64-apple-darwin"
+dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.18/aarch64-apple-darwin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.17/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper-0.0.18/aarch64-unknown-linux-musl"
