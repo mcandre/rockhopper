@@ -43,7 +43,7 @@ rocklet.os_arch = "x86_64"
 rocklet.pkg_os_version = "10.1"
 # byte estimate, including dependencies
 rocklet.pkg_size_all = "1000000"
-dest."bin" = "bin"
+dest."bin" = ".crit/bin/rockhopper-0.0.17/x86_64-unknown-netbsd"
 
 [[pkg]]
 image = "n4jm4/rockhopper:test-ubuntu"

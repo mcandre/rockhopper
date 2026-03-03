@@ -8,7 +8,7 @@
  ^^
 ```
 
-# SUMMARY
+# ABOUT
 
 rockhopper provides a unified framework for building binary based OS packages across many kinds of platforms.
 
@@ -66,7 +66,7 @@ See `rockhopper -h` for more options.
     </tr>
     <tr>
       <td>NetBSD</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/netbsd-x86_64/rockhopper-0.0.17nb1.pkg">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.17/netbsd-x86_64/rockhopper-0.0.17nb1.tgz">Intel</a></td>
       <td></td>
     </tr>
     <tr>
