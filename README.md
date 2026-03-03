@@ -87,15 +87,15 @@ For more host platforms and installation methods, see our [install guide](INSTAL
 
 # DOCKER IMAGES
 
-[Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
-
 Where other package generators rely on host native tools, rockhopper abstracts package generation as Docker images. This abstraction simplifies the setup process, and reduces the impact of vendor lock for each of the host and target platforms involved.
-
-Image Pattern: `n4jm4/rockhopper:<tag>`
 
 ## Stock Images
 
-| Package Manager | Distro Primary | Distro Tag     |
+[Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
+
+Image Pattern: `n4jm4/rockhopper:<tag>`
+
+| Package Manager | Distro Primary | Docker Tag     |
 | --------------- | -------------- | -------------- |
 | apk             | Alpine Linux   | `alpine-linux` |
 | apt             | Ubuntu         | `ubuntu`       |
