@@ -19,8 +19,6 @@ For advanced operations, such as linting, managing multiplatform Docker images, 
 
 ## Recommended
 
-* a host capable of running musl/Linux containers (e.g. a GNU/Linux, musl/Linux, macOS, or Windows host)
-* [Docker First Aid Kit](https://github.com/mcandre/docker-first-aid-kit)
 * Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
 * [ASDF](https://asdf-vm.com/) 0.18 (run `asdf reshim` after provisioning)
 
