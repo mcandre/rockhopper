@@ -93,14 +93,14 @@ Where other package generators rely on host native tools, rockhopper abstracts p
 
 ## Stock Images
 
-| Package Manager | Distro Primary | Docker Tag     |
-| --------------- | -------------- | -------------- |
-| apk             | Alpine Linux   | `alpine-linux` |
-| apt             | Ubuntu         | `ubuntu`       |
-| dnf             | Fedora         | `fedora`       |
-| installer       | macOS          | `macos`        |
-| pkg             | FreeBSD        | `freebsd`      |
-| pkg_add         | NetBSD         | `netbsd`       |
+| Package Manager | File Extension | Distro Primary | Docker Tag     |
+| --------------- | -------------- | -------------- | -------------- |
+| apk             | `*.apk`        | Alpine Linux   | `alpine-linux` |
+| apt             | `*.deb`        | Ubuntu         | `ubuntu`       |
+| dnf             | `*.rpm`        | Fedora         | `fedora`       |
+| installer       | `*.pkg`        | macOS          | `macos`        |
+| pkg             | `*.pkg`        | FreeBSD        | `freebsd`      |
+| pkg_add         | `*.tgz`        | NetBSD         | `netbsd`       |
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
