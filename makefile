@@ -20,6 +20,7 @@
 	docker-build-macos \
 	docker-build-netbsd \
 	docker-build-ubuntu \
+	docker-build-windows \
 	docker-push \
 	docker-push-alpine-linux \
 	docker-push-fedora \
@@ -27,6 +28,7 @@
 	docker-push-macos \
 	docker-push-netbsd \
 	docker-push-ubuntu \
+	docker-push-windows \
 	docker-test \
 	docker-test-alpine-linux \
 	docker-test-fedora \
@@ -34,6 +36,7 @@
 	docker-test-macos \
 	docker-test-netbsd \
 	docker-test-ubuntu \
+	docker-test-windows \
 	install \
 	lint \
 	package \
@@ -90,7 +93,8 @@ docker-build: \
 	docker-build-freebsd \
 	docker-build-macos \
 	docker-build-netbsd \
-	docker-build-ubuntu
+	docker-build-ubuntu \
+	docker-build-windows
 
 docker-build-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux --load"
@@ -110,13 +114,17 @@ docker-build-netbsd:
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu --load"
 
+docker-build-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:windows --load"
+
 docker-push: \
 	docker-push-alpine-linux \
 	docker-push-fedora \
 	docker-push-freebsd \
 	docker-push-macos \
 	docker-push-netbsd \
-	docker-push-ubuntu
+	docker-push-ubuntu \
+	docker-push-windows
 
 docker-push-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux -a n4jm4/rockhopper:$(VERSION)-alpine-linux-3.23,n4jm4/rockhopper:$(VERSION)-alpine-linux,n4jm4/rockhopper:alpine-linux-3.23 --push"
@@ -136,13 +144,17 @@ docker-push-netbsd:
 docker-push-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu -a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble --push"
 
+docker-push-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:windows -a n4jm4/rockhopper:$(VERSION)-windows --push"
+
 docker-test: \
 	docker-test-alpine-linux \
 	docker-test-fedora \
 	docker-test-freebsd \
 	docker-test-macos \
 	docker-test-netbsd \
-	docker-test-ubuntu
+	docker-test-ubuntu \
+	docker-test-windows
 
 docker-test-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:test-alpine-linux --load"
@@ -167,6 +179,10 @@ docker-test-netbsd:
 docker-test-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --load"
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --push"
+
+docker-test-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:test-windows --load"
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:test-windows --push"
 
 install:
 	cargo install --force --path .

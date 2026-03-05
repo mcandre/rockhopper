@@ -1,6 +1,6 @@
 # log_level = "info"
-# log_level = "debug"
-log_level = "quiet"
+log_level = "debug"
+# log_level = "quiet"
 
 # docker_args = []
 
@@ -10,6 +10,7 @@ identifier = "test.mars.raygun"
 version = "1.2.3"
 rev = "81"
 maintainer = "Marvin the Martian <marvin@mars.test>"
+manufacturer = "Mars Corp"
 summary = "Space modulator"
 description = "Illudium Q-36 explosive space modulator"
 copyright = "Copyright (C) 1948 Marvin the Martian"
@@ -19,83 +20,101 @@ url = "https://mars.test/"
 # [docker_env]
 # key = "value"
 
-[[pkg]]
-image = "n4jm4/rockhopper:alpine-linux"
-# rocklet.oci_arch = "linux/amd64"
+# [[pkg]]
+# image = "n4jm4/rockhopper:alpine-linux"
+# # rocklet.oci_arch = "linux/amd64"
+# # rocklet.os_arch = "x86_64"
+# rocklet.os_arch = "noarch"
+# # rocklet.dependencies = "bash"
+# # rocklet.apk_makedepends = "gcc"
+# # rocklet.apk_checkdepends = "diff"
+# dest."usr/bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:fedora"
+# # rocklet.oci_arch = "linux/amd64"
+# # rocklet.os_arch = "x86_64"
+# rocklet.os_arch = "noarch"
+# # rocklet.dependencies = "bash"
+# # rocklet.pkg_licenselogic = "single"
+# dest."usr/bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:freebsd"
+# rocklet.origin = "local/raygun"
+# # rocklet.oci_arch = "linux/amd64"
+# # rocklet.os_arch = "freebsd:*:amd64"
+# rocklet.os_arch = "freebsd:*"
+# # rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
+# # rocklet.pkg_prefix = "/usr/local"
+# dest."usr/local/bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:macos"
+# # rocklet.oci_arch = "linux/amd64"
+# # rocklet.os_arch = "x86_64"
+# rocklet.os_arch = "universal"
+# # rocklet.dependencies = "bash"
+# #
+# # macOS user:staff
+# #
+# # rocklet.uid = "501"
+# # rocklet.gid = "20"
+# # dest."Applications/raygun.app" = "raygun.app"
+# #
+# # macOS root:wheel
+# #
+# # rocklet.uid = "0"
+# # rocklet.gid = "0"
+# dest."usr/local/bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:netbsd"
+# # rocklet.oci_arch = "linux/amd64"
 # rocklet.os_arch = "x86_64"
-rocklet.os_arch = "noarch"
-# rocklet.dependencies = "bash"
-# rocklet.apk_makedepends = "gcc"
-# rocklet.apk_checkdepends = "diff"
-dest."usr/bin" = "bin"
+# # rocklet.dependencies = "bash"
+# # rocklet.pkg_opsys = "NetBSD"
+# rocklet.pkg_os_version = "10.1"
+# # byte estimate, including dependencies
+# rocklet.pkg_size_all = "1000"
+# # rocklet.pkg_localbase = "/usr/pkg"
+# dest."bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:netbsd"
+# # rocklet.oci_arch = "linux/arm64"
+# rocklet.os_arch = "aarch64"
+# # rocklet.dependencies = "bash"
+# # rocklet.pkg_opsys = "NetBSD"
+# rocklet.pkg_os_version = "10.1"
+# # byte estimate, including dependencies
+# rocklet.pkg_size_all = "1000"
+# # rocklet.pkg_localbase = "/usr/pkg"
+# dest."bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:ubuntu"
+# # rocklet.oci_arch = "linux/amd64"
+# # rocklet.os_arch = "amd64"
+# rocklet.os_arch = "all"
+# # rocklet.dependencies = "bash"
+# # rocklet.apt_priority = "optional"
+# dest."usr/bin" = "bin"
+
+# [[pkg]]
+# image = "n4jm4/rockhopper:windows"
+# # rocklet.oci_arch = "linux/arm64"
+# rocklet.os_arch = "arm64"
+# rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
+# # rocklet_msi_lcid = "1033"
+# # rocklet.msi_codepage = "1252"
+# dest."bin" = "bin"
 
 [[pkg]]
-image = "n4jm4/rockhopper:fedora"
-# rocklet.pkg_licenselogic = "single"
+image = "n4jm4/rockhopper:windows"
 # rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "x86_64"
-rocklet.os_arch = "noarch"
-# rocklet.dependencies = "bash"
-dest."usr/bin" = "bin"
-
-[[pkg]]
-image = "n4jm4/rockhopper:freebsd"
-rocklet.origin = "local/raygun"
-# rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "freebsd:*:amd64"
-rocklet.os_arch = "freebsd:*"
-# rocklet.pkg_prefix = "/usr/local"
-# rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
-dest."usr/local/bin" = "bin"
-
-[[pkg]]
-image = "n4jm4/rockhopper:macos"
-# rocklet.oci_arch = "linux/amd64"
-# rocklet.os_arch = "x86_64"
-rocklet.os_arch = "universal"
-# rocklet.dependencies = "bash"
-#
-# macOS user:staff
-#
-# rocklet.uid = "501"
-# rocklet.gid = "20"
-# dest."Applications/raygun.app" = "raygun.app"
-#
-# macOS root:wheel
-#
-# rocklet.uid = "0"
-# rocklet.gid = "0"
-dest."usr/local/bin" = "bin"
-
-[[pkg]]
-image = "n4jm4/rockhopper:netbsd"
-# rocklet.oci_arch = "linux/amd64"
-rocklet.os_arch = "x86_64"
-# rocklet.pkg_localbase = "/usr/pkg"
-# rocklet_opsys = "NetBSD"
-# rocklet.dependencies = "bash"
-rocklet.pkg_os_version = "10.1"
-# byte estimate, including dependencies
-rocklet.pkg_size_all = "1000"
+rocklet.os_arch = "x64"
+rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
+# rocklet_msi_lcid = "1033"
+# rocklet.msi_codepage = "1252"
 dest."bin" = "bin"
-
-[[pkg]]
-image = "n4jm4/rockhopper:netbsd"
-# rocklet.oci_arch = "linux/arm64"
-rocklet.os_arch = "aarch64"
-# rocklet.pkg_localbase = "/usr/pkg"
-# rocklet_opsys = "NetBSD"
-# rocklet.dependencies = "bash"
-rocklet.pkg_os_version = "10.1"
-# byte estimate, including dependencies
-rocklet.pkg_size_all = "1000"
-dest."bin" = "bin"
-
-[[pkg]]
-image = "n4jm4/rockhopper:ubuntu"
-# rocklet.oci_arch = "linux/amd64"
-# rocklet.dpkg_priority = "optional"
-# rocklet.os_arch = "amd64"
-rocklet.os_arch = "all"
-# rocklet.dependencies = "bash"
-dest."usr/bin" = "bin"

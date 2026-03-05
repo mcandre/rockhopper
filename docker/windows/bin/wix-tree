@@ -1,0 +1,71 @@
+#!/bin/bash
+set -eufo pipefail
+
+#
+# Generate wix v3 entry XML trees
+#
+
+usage() {
+    printf "usage: %s <app> <source-media>\n" "$0"
+}
+
+if [ "$#" != 2 ] || [ -z "$1" ] || [ -z "$2" ]; then
+    usage
+    exit 1
+fi
+
+ENTRY_ID_PREFIX='entry'
+ENTRY_ID=0
+declare -a COMPONENT_ENTRIES
+
+set -x
+
+wix-entry() {
+    local dir="$1"
+    local dir_basename="$(basename "$dir")"
+    local f=''
+
+    for f in $(find "$dir" -maxdepth 1 -print | sort); do
+        f="${f#./}"
+
+        if [ "$f" = '.' ]; then
+            continue
+        fi
+
+        local b="$(basename "$f")"
+
+        if [ -d "$f" ]; then
+            printf "<Directory Id=\"%s%d\" Name=\"%s\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$b"
+            ENTRY_ID=$((ENTRY_ID + 1))
+
+            cd "$f"
+
+            wix-entry .
+
+            cd ..
+
+            printf "</Directory>"
+        elif [ -f "$f" ]; then
+            printf "<Component Id=\"%s%d\" Guid=\"%s\" Win64=\"yes\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$(uuidgen)"
+            printf "<File Source=\"%s\" KeyPath=\"yes\" />" "$b"
+            printf "</Component>"
+            COMPONENT_ENTRIES+=("${ENTRY_ID_PREFIX}${ENTRY_ID}")
+            ENTRY_ID=$((ENTRY_ID + 1))
+        else
+            echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+        fi
+    done
+}
+
+printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"ProgramFiles64Folder\" Name=\"PFiles\"><Directory Id=\"INSTALLDIR\" Name=\"$1\">"
+
+wix-entry "$2"
+
+printf "</Directory></Directory></Directory>"
+printf "<Feature Id=\"Complete\" Level=\"1\">"
+
+for COMPONENT_ENTRY in "${COMPONENT_ENTRIES[@]}"; do
+    printf "<ComponentRef Id=\"$COMPONENT_ENTRY\" />"
+done
+
+printf "</Feature>\n"
