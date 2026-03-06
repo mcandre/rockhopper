@@ -101,14 +101,14 @@ url = "https://mars.test/"
 # # rocklet.apt_priority = "optional"
 # dest."usr/bin" = "bin"
 
-# [[pkg]]
-# image = "n4jm4/rockhopper:windows"
-# # rocklet.oci_arch = "linux/arm64"
-# rocklet.os_arch = "arm64"
-# rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
-# # rocklet_msi_lcid = "1033"
-# # rocklet.msi_codepage = "1252"
-# dest."bin" = "bin"
+[[pkg]]
+image = "n4jm4/rockhopper:windows"
+# rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "arm64"
+rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
+# rocklet_msi_lcid = "1033"
+# rocklet.msi_codepage = "1252"
+dest."bin" = "win-bin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:windows"
@@ -117,4 +117,4 @@ rocklet.os_arch = "x64"
 rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
 # rocklet_msi_lcid = "1033"
 # rocklet.msi_codepage = "1252"
-dest."bin" = "bin"
+dest."bin" = "win-bin"
