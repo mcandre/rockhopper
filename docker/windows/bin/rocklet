@@ -150,13 +150,13 @@ if [ "$rocklet_log_level" = 'debug' ]; then
     cat "$PRODUCT"
 fi
 
-artifact="${rocklet_name}_${rocklet_version}"
+artifact="${rocklet_name}-${rocklet_version}"
 
 if [ -n "$rocklet_rev" ]; then
-    artifact="${artifact}_${rocklet_rev}"
+    artifact="${artifact}.${rocklet_rev}"
 fi
 
-artifact="${artifact}_${rocklet_os_arch}.msi"
+artifact="${artifact}-${rocklet_os_arch}.msi"
 
 mkdir -p "$rocklet_artifact"
 wixl -v -o "$rocklet_artifact/$artifact" -a "$rocklet_os_arch" "$PRODUCT"
