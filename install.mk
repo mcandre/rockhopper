@@ -7,7 +7,6 @@ all:
 		cargo-audit \
 		cargo-cache \
 		cargo-edit \
-		chandler@0.0.12 \
 		crit@0.0.17 \
 		tuggy@0.0.39
 	cargo install --force \
