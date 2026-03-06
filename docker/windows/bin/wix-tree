@@ -6,7 +6,7 @@ set -eufo pipefail
 #
 
 usage() {
-    printf "usage: %s <app> <source-media> <arch>\n" "$0"
+    printf "usage: %s <source-media> <app> <arch>\n" "$0"
 }
 
 if [ "$#" != 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -14,7 +14,12 @@ if [ "$#" != 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
     exit 1
 fi
 
+source_media="$1"
+app="$2"
+arch="$3"
+
 DIR_ID=0
+FILE_ID=0
 COMPONENT_ID=0
 
 set -x
@@ -50,11 +55,11 @@ wix-entry() {
 
             printf "</Directory>"
         elif [ -f "$f" ]; then
-            r="$(realpath "$b")"
             printf "<Component Id=\"%s\" Guid=\"%s\">" "Component$COMPONENT_ID" "$(uuidgen)"
-            printf "<File Id=\"%s\" Name=\"%s\" Source=\"%s\" DiskId=\"1\" KeyPath=\"yes\" %s />" "File$b" "$b" "$b" "$win64"
+            printf "<File Id=\"%s\" Name=\"%s\" Source=\"%s\" DiskId=\"1\" KeyPath=\"yes\" %s />" "File$FILE_ID" "$b" "$b" "$win64"
             printf "</Component>"
-            COMPONENT_ID=$((COMPONENT + 1))
+            COMPONENT_ID=$((COMPONENT_ID + 1))
+            FILE_ID=$((FILE_ID + 1))
         else
             echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
         fi
@@ -64,14 +69,14 @@ wix-entry() {
 bitness='32'
 program_files_folder='ProgramFilesFolder'
 
-if [[ "$3" = "*64*" ]; then
+if [[ "$arch" = "*64*" ]]; then
     bitness='64'
     program_files_folder='ProgramFiles64Folder'
 fi
 
-printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"%s\" Name=\"PFiles\"><Directory Id=\"INSTALLLOCATION\" Name=\"$2\">" "$program_files_folder"
+printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"%s\" Name=\"PFiles\"><Directory Id=\"INSTALLLOCATION\" Name=\"$app\">" "$program_files_folder"
 
-wix-entry "$1"
+wix-entry "$source_media"
 
 printf "</Directory></Directory></Directory>"
 printf "<Feature Id=\"Complete\" Level=\"1\">"
