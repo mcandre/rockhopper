@@ -6,7 +6,7 @@ set -eufo pipefail
 #
 
 usage() {
-    printf "usage: %s <source-media> <app> <arch>\n" "$0"
+    printf "usage: %s <source-media> <app> <arch>\n" "$0" >&2
 }
 
 if [ "$#" != 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
@@ -74,11 +74,17 @@ if [[ "$arch" = "*64*" ]]; then
     program_files_folder='ProgramFiles64Folder'
 fi
 
+WIX_ENTRY="$(wix-entry "$source_media")"
+
+if [ -z "$WIX_ENTRY" ]; then
+    echo 'error: blank source media list' >&2
+    exit 1
+fi
+
 printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"%s\" Name=\"PFiles\"><Directory Id=\"INSTALLLOCATION\" Name=\"$app\">" "$program_files_folder"
-
-wix-entry "$source_media"
-
+printf "%s\n" "$WIX_ENTRY"
 printf "</Directory></Directory></Directory>"
+
 printf "<Feature Id=\"Complete\" Level=\"1\">"
 
 for COMPONENT_ENTRY in "${COMPONENT_ENTRIES[@]}"; do
