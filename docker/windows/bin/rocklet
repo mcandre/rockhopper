@@ -159,6 +159,6 @@ fi
 artifact="${artifact}_${rocklet_os_arch}.msi"
 
 mkdir -p "$rocklet_artifact"
-wixl -v "$PRODUCT" -o "$rocklet_artifact/$artifact" -a "$rocklet_os_arch"
+wixl -v -o "$rocklet_artifact/$artifact" -a "$rocklet_os_arch" "$PRODUCT"
 
 clean
