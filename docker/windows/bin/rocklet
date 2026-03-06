@@ -129,7 +129,7 @@ if [ -n "$rocklet_copyright" ] || [ -n "$rocklet_license" ]; then
     fi
 fi
 
-find "$source_media" -type f -exec cp "{}" "$rocklet_msi_build" \;
+cp -r "$source_media"/* "$rocklet_msi_build"
 
 cd "$rocklet_msi_build"
 
