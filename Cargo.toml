@@ -1,11 +1,15 @@
 [package]
 name = "rockhopper"
 description = "metapackage generator"
-version = "0.0.19"
+version = "0.0.20"
 edition = "2024"
 authors = ["Andrew Pennebaker <n4jm4@pm.me>"]
 license = "0BSD"
 repository = "https://github.com/mcandre/rockhopper"
+exclude = [
+    "docker",
+    "examples",
+]
 
 [dependencies]
 die = "0.2.0"
