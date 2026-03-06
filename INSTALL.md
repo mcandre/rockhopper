@@ -45,7 +45,7 @@ curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uni
 * Linux (ARM, Intel)
 * macOS (ARM, Intel)
 * NetBSD (Intel)
-* Windows (ARM, Intel) via [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+* WSL (ARM, Intel)
 
 ### Prerequisites
 
@@ -89,7 +89,7 @@ Remove the application executables from the selected directory.
 * Linux (ARM, Intel)
 * macOS (ARM, Intel)
 * NetBSD (Intel)
-* Windows (ARM, Intel) native or [WSL](https://learn.microsoft.com/en-us/windows/wsl/)
+* Windows (ARM, Intel)
 
 # INSTALL (COMPILE FROM SOURCE)
 

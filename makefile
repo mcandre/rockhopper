@@ -7,9 +7,12 @@
 	cargo-check \
 	clean \
 	clean-cargo \
-	clean-example \
+	clean-examples \
+	clean-go \
 	clean-packages \
 	clean-ports \
+	clean-rust \
+	clean-shell \
 	clippy \
 	crit \
 	doc \
@@ -20,6 +23,7 @@
 	docker-build-macos \
 	docker-build-netbsd \
 	docker-build-ubuntu \
+	docker-build-windows \
 	docker-push \
 	docker-push-alpine-linux \
 	docker-push-fedora \
@@ -27,6 +31,7 @@
 	docker-push-macos \
 	docker-push-netbsd \
 	docker-push-ubuntu \
+	docker-push-windows \
 	docker-test \
 	docker-test-alpine-linux \
 	docker-test-fedora \
@@ -34,6 +39,7 @@
 	docker-test-macos \
 	docker-test-netbsd \
 	docker-test-ubuntu \
+	docker-test-windows \
 	install \
 	lint \
 	package \
@@ -41,6 +47,9 @@
 	publish \
 	rustfmt \
 	test \
+	test-go \
+	test-rust \
+	test-shell \
 	uninstall \
 	upload
 .IGNORE: \
@@ -61,19 +70,27 @@ build: lint
 cargo-check:
 	cargo check
 
-clean: clean-cargo clean-example clean-packages clean-ports
+clean: clean-cargo clean-examples clean-packages clean-ports
 
 clean-cargo:
 	cargo clean
 
-clean-example:
-	rm -rf example/sh/.rockhopper
+clean-examples: clean-go clean-shell
+
+clean-go:
+	rm -rf examples/go/.rockhopper
 
 clean-packages:
 	rm -rf .rockhopper
 
 clean-ports:
 	crit -c
+
+clean-rust:
+	rm -rf examples/rust/.rockhopper
+
+clean-shell:
+	rm -rf examples/shell/.rockhopper
 
 clippy:
 	cargo clippy
@@ -90,7 +107,8 @@ docker-build: \
 	docker-build-freebsd \
 	docker-build-macos \
 	docker-build-netbsd \
-	docker-build-ubuntu
+	docker-build-ubuntu \
+	docker-build-windows
 
 docker-build-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux --load"
@@ -110,13 +128,17 @@ docker-build-netbsd:
 docker-build-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu --load"
 
+docker-build-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:windows --load"
+
 docker-push: \
 	docker-push-alpine-linux \
 	docker-push-fedora \
 	docker-push-freebsd \
 	docker-push-macos \
 	docker-push-netbsd \
-	docker-push-ubuntu
+	docker-push-ubuntu \
+	docker-push-windows
 
 docker-push-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:alpine-linux -a n4jm4/rockhopper:$(VERSION)-alpine-linux-3.23,n4jm4/rockhopper:$(VERSION)-alpine-linux,n4jm4/rockhopper:alpine-linux-3.23 --push"
@@ -136,13 +158,17 @@ docker-push-netbsd:
 docker-push-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:ubuntu -a n4jm4/rockhopper:$(VERSION)-ubuntu-24.04,n4jm4/rockhopper:$(VERSION)-ubuntu-noble,n4jm4/rockhopper:$(VERSION)-ubuntu,n4jm4/rockhopper:ubuntu-24.04,n4jm4/rockhopper:ubuntu-noble --push"
 
+docker-push-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:windows -a n4jm4/rockhopper:$(VERSION)-windows --push"
+
 docker-test: \
 	docker-test-alpine-linux \
 	docker-test-fedora \
 	docker-test-freebsd \
 	docker-test-macos \
 	docker-test-netbsd \
-	docker-test-ubuntu
+	docker-test-ubuntu \
+	docker-test-windows
 
 docker-test-alpine-linux:
 	sh -c "cd docker/alpine-linux && tuggy -t n4jm4/rockhopper:test-alpine-linux --load"
@@ -168,6 +194,10 @@ docker-test-ubuntu:
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --load"
 	sh -c "cd docker/ubuntu && tuggy -t n4jm4/rockhopper:test-ubuntu --push"
 
+docker-test-windows:
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:test-windows --load"
+	sh -c "cd docker/windows && tuggy -t n4jm4/rockhopper:test-windows --push"
+
 install:
 	cargo install --force --path .
 
@@ -189,8 +219,16 @@ publish:
 rustfmt:
 	cargo fmt
 
-test:
-	sh -c "cd example/sh && rockhopper && tree .rockhopper/artifacts"
+test: test-go test-rust test-shell
+
+test-go:
+	sh -c "cd examples/go && rockhopper && tree .rockhopper/artifacts"
+
+test-rust:
+	sh -c "cd examples/rust && rockhopper && tree .rockhopper/artifacts"
+
+test-shell:
+	sh -c "cd examples/shell && rockhopper && tree .rockhopper/artifacts"
 
 uninstall:
 	cargo uninstall rockhopper

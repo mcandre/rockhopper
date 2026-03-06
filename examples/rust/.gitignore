@@ -1,5 +1,12 @@
-/.crit/
+.crit/cross/
+
+# Accelerate demo
+#
+# .crit/bin/
+!.crit/bin/
+
 .rockhopper/
+
 # Created by https://www.toptal.com/developers/gitignore/api/rust
 # Edit at https://www.toptal.com/developers/gitignore?templates=rust
 

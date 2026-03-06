@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product
+        Id="*"
+        Name="{{ rocklet_name }}"
+        Language="{{ rocklet_msi_lcid | default('1033') }}"
+        Version="{{ rocklet_version }}"
+        Manufacturer="{{ rocklet_manufacturer }}"
+        UpgradeCode="{{ rocklet_msi_upgrade_code }}"
+    >
+        <Package
+            InstallerVersion="300"
+            Description="{{ rocklet_summary }}"
+            SummaryCodepage="{{ rocklet_msi_codepage | default('1252') }}"
+            Compressed="yes"
+        />
+        <Media Id="1" Cabinet="cab1.cab" EmbedCab="yes" />
+        {{ msi_files }}
+    </Product>
+</Wix>

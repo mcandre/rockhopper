@@ -403,6 +403,10 @@ rocklet.os_arch = "amd64"
 | Ubuntu        | 64-bit ARM            | `arm64`                      |
 | Ubuntu        | 64-bit Intel          | `amd64`                      |
 | Ubuntu        | (chipset independent) | `all`                        |
+| Windows (MSI) | 64-bit ARM            | `arm64`                      |
+| Windows (MSI) | 64-bit Intel          | `x64`                        |
+
+Note: Some platforms / package managers / package manager versions may lack support for noarch-style semantics.
 
 #### `dependencies`
 
@@ -448,7 +452,13 @@ Example:
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin/raygun" = "bin/x86_64-unknown-linux-musl/raygun"
+dest."usr/bin" = "bin/x86_64-unknown-linux-musl"
 ```
 
 Recommended for binary based package builds.
+
+#### Warning
+
+Some distros have limited support for mapping files with duplicate basenames (e.g., `usr/share/app/LICENSE` vs. `usr/share/app/data/LICENSE`).
+
+When in doubt, delect unique basenames for all source media file paths.

@@ -1,0 +1,90 @@
+#!/bin/bash
+set -eufo pipefail
+
+#
+# Generate wix v3 entry XML trees
+#
+
+usage() {
+    printf "usage: %s <source-media> <app> <arch>\n" "$0" >&2
+}
+
+if [ "$#" != 3 ] ||
+    [ -z "$1" ] ||
+    [ -z "$2" ] ||
+    [ -z "$3" ]; then
+    usage
+    exit 1
+fi
+
+source_media="$1"
+app="$2"
+arch="$3"
+
+DIR_ID=0
+FILE_ID=0
+COMPONENT_ID=0
+
+wix-entry() {
+    local dir="$1"
+    local dir_basename="$(basename "$dir")"
+    local f=''
+    local win64='Win64="yes"'
+
+    if [ "$bitness" != '64' ]; then
+        win64=''
+    fi
+
+    for f in $(find "$dir" -maxdepth 1 -print | sort); do
+        f="${f#./}"
+
+        if [ "$f" = '.' ]; then
+            continue
+        fi
+
+        local b="$(basename "$f")"
+
+        if [ -d "$f" ]; then
+            printf "<Directory Id=\"%s\" Name=\"%s\">" "Dir$DIR_ID" "$b"
+            DIR_ID=$((DIR_ID + 1))
+
+            cd "$f"
+
+            wix-entry .
+
+            cd ..
+
+            printf "</Directory>"
+        elif [ -f "$f" ]; then
+            r="$(realpath "$f")"
+            printf "<Component Id=\"%s\" Guid=\"%s\" %s>" "Component$COMPONENT_ID" "$(uuidgen)"  "$win64"
+            printf "<File Id=\"%s\" Name=\"%s\" Source=\"%s\" DiskId=\"1\" KeyPath=\"yes\" />" "File$FILE_ID" "$b" "$r"
+            printf "</Component>"
+            COMPONENT_ID=$((COMPONENT_ID + 1))
+            FILE_ID=$((FILE_ID + 1))
+        else
+            echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
+        fi
+    done
+}
+
+bitness='32'
+program_files_folder='ProgramFilesFolder'
+
+if [[ "$arch" = *'64'* ]]; then
+    bitness='64'
+    program_files_folder='ProgramFiles64Folder'
+fi
+
+printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"%s\" Name=\"PFiles\"><Directory Id=\"INSTALLLOCATION\" Name=\"$app\">" "$program_files_folder"
+
+wix-entry "$source_media"
+
+printf "</Directory></Directory></Directory>"
+printf "<Feature Id=\"Complete\" Level=\"1\">"
+
+for ((i=0; i <COMPONENT_ID; i++)); do
+    printf "<ComponentRef Id=\"Component$i\" />"
+done
+
+printf "</Feature>\n"
