@@ -159,6 +159,15 @@ fi
 artifact="${artifact}-${rocklet_os_arch}.msi"
 
 mkdir -p "$rocklet_artifact"
-wixl -v -o "$rocklet_artifact/$artifact" -a "$rocklet_os_arch" "$PRODUCT"
+
+wixl() {
+    if [ "$rocklet_log_level" = 'debug' ]; then
+        command wixl -v "$@"
+    else
+        command wixl "$@"
+    fi
+}
+
+wixl -o "$rocklet_artifact/$artifact" -a "$rocklet_os_arch" "$PRODUCT"
 
 clean

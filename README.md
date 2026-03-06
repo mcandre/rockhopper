@@ -14,25 +14,31 @@ rockhopper provides a unified framework for building binary based OS packages ac
 
 BYOB (Bring Your Own Binaries).
 
-# EXAMPLE
+# EXAMPLES
 
 ```console
-$ cd example/sh
+$ cd examples/go
 
 $ rockhopper
 
 $ tree .rockhopper/artifacts
 .rockhopper/artifacts
 ├── alpine-linux
-│   └── raygun-1.2.3-r81.noarch.apk
+│   ├── raygun-0.0.1-r1.aarch64.apk
+│   └── raygun-0.0.1-r1.x86_64.apk
 ├── fedora
-│   └── raygun-1.2.3-81.noarch.rpm
-├── freebsd
-│   └── raygun-1.2.3_81.pkg
+│   ├── raygun-0.0.1-1.aarch64.rpm
+│   └── raygun-0.0.1-1.x86_64.rpm
+├── freebsd-amd64
+│   └── raygun-0.0.1_1.pkg
+├── freebsd-arm64
+│   └── raygun-0.0.1_1.pkg
 ...
 ```
 
-See `rockhopper -h` for more options.
+For more CLI options, run `rockhopper -h`.
+
+rockhopper is programming language agnostic. For more programming language samples, see [examples](examples).
 
 # DOWNLOAD
 
@@ -70,9 +76,14 @@ See `rockhopper -h` for more options.
       <td></td>
     </tr>
     <tr>
-      <td>Ubuntu / Windows (WSL)</td>
+      <td>Ubuntu</td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.18/ubuntu/rockhopper_0.0.18-1_amd64.deb">Intel</a></td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.18/ubuntu/rockhopper_0.0.18-1_arm64.deb">ARM</a></td>
+    </tr>
+    <tr>
+      <td>Windows</td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.18/windows/rockhopper-0.0.18.1-x64.msi">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.18/windows/rockhopper-0.0.18.1-arm64.msi">ARM</a></td>
     </tr>
   </tbody>
 </table>
@@ -99,6 +110,7 @@ Where other package generators rely on host native tools, rockhopper abstracts p
 | apt             | `*.deb`        | Ubuntu         | `ubuntu`       |
 | dnf             | `*.rpm`        | Fedora         | `fedora`       |
 | installer       | `*.pkg`        | macOS          | `macos`        |
+| msiexec         | `*.msi`        | Windows        | `windows`      |
 | pkg             | `*.pkg`        | FreeBSD        | `freebsd`      |
 | pkg_add         | `*.tgz`        | NetBSD         | `netbsd`       |
 

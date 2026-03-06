@@ -7,9 +7,12 @@
 	cargo-check \
 	clean \
 	clean-cargo \
-	clean-example \
+	clean-examples \
+	clean-go \
 	clean-packages \
 	clean-ports \
+	clean-rust \
+	clean-shell \
 	clippy \
 	crit \
 	doc \
@@ -44,6 +47,9 @@
 	publish \
 	rustfmt \
 	test \
+	test-go \
+	test-rust \
+	test-shell \
 	uninstall \
 	upload
 .IGNORE: \
@@ -64,19 +70,27 @@ build: lint
 cargo-check:
 	cargo check
 
-clean: clean-cargo clean-example clean-packages clean-ports
+clean: clean-cargo clean-examples clean-packages clean-ports
 
 clean-cargo:
 	cargo clean
 
-clean-example:
-	rm -rf example/sh/.rockhopper
+clean-examples: clean-go clean-shell
+
+clean-go:
+	rm -rf examples/go/.rockhopper
 
 clean-packages:
 	rm -rf .rockhopper
 
 clean-ports:
 	crit -c
+
+clean-rust:
+	rm -rf examples/rust/.rockhopper
+
+clean-shell:
+	rm -rf examples/shell/.rockhopper
 
 clippy:
 	cargo clippy
@@ -205,8 +219,16 @@ publish:
 rustfmt:
 	cargo fmt
 
-test:
-	sh -c "cd example/sh && rockhopper && tree .rockhopper/artifacts"
+test: test-go test-rust test-shell
+
+test-go:
+	sh -c "cd examples/go && rockhopper && tree .rockhopper/artifacts"
+
+test-rust:
+	sh -c "cd examples/rust && rockhopper && tree .rockhopper/artifacts"
+
+test-shell:
+	sh -c "cd examples/shell && rockhopper && tree .rockhopper/artifacts"
 
 uninstall:
 	cargo uninstall rockhopper

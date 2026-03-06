@@ -1,0 +1,48 @@
+#!/bin/bash
+unset IFS
+set -euf
+
+apps=(raygun)
+
+declare -a platforms
+while IFS= read -r line; do
+    platforms+=("$line")
+done <<<"$(go tool dist list)"
+
+for platform in "${platforms[@]}"; do
+    os="${platform%/*}"
+    arch="${platform#*/}"
+
+    case "$os" in
+        # Skip mobile devices
+        'android' | 'ios')
+            continue
+            ;;
+        # Skip fringe OS's
+        'aix' | 'dragonfly' | 'illumos' | 'js' | 'openbsd' | 'plan9' | 'solaris' | 'wasip1')
+            continue
+            ;;
+        *)
+            ;;
+    esac
+
+    case "$arch" in
+        # Skip 32-bit ISA's
+        '386' | 'arm' | 'mips' | 'mipsle')
+            continue
+            ;;
+        # Skip fringe ISA's
+        'loong64' | 'mips64' | 'mips64le' | 'ppc64' | 'ppc64le' | 'riscv64' | 's390x')
+            continue
+            ;;
+        *)
+            ;;
+    esac
+
+    artifact_dir="bin/$os/$arch"
+    mkdir -p "$artifact_dir"
+
+    for app in "${apps[@]}"; do
+        env GOOS="$os" GOARCH="$arch" go build -o "$artifact_dir/$app" "cmd/$app/main.go"
+    done
+done

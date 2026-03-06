@@ -452,7 +452,7 @@ Example:
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin/raygun" = "bin/x86_64-unknown-linux-musl/raygun"
+dest."usr/bin" = "bin/x86_64-unknown-linux-musl"
 ```
 
 Recommended for binary based package builds.
