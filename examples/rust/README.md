@@ -14,6 +14,12 @@ My Illudium Q-36 space modulator!
 * [Rust](https://www.rust-lang.org/en-US/)
 * Provision additional dev tools with `make -f install.mk`
 
+# INSTALL
+
+```sh
+make install
+```
+
 # RUN
 
 ```sh

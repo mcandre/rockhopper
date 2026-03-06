@@ -2,6 +2,7 @@
 .SILENT:
 .PHONY: \
 	crit \
+	install \
 	package \
 	publish
 
@@ -10,6 +11,9 @@ BANNER=raygun-$(VERSION)
 
 crit:
 	crit -b $(BANNER)
+
+install:
+	cargo install --force --path .
 
 package:
 	rockhopper
