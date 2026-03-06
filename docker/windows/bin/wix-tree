@@ -6,17 +6,16 @@ set -eufo pipefail
 #
 
 usage() {
-    printf "usage: %s <app> <source-media>\n" "$0"
+    printf "usage: %s <app> <source-media> <arch>\n" "$0"
 }
 
-if [ "$#" != 2 ] || [ -z "$1" ] || [ -z "$2" ]; then
+if [ "$#" != 3 ] || [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]; then
     usage
     exit 1
 fi
 
-ENTRY_ID_PREFIX='entry'
-ENTRY_ID=0
-declare -a COMPONENT_ENTRIES
+DIR_ID=0
+COMPONENT_ID=0
 
 set -x
 
@@ -24,6 +23,11 @@ wix-entry() {
     local dir="$1"
     local dir_basename="$(basename "$dir")"
     local f=''
+    local win64='Win64="yes"'
+
+    if [ "$bitness" != '64' ]; then
+        win64=''
+    fi
 
     for f in $(find "$dir" -maxdepth 1 -print | sort); do
         f="${f#./}"
@@ -35,8 +39,8 @@ wix-entry() {
         local b="$(basename "$f")"
 
         if [ -d "$f" ]; then
-            printf "<Directory Id=\"%s%d\" Name=\"%s\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$b"
-            ENTRY_ID=$((ENTRY_ID + 1))
+            printf "<Directory Id=\"%s\" Name=\"%s\">" "Dir$DIR_ID" "$b"
+            DIR_ID=$((DIR_ID + 1))
 
             cd "$f"
 
@@ -46,20 +50,28 @@ wix-entry() {
 
             printf "</Directory>"
         elif [ -f "$f" ]; then
-            printf "<Component Id=\"%s%d\" Guid=\"%s\" Win64=\"yes\">" "$ENTRY_ID_PREFIX" "$ENTRY_ID" "$(uuidgen)"
-            printf "<File Source=\"%s\" KeyPath=\"yes\" />" "$b"
+            r="$(realpath "$b")"
+            printf "<Component Id=\"%s\" Guid=\"%s\">" "Component$COMPONENT_ID" "$(uuidgen)"
+            printf "<File Id=\"%s\" Name=\"%s\" Source=\"%s\" DiskId=\"1\" KeyPath=\"yes\" %s />" "File$b" "$b" "$b" "$win64"
             printf "</Component>"
-            COMPONENT_ENTRIES+=("${ENTRY_ID_PREFIX}${ENTRY_ID}")
-            ENTRY_ID=$((ENTRY_ID + 1))
+            COMPONENT_ID=$((COMPONENT + 1))
         else
             echo "error: ${ROCKHOPPER_IMAGE}: unsupported file system file type for path: ${f}"
         fi
     done
 }
 
-printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"ProgramFiles64Folder\" Name=\"PFiles\"><Directory Id=\"INSTALLDIR\" Name=\"$1\">"
+bitness='32'
+program_files_folder='ProgramFilesFolder'
 
-wix-entry "$2"
+if [[ "$3" = "*64*" ]; then
+    bitness='64'
+    program_files_folder='ProgramFiles64Folder'
+fi
+
+printf "<Directory Id=\"TARGETDIR\" Name=\"SourceDir\"><Directory Id=\"%s\" Name=\"PFiles\"><Directory Id=\"INSTALLLOCATION\" Name=\"$2\">" "$program_files_folder"
+
+wix-entry "$1"
 
 printf "</Directory></Directory></Directory>"
 printf "<Feature Id=\"Complete\" Level=\"1\">"

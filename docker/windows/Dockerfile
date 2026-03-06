@@ -5,6 +5,7 @@ RUN dnf install -y cargo && \
 FROM library/fedora:43
 RUN dnf install -y \
         msitools \
+        tree \
         util-linux && \
     dnf clean all
 COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin

@@ -133,7 +133,7 @@ find "$source_media" -type f -exec cp "{}" "$rocklet_msi_build" \;
 
 cd "$rocklet_msi_build"
 
-export msi_files="$(wix-tree "$rocklet_name" .)"
+export msi_files="$(wix-tree . "$rocklet_name" "$rocklet_os_arch")"
 
 PRODUCT='Product.wxs'
 rsubst --strict "$rocklet_templates/Product.wxs.j2" >"$PRODUCT"
@@ -151,7 +151,16 @@ fi
 
 artifact="${artifact}_${rocklet_os_arch}.msi"
 
-wixl -o "$rocklet_name.msi" --arch "$rocklet_os_arch" "$PRODUCT"
+tree .
+ls -Ahl
+
+wixl -v "$PRODUCT" -o "$rocklet_name.msi" -a "$rocklet_os_arch"
+echo "$?"
+
+tree .
+ls -Ahl
+
+mkdir -p "$rocklet_artifact"
 mv "$rocklet_name.msi" "$rocklet_artifact/$artifact"
 
 clean
