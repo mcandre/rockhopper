@@ -128,7 +128,7 @@ rocklet.os_arch = "arm64"
 dest."usr/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
 
 [[pkg]]
-image = "n4jm4/rockhopper:test-windows"
+image = "n4jm4/rockhopper:windows"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x64"
 rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
@@ -137,7 +137,7 @@ rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
 dest."bin" = ".crit/bin/raygun-0.0.1/x86_64-pc-windows-msvc"
 
 [[pkg]]
-image = "n4jm4/rockhopper:test-windows"
+image = "n4jm4/rockhopper:windows"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "arm64"
 rocklet.msi_upgrade_code = "69F159AD-CE9C-4EE8-A25D-BB4E8A226D73"
