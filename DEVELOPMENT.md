@@ -19,7 +19,8 @@ For advanced operations, such as linting, managing multiplatform Docker images, 
 
 ## Recommended
 
-* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, as many industry Docker images lag behind in ARM support
+* Users may want to apply `BUILDX_NO_DEFAULT_LOAD=true`, in order to reduce spurious messages about missing buildx platforms
+* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, in order to account for images commonly lacking `linux/arm64` buildx platforms
 * [ASDF](https://asdf-vm.com/) 0.18 (run `asdf reshim` after provisioning)
 
 # INSTALL APP
