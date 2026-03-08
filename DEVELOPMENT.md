@@ -9,8 +9,9 @@ For advanced operations, such as linting, managing multiplatform Docker images, 
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
 * [awscli](https://aws.amazon.com/cli/)
 * [bash](https://www.gnu.org/software/bash/) 4+
-* [Docker](https://www.docker.com/) 28.0.1+
+* [Docker](https://www.docker.com/)
 * POSIX compliant [findutils](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html)
+* [jq](https://jqlang.org/)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [Rust](https://www.rust-lang.org/en-US/)
 * GNU [tar](https://www.gnu.org/software/tar/) as `gtar`

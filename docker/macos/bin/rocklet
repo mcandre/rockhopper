@@ -33,11 +33,8 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
-ROCKHOPPER_VERSION='0.0.20'
-ROCKHOPPER_REV='1'
-
 banner() {
-    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
+    echo "$0 $ROCKHOPPER_VERSION"
 }
 
 while [ "$#" -ge 1 ]; do
@@ -144,7 +141,7 @@ bsdtar --format=odc --uid "$rocklet_uid" --gid "$rocklet_gid" -czf "$PAYLOAD" .
 
 export authoring_tool="com.github.mcandre.rockhopper"
 export authoring_tool_version="$ROCKHOPPER_VERSION"
-export authoring_tool_build="$ROCKHOPPER_REV"
+export authoring_tool_build='1'
 DISTRIBUTION="$rocklet_pkg_build/Distribution"
 rsubst --strict "$rocklet_templates/Distribution.j2" >"$DISTRIBUTION"
 

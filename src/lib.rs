@@ -193,7 +193,7 @@ impl Rockhopper {
         }
 
         let mut cmd = process::Command::new("docker");
-        let mut args: Vec<String> = vec!["run".to_string()];
+        let mut args: Vec<String> = vec!["run".to_string(), "--rm".to_string()];
         let oci_arch = match &pkg.rocklet {
             Some(e) => e.get("oci_arch"),
             _ => None,

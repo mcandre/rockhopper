@@ -3,6 +3,8 @@ RUN dnf install -y cargo && \
     cargo install rsubst@0.2.1
 
 FROM library/fedora:43
+ARG ROCKHOPPER_VERSION
+ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN dnf install -y \
         rpmdevtools \
         rpmlint && \

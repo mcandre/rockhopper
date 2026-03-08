@@ -14,6 +14,8 @@ RUN apt update && \
     make all
 
 FROM library/ubuntu:25.04
+ARG ROCKHOPPER_VERSION
+ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN apt update && \
     apt install --no-install-recommends -y \
         libarchive-tools \

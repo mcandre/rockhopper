@@ -42,11 +42,8 @@ usage() {
     printf -- "--version -V\tShow version banner\n"
 }
 
-ROCKHOPPER_VERSION='0.0.20'
-ROCKHOPPER_REV='1'
-
 banner() {
-    echo "$0 $ROCKHOPPER_VERSION-$ROCKHOPPER_REV"
+    echo "$0 $ROCKHOPPER_VERSION"
 }
 
 while [ "$#" -ge 1 ]; do

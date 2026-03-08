@@ -4,6 +4,8 @@ RUN apk add -U cargo && \
 
 FROM library/alpine:3.23
 # Include a test keypair for signing packages
+ARG ROCKHOPPER_VERSION
+ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN apk add -U --no-cache \
         alpine-sdk \
         atools \

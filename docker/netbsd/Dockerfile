@@ -10,6 +10,8 @@ RUN apt update && \
     cargo install rsubst@0.2.1
 
 FROM library/ubuntu:24.04
+ARG ROCKHOPPER_VERSION
+ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN apt update && \
     apt install --no-install-recommends -y libarchive-tools && \
     rm -rf /var/lib/apt/lists/*
