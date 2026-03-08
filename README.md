@@ -131,7 +131,6 @@ For information on developing custom rockhopper images, see the [rocklets interf
 ## Recommended
 
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
-* Users may want to apply `BUILDX_NO_DEFAULT_LOAD=true`, in order to reduce spurious messages about missing buildx platforms
 * Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, in order to account for images commonly lacking `linux/arm64` buildx platforms
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
