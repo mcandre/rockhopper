@@ -17,8 +17,8 @@ fn main() {
     opts.optflag("c", "clean", "remove artifacts");
     opts.optflag("d", "debug", "enable additional logging");
     opts.optflag("q", "quiet", "reduce logging");
-    opts.optflag("h", "help", "usage operation. print usage info");
-    opts.optflag("v", "version", "version operation. print version info");
+    opts.optflag("h", "help", "show usage menu");
+    opts.optflag("v", "version", "show version banner");
 
     let usage: String = opts.usage(&brief);
     let arguments: Vec<String> = env::args().collect();
