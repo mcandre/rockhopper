@@ -55,10 +55,10 @@ Reduce nonerror console logs.
 
 # CLI FLAGS
 
-* `--debug`, `-d`: Enable debug mode. Provide more context as package is being built.
-* `--quiet`, `-q`: Enable quiet mode. Elide all rocklet console logs from stdout and from stderr, except in the event of an error.
-* `--help`, `-h`: Show usage menu.
-* `--version`, `-V`: Show a rockhopper compatibility version banner, of the form `<rocklet executable> <rockhopper version>`.
+* `-d`, `--debug`: Enable debug mode. Provide more context as package is being built.
+* `-q`, `--quiet`: Enable quiet mode. Elide all rocklet console logs from stdout and from stderr, except in the event of an error.
+* `-h`, `--help`: Show usage menu.
+* `-V`, `--version`: Show a rockhopper compatibility version banner, of the form `<rocklet executable> <rockhopper version>`.
 
 The banner executable indicated may be either basename or absolute path.
 

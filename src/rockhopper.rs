@@ -4,6 +4,9 @@ extern crate getopts;
 extern crate rockhopper;
 
 use die::{Die, die};
+use regex;
+
+use std::collections::BTreeMap;
 use std::env;
 
 /// CLI entrypoint
@@ -13,10 +16,13 @@ fn main() {
         env!("CARGO_PKG_NAME")
     );
 
+    let rocklet_env_pattern = regex::Regex::new("^(?P<key>.+)=(?P<value>.*)$").unwrap();
+
     let mut opts: getopts::Options = getopts::Options::new();
     opts.optflag("c", "clean", "remove artifacts");
     opts.optflag("d", "debug", "enable additional logging");
     opts.optflag("q", "quiet", "reduce logging");
+    opts.optmulti("r", "rocklet-env", "set global rocklet option", "<key>=<value>");
     opts.optflag("h", "help", "show usage menu");
     opts.optflag("v", "version", "show version banner");
 
@@ -47,6 +53,18 @@ fn main() {
 
     if optmatches.opt_present("d") {
         rh.log_level = Some(rockhopper::LogLevel::Debug);
+    }
+
+    for entry in optmatches.opt_strs("r") {
+        let (key, value) = rocklet_env_pattern
+            .captures(&entry)
+            .map(|e| (e["key"].to_string(), e["value"].to_string()))
+            .die(&format!("invalid env entry: {entry}"));
+        rh
+            .rocklet
+            .as_mut()
+            .unwrap_or(&mut BTreeMap::new())
+            .insert(key, value);
     }
 
     rh.rocklet_args = optmatches.free.clone();

@@ -99,7 +99,7 @@ lint: \
 	rustfmt
 
 package:
-	rockhopper
+	rockhopper -r "version=$(VERSION)"
 
 port:
 	./port -C .crit/bin -a rockhopper $(BANNER)

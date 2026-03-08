@@ -2,7 +2,7 @@
 
 # FLAGS
 
-## `--debug`, `-d`
+## `-d`, `--debug`
 
 Overrides `log_level`.
 
@@ -10,7 +10,7 @@ Enables debug mode. Show additional logs.
 
 In the event a problem, debug mode provides context for common resources, such as package configurations.
 
-## `--quiet`, `-q`
+## `-q`, `--quiet`
 
 Overrides `log_level`.
 
@@ -18,11 +18,15 @@ Enables quiet mode. Elide most console logs.
 
 In the event of a problem, remove this option.
 
-## `--help`, `-h`
+## `-r`, `--rocklet-env` `<key>=<value>`
+
+Overrides global `rocklet` options.
+
+## `-h`, `--help`
 
 Show usage menu.
 
-## `--version`, `-V`
+## `-V`, `--version`
 
 Show version banner.
 

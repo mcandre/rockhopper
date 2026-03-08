@@ -162,7 +162,7 @@ impl Rockhopper {
             for (k, v) in dest {
                 let source_media_k = source_media.join(k);
                 let metadata =
-                    fs::metadata(&v).map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                    fs::metadata(&v).map_err(|e| RockhopperError::IOError(format!("unable to query host file path: {v}: {e}")))?;
 
                 if metadata.is_dir() {
                     let mut options = fs_extra::dir::CopyOptions::new();

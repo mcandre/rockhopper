@@ -4,7 +4,6 @@ log_level = "quiet"
 [rocklet]
 name = "rockhopper"
 identifier = "com.github.mcandre.rockhopper"
-version = "0.0.20"
 rev = "1"
 maintainer = "Andrew Pennebaker <n4jm4@pm.me>"
 manufacturer = "YelloSoft"
