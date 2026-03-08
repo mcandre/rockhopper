@@ -22,7 +22,12 @@ fn main() {
     opts.optflag("c", "clean", "remove artifacts");
     opts.optflag("d", "debug", "enable additional logging");
     opts.optflag("q", "quiet", "reduce logging");
-    opts.optmulti("r", "rocklet-env", "set global rocklet option", "<key>=<value>");
+    opts.optmulti(
+        "r",
+        "rocklet-env",
+        "set global rocklet option",
+        "<key>=<value>",
+    );
     opts.optflag("h", "help", "show usage menu");
     opts.optflag("v", "version", "show version banner");
 
@@ -60,8 +65,7 @@ fn main() {
             .captures(&entry)
             .map(|e| (e["key"].to_string(), e["value"].to_string()))
             .die(&format!("invalid env entry: {entry}"));
-        rh
-            .rocklet
+        rh.rocklet
             .as_mut()
             .unwrap_or(&mut BTreeMap::new())
             .insert(key, value);

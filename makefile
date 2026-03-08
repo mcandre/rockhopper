@@ -7,6 +7,7 @@
 	cargo-check \
 	clean \
 	clean-cargo \
+	clean-crit \
 	clean-examples \
 	clean-go \
 	clean-packages \
@@ -16,9 +17,9 @@
 	clippy \
 	crit \
 	doc \
-	docker-build
-	docker-push
-	docker-test
+	docker-build \
+	docker-push \
+	docker-test \
 	install \
 	lint \
 	package \
@@ -34,12 +35,13 @@
 .IGNORE: \
 	clean \
 	clean-cargo \
+	clean-crit \
 	clean-example \
 	clean-packages \
 	clean-ports
 
 VERSION!=cargo metadata --format-version 1 --no-deps | jq -r ".packages[0].version"
-BANNER=rockhopper-$(VERSION)
+BANNER=rockhopper
 
 all: install
 
@@ -54,6 +56,9 @@ clean: clean-cargo clean-examples clean-packages clean-ports
 clean-cargo:
 	cargo clean
 
+clean-crit:
+	crit -c
+
 clean-examples: clean-go clean-shell
 
 clean-go:
@@ -63,7 +68,7 @@ clean-packages:
 	rm -rf .rockhopper
 
 clean-ports:
-	crit -c
+	rm -rf .crit/bin/rockhopper-ports
 
 clean-rust:
 	rm -rf examples/rust/.rockhopper

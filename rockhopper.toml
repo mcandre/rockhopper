@@ -16,41 +16,41 @@ url = "https://github.com/mcandre/rockhopper"
 [[pkg]]
 image = "n4jm4/rockhopper:alpine-linux"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:alpine-linux"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:fedora"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:fedora"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:freebsd"
 rocklet.origin = "local/rockhopper"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "freebsd:*:amd64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.20/x86_64-unknown-freebsd"
+dest."usr/local/bin" = ".crit/bin/rockhopper/x86_64-unknown-freebsd"
 
 [[pkg]]
 image = "n4jm4/rockhopper:macos"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.20/x86_64-apple-darwin"
+dest."usr/local/bin" = ".crit/bin/rockhopper/x86_64-apple-darwin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:macos"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "arm64"
-dest."usr/local/bin" = ".crit/bin/rockhopper-0.0.20/aarch64-apple-darwin"
+dest."usr/local/bin" = ".crit/bin/rockhopper/aarch64-apple-darwin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:netbsd"
@@ -59,28 +59,28 @@ rocklet.os_arch = "x86_64"
 rocklet.pkg_os_version = "10.1"
 # byte estimate, including dependencies
 rocklet.pkg_size_all = "1000000"
-dest."bin" = ".crit/bin/rockhopper-0.0.20/x86_64-unknown-netbsd"
+dest."bin" = ".crit/bin/rockhopper/x86_64-unknown-netbsd"
 
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/x86_64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/x86_64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/arm64"
-dest."usr/bin" = ".crit/bin/rockhopper-0.0.20/aarch64-unknown-linux-musl"
+dest."usr/bin" = ".crit/bin/rockhopper/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:windows"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x64"
 rocklet.msi_upgrade_code = "E1F3CEB0-67C9-4F88-86C3-99E895699067"
-dest."bin" = ".crit/bin/rockhopper-0.0.20/x86_64-pc-windows-msvc"
+dest."bin" = ".crit/bin/rockhopper/x86_64-pc-windows-msvc"
 
 [[pkg]]
 image = "n4jm4/rockhopper:windows"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "arm64"
 rocklet.msi_upgrade_code = "E1F3CEB0-67C9-4F88-86C3-99E895699067"
-dest."bin" = ".crit/bin/rockhopper-0.0.20/aarch64-pc-windows-msvc"
+dest."bin" = ".crit/bin/rockhopper/aarch64-pc-windows-msvc"

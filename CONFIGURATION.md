@@ -22,6 +22,8 @@ In the event of a problem, remove this option.
 
 Overrides global `rocklet` options.
 
+Useful for populating values dynamically.
+
 ## `-h`, `--help`
 
 Show usage menu.
@@ -75,7 +77,7 @@ Example:
 ```toml
 [rocklet]
 name = "raygun"
-version = "1.2.3"
+version = "0.0.1"
 ```
 
 ### `name`
@@ -100,7 +102,7 @@ Example:
 ```toml
 [rocklet]
 name = "raygun"
-version = "1.2.3"
+version = "0.0.1"
 ```
 
 ### `rev`
@@ -114,8 +116,8 @@ Example:
 ```toml
 [rocklet]
 name = "raygun"
-version = "1.2.3"
-rev = "81"
+version = "0.0.1"
+rev = "1"
 ```
 
 ### `maintainer`
