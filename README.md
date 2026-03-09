@@ -88,7 +88,7 @@ rockhopper is programming language agnostic. For more programming language sampl
   </tbody>
 </table>
 
-# System Requirements
+# SYSTEM REQUIREMENTS
 
 ## Bitness
 
