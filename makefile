@@ -51,7 +51,7 @@ build: lint
 cargo-check:
 	cargo check
 
-clean: clean-cargo clean-examples clean-packages clean-ports
+clean: clean-cargo clean-crit clean-examples clean-packages clean-ports
 
 clean-cargo:
 	cargo clean
