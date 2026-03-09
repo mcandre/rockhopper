@@ -61,7 +61,7 @@ rockhopper is programming language agnostic. For more programming language sampl
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.21/fedora/rockhopper-0.0.21-1.aarch64.rpm">ARM</a></td>
     </tr>
     <tr>
-      <td>FreeBSD 13+</td>
+      <td>FreeBSD 13</td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.21/freebsd-amd64/rockhopper-0.0.21_1.pkg">Intel</a></td>
       <td></td>
     </tr>

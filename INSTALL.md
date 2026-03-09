@@ -40,7 +40,7 @@ curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uni
 
 ### Hosts
 
-* FreeBSD 13+ (Intel)
+* FreeBSD 13 (Intel)
 * Illumos (Intel)
 * Linux (ARM, Intel)
 * macOS 26 Tahoe+ (ARM, Intel)
@@ -84,7 +84,7 @@ Remove the application executables from the selected directory.
 
 ### Hosts
 
-* FreeBSD 13+ (Intel)
+* FreeBSD 13 (Intel)
 * Illumos (Intel)
 * Linux (ARM, Intel)
 * macOS 26 Tahoe+ (ARM, Intel)
