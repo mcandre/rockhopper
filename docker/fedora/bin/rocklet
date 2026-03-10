@@ -156,20 +156,24 @@ done
 
 export fedora_data
 
-fedora_files=''
+fedora_files=()
 
 for f in $(find . -type f -print); do
     f="${f#./}"
-    fedora_files="${fedora_files}/$f "
+    fedora_files+=("$f")
 done
-
-export fedora_files
 
 cd "$rocklet_rpm_build"
 
 mkdir -p "$rocklet_rpm_build/SPECS"
 SPEC="$rocklet_rpm_build/SPECS/$rocklet_name.spec"
 rsubst --strict "$rocklet_templates/.spec.j2" >"$SPEC"
+
+for f in "${fedora_files[@]}"; do
+    printf "%s\n" "/$f" >>"$SPEC"
+done
+
+printf "%%changelog\n%%autochangelog\n" >>"$SPEC"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo 'SPEC:'

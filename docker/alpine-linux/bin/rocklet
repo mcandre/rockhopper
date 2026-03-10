@@ -130,7 +130,7 @@ for f in $(find . -print); do
     if [ -d "$f" ]; then
         apk_package="${apk_package}mkdir -p \"\$pkgdir/$f\"; "
     elif [ -f "$f" ]; then
-        apk_package="${apk_package}cp \"\$srcdir/$f\" \"\$pkgdir/$f\""
+        apk_package="${apk_package}cp \"\$srcdir/$f\" \"\$pkgdir/$f\"; "
     else
         echo "error: ${rocklet_image}: unsupported file system file type for path: ${source_media}/${f}" >&2
         exit 1
