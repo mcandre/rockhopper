@@ -1,10 +1,10 @@
 //! CLI rockhopper tool
 
 extern crate getopts;
+extern crate regex;
 extern crate rockhopper;
 
 use die::{Die, die};
-use regex;
 
 use std::collections::BTreeMap;
 use std::env;

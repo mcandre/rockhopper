@@ -2,6 +2,11 @@
 # log_level = "debug"
 log_level = "quiet"
 
+# excludes = [
+#     ".DS_Store",
+#     "Thumbs.db",
+# ]
+
 # docker_args = []
 
 [rocklet]

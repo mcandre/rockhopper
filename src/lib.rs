@@ -1,7 +1,8 @@
 //! rockhopper provides predicates for generating software packages.
 
-extern crate fs_extra;
+extern crate glob;
 extern crate toml;
+extern crate walkdir;
 
 use serde::{Deserialize, Serialize};
 
@@ -10,6 +11,7 @@ use std::fmt;
 use std::fs;
 use std::path;
 use std::process;
+use std::sync;
 
 /// CONFIGURATION_FILENAME denotes the file path to an optional TOML configuration file,
 /// relative to the current working directory.
@@ -24,6 +26,14 @@ pub static DATA: &str = "source-media";
 /// DEFAULT_DOCKER_MOUNT_PATH denotes the default location of the Docker mount directory,
 /// where the current working directory gets loaded into containers.
 pub static DEFAULT_DOCKER_MOUNT_PATH: &str = "/mnt/rockhopper";
+
+/// DEFAULT_EXCLUDES collects default skip patterns.
+pub static DEFAULT_EXCLUDES: sync::LazyLock<Vec<String>> = sync::LazyLock::new(|| {
+    [".DS_Store", "Thumbs.db"]
+        .iter()
+        .map(|e| e.to_string())
+        .collect()
+});
 
 #[derive(Debug)]
 pub enum RockhopperError {
@@ -100,6 +110,12 @@ pub struct Rockhopper {
     /// log_level modulates log noise (optional).
     pub log_level: Option<LogLevel>,
 
+    // excludes collects file path skip patterns for dest file mapping.
+    //
+    // Glob syntax
+    // https://docs.rs/glob/latest/glob/index.html
+    pub excludes: Option<Vec<String>>,
+
     /// rocklet supplies additional build configuration to rocklets (requirements vary by distro).
     pub rocklet: Option<BTreeMap<String, String>>,
 
@@ -118,6 +134,10 @@ pub struct Rockhopper {
     /// rocklet_args supplies additional CLI arguments to rocklets (optional).
     #[serde(skip)]
     pub rocklet_args: Vec<String>,
+
+    /// exclude_patterns caches glob patterns.
+    #[serde(skip)]
+    excludes_patterns: Vec<glob::Pattern>,
 }
 
 impl Rockhopper {
@@ -166,13 +186,49 @@ impl Rockhopper {
                 })?;
 
                 if metadata.is_dir() {
-                    let mut options = fs_extra::dir::CopyOptions::new();
-                    options.content_only = true;
                     fs::create_dir_all(&source_media_k)
                         .map_err(|e| RockhopperError::IOError(e.to_string()))?;
-                    fs_extra::dir::copy(v, source_media_k, &options)
-                        .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+
+                    for entry in walkdir::WalkDir::new(&v).min_depth(1) {
+                        let entry = entry.map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                        let pth = entry.path();
+                        let basename_osstr = entry.file_name();
+                        let basename =
+                            basename_osstr
+                                .to_str()
+                                .ok_or(RockhopperError::IOError(format!(
+                                    "unable to render file path: {:?}",
+                                    basename_osstr
+                                )))?;
+
+                        if self.excludes_patterns.iter().any(|e| e.matches(basename)) {
+                            continue;
+                        }
+
+                        let pth_clean = pth
+                            .strip_prefix(&v)
+                            .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                        let pth_kv = source_media_k.join(pth_clean);
+                        let ty = entry.file_type();
+
+                        if ty.is_dir() {
+                            fs::create_dir_all(pth_kv)
+                                .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                        } else if ty.is_file() {
+                            fs::copy(pth, pth_kv)
+                                .map_err(|e| RockhopperError::IOError(e.to_string()))?;
+                        } else {
+                            return Err(RockhopperError::IOError(format!(
+                                "unsupported file system file type for path: {:?}",
+                                pth
+                            )));
+                        }
+                    }
                 } else if metadata.is_file() {
+                    if self.excludes_patterns.iter().any(|e| e.matches(&v)) {
+                        continue;
+                    }
+
                     let source_media_p =
                         source_media_k
                             .parent()
@@ -270,7 +326,20 @@ impl Rockhopper {
     }
 
     /// build generates packages.
-    pub fn build(&self) -> Result<(), RockhopperError> {
+    pub fn build(&mut self) -> Result<(), RockhopperError> {
+        let excludes_string = self.excludes.clone().unwrap_or(DEFAULT_EXCLUDES.clone());
+        let mut excludes: Vec<glob::Pattern> = Vec::new();
+
+        for exclusion_string in excludes_string {
+            let exclusion = glob::Pattern::new(&exclusion_string).map_err(|e| {
+                RockhopperError::IOError(format!(
+                    "unable to parse glob pattern: {exclusion_string}: {e}"
+                ))
+            })?;
+            excludes.push(exclusion);
+        }
+
+        self.excludes_patterns = excludes;
         let rocklet = self.rocklet.clone().unwrap_or_default();
         let default_cache = DEFAULT_CACHE.to_string();
         let cache = path::Path::new(rocklet.get("cache").unwrap_or(&default_cache));

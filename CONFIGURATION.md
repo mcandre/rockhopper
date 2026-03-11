@@ -54,6 +54,31 @@ Example:
 log_level = "debug"
 ```
 
+## `excludes`
+
+Default:
+
+```toml
+[
+    ".DS_Store", # Finder
+    "Thumbs.db", # Explorer
+]
+```
+
+Skip corresponding file path patterns for `dest` file mapping.
+
+Syntax: [Glob](https://docs.rs/glob/latest/glob/index.html).
+
+Example:
+
+```toml
+excludes = [
+    ".DS_Store",  # Finder
+    ".directory", # Dolphin
+    "Thumbs.db",  # Explorer
+]
+```
+
 ## `docker_args`
 
 Default: (empty)
