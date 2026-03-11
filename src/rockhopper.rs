@@ -77,10 +77,12 @@ fn main() {
         eprintln!("debug: configuration: {:?}", rh);
     }
 
-    if optmatches.opt_present("c")
-        && let Err(e) = rh.clean()
-    {
-        die!(1; format!("error: {e}"));
+    if optmatches.opt_present("c") {
+        if let Err(e) = rh.clean() {
+            die!(1; format!("error: {e}"));
+        } else {
+            die!(0);
+        }
     }
 
     if let Err(e) = rh.build() {

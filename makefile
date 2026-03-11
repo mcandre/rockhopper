@@ -62,19 +62,19 @@ clean-crit:
 clean-examples: clean-go clean-shell
 
 clean-go:
-	rm -rf examples/go/.rockhopper
+	sh -c "cd examples/go && rockhopper -c"
 
 clean-packages:
-	rm -rf .rockhopper
+	rockhopper -c
 
 clean-ports:
 	rm -rf .crit/bin/rockhopper-ports
 
 clean-rust:
-	rm -rf examples/rust/.rockhopper
+	sh -c "cd examples/rust && rockhopper -c"
 
 clean-shell:
-	rm -rf examples/shell/.rockhopper
+	sh -c "cd examples/shell && rockhopper -c"
 
 clippy:
 	cargo clippy
