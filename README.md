@@ -161,6 +161,7 @@ Prior art, personal plugs, and tools for developing portable applications (inclu
 * [cargo](https://doc.rust-lang.org/cargo/) - a crossplatform package manager for Rust projects
 * [fpm](https://github.com/jordansissel/fpm) - an older, host native package generator
 * [go mod](https://go.dev/doc/modules/gomod-ref) - a crossplatform package manager for Go applications
+* [goreleaser](https://goreleaser.com/) - a crossplatform binary & package generator
 * [mcandre/crit](https://github.com/mcandre/crit) - an automated Rust multiplatform compiler
 * [mcandre/tuco](https://github.com/mcandre/tuco) - an automated Go multiplatform compiler
 * [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os) - a Docker base image for Raspberry Pi OS
