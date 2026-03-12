@@ -162,7 +162,7 @@ Prior art, personal plugs, and tools for developing portable applications (inclu
 * [fpm](https://github.com/jordansissel/fpm) - an older, host native package generator
 * [go mod](https://go.dev/doc/modules/gomod-ref) - a crossplatform package manager for Go applications
 * [mcandre/crit](https://github.com/mcandre/crit) - an automated Rust multiplatform compiler
-* [mcandre/factorio](https://github.com/mcandre/factorio) - an automated Go multiplatform compiler
+* [mcandre/tuco](https://github.com/mcandre/tuco) - an automated Go multiplatform compiler
 * [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os) - a Docker base image for Raspberry Pi OS
 * [msitools](https://gitlab.gnome.org/GNOME/msitools) - a Linux framework for generating Windows MSI packages
 * [UTM](https://mac.getutm.app/) - a macOS emulator with support for NetBSD and other operating systems
