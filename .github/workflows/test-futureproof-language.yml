@@ -14,4 +14,6 @@ jobs:
         toolchain: "stable"
     - name: "provision dev tools"
       run: "make -f install.mk"
-    - run: "make test"
+    - run: |
+        make install
+        make test
