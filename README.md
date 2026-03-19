@@ -88,11 +88,19 @@ rockhopper is programming language agnostic. For more programming language sampl
   </tbody>
 </table>
 
+## Postinstall (Windows)
+
+Register `C:\Program Files\rockhopper\bin` to `PATH` environment variable.
+
 # SYSTEM REQUIREMENTS
 
 ## Bitness
 
 64
+
+## Prerequisites
+
+* [Docker](https://www.docker.com/)
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 

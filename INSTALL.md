@@ -14,6 +14,10 @@ cargo install rockhopper
 
 * [cargo](https://doc.rust-lang.org/cargo/)
 
+## Postinstall
+
+Register `~/.cargo/bin` to `PATH` environment variable.
+
 # INSTALL (CURL)
 
 curl based installs automatically download and extract precompiled binaries.
@@ -24,7 +28,7 @@ curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/ins
 
 ## Postinstall
 
-Ensure `$HOME/.local/bin` is registered with your shell's `PATH` environment variable.
+Register `~/.local/bin` to `PATH` environment variable.
 
 ## Uninstall
 
@@ -70,7 +74,7 @@ Precompiled binaries may be installed manually.
 
 ## Postinstall
 
-Ensure the selected directory is registered with your shell's `PATH` environment variable.
+Register the selected directory to `PATH` environment variable.
 
 ## Uninstall
 
@@ -105,5 +109,9 @@ cargo install --force --path .
 
 * [cargo](https://doc.rust-lang.org/cargo/)
 * [git](https://git-scm.com/)
+
+## Postinstall
+
+Register `~/.cargo/bin` to `PATH` environment variable.
 
 For more details on developing rockhopper, see our [development guide](DEVELOPMENT.md).

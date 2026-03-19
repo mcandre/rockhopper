@@ -21,7 +21,11 @@ For advanced operations, such as linting, we further supplement with some softwa
 ## Recommended
 
 * Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, in order to account for images commonly lacking `linux/arm64` buildx platforms
-* [ASDF](https://asdf-vm.com/) 0.18 (run `asdf reshim` after provisioning)
+* [asdf](https://asdf-vm.com/) 0.18
+
+## Postinstall
+
+Register `~/.cargo/bin` to `PATH` environment variable.
 
 # INSTALL APP
 
