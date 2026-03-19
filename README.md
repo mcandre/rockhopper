@@ -1,6 +1,6 @@
 # rockhopper: metapackage generator
 
-[![CloudFlare R2 install media downloads](https://img.shields.io/badge/Packages-F38020?logo=Cloudflare&logoColor=white)](#download) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/%E2%99%A5-Sponsor-BF3988)](https://github.com/sponsors/mcandre)
+[![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/%E2%99%A5-Sponsor-BF3988)](https://github.com/sponsors/mcandre)
 
 ```text
   o<  gak! gak!
@@ -17,11 +17,11 @@ BYOB (Bring Your Own Binaries).
 # EXAMPLES
 
 ```console
-$ cd examples/go
+% cd examples/go
 
-$ rockhopper
+% rockhopper
 
-$ tree .rockhopper/artifacts
+% tree .rockhopper/artifacts
 .rockhopper/artifacts
 ├── alpine-linux
 │   ├── raygun-0.0.1-r1.aarch64.apk
@@ -42,52 +42,20 @@ rockhopper is programming language agnostic. For more programming language sampl
 
 # DOWNLOAD
 
-<table>
-  <thead>
-    <tr>
-      <th>Host</th>
-      <th colspan=2>Package</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Alpine Linux 3.23+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/alpine-linux/rockhopper-0.0.24-r1.x86_64.apk">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/alpine-linux/rockhopper-0.0.24-r1.aarch64.apk">ARM</a></td>
-    </tr>
-    <tr>
-      <td>Fedora 43+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/fedora/rockhopper-0.0.24-1.x86_64.rpm">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/fedora/rockhopper-0.0.24-1.aarch64.rpm">ARM</a></td>
-    </tr>
-    <tr>
-      <td>FreeBSD 13</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/freebsd-amd64/rockhopper-0.0.24_1.pkg">Intel</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>macOS 26 Tahoe+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/macos/rockhopper-x86_64-0.0.24-1.pkg">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/macos/rockhopper-arm64-0.0.24-1.pkg">ARM</a></td>
-    </tr>
-    <tr>
-      <td>NetBSD 10.1</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/netbsd-x86_64/rockhopper-0.0.24nb1.tgz">Intel</a></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>Ubuntu 24.04 Noble+ / WSL 2+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_amd64.deb">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_arm64.deb">ARM</a></td>
-    </tr>
-  </tbody>
-</table>
+```sh
+cargo install rockhopper
+```
 
 ## Prerequisites
 
+* [cargo](https://doc.rust-lang.org/cargo/)
 * [Docker](https://www.docker.com/)
 
-For more host platforms and installation methods, see our [install guide](INSTALL.md).
+## Postinstall
+
+Register `~/.cargo/bin` to `PATH` environment variable.
+
+For more installation methods, see our [install guide](INSTALL.md).
 
 # DOCKER IMAGES
 

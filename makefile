@@ -7,21 +7,17 @@
 	cargo-check \
 	clean \
 	clean-cargo \
-	clean-crit \
 	clean-examples \
 	clean-go \
-	clean-packages \
 	clean-rust \
 	clean-shell \
 	clippy \
-	crit \
 	doc \
 	docker-build \
 	docker-push \
 	docker-test \
 	install \
 	lint \
-	package \
 	publish \
 	rustfmt \
 	test \
@@ -33,12 +29,9 @@
 .IGNORE: \
 	clean \
 	clean-cargo \
-	clean-crit \
-	clean-example \
-	clean-packages
+	clean-example
 
 VERSION!=cargo metadata --format-version 1 --no-deps | jq -r ".packages[0].version"
-BANNER=rockhopper
 
 all: install
 
@@ -48,21 +41,15 @@ build: lint
 cargo-check:
 	cargo check
 
-clean: clean-cargo clean-crit clean-examples clean-packages
+clean: clean-cargo clean-examples
 
 clean-cargo:
 	cargo clean
-
-clean-crit:
-	crit -c
 
 clean-examples: clean-go clean-shell
 
 clean-go:
 	sh -c "cd examples/go && rockhopper -c"
-
-clean-packages:
-	rockhopper -c
 
 clean-rust:
 	sh -c "cd examples/rust && rockhopper -c"
@@ -72,9 +59,6 @@ clean-shell:
 
 clippy:
 	cargo clippy
-
-crit:
-	crit -b $(BANNER)
 
 doc:
 	cargo doc
@@ -97,9 +81,6 @@ lint: \
 	doc \
 	rustfmt
 
-package:
-	rockhopper -r "version=$(VERSION)"
-
 publish:
 	cargo publish
 
@@ -119,6 +100,3 @@ test-shell:
 
 uninstall:
 	cargo uninstall rockhopper
-
-upload:
-	./upload
