@@ -52,38 +52,38 @@ rockhopper is programming language agnostic. For more programming language sampl
   <tbody>
     <tr>
       <td>Alpine Linux 3.23+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/alpine-linux/rockhopper-0.0.23-r1.x86_64.apk">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/alpine-linux/rockhopper-0.0.23-r1.aarch64.apk">ARM</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/alpine-linux/rockhopper-0.0.24-r1.x86_64.apk">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/alpine-linux/rockhopper-0.0.24-r1.aarch64.apk">ARM</a></td>
     </tr>
     <tr>
       <td>Fedora 43+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/fedora/rockhopper-0.0.23-1.x86_64.rpm">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/fedora/rockhopper-0.0.23-1.aarch64.rpm">ARM</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/fedora/rockhopper-0.0.24-1.x86_64.rpm">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/fedora/rockhopper-0.0.24-1.aarch64.rpm">ARM</a></td>
     </tr>
     <tr>
       <td>FreeBSD 13</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/freebsd-amd64/rockhopper-0.0.23_1.pkg">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/freebsd-amd64/rockhopper-0.0.24_1.pkg">Intel</a></td>
       <td></td>
     </tr>
     <tr>
       <td>macOS 26 Tahoe+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/macos/rockhopper-x86_64-0.0.23-1.pkg">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/macos/rockhopper-arm64-0.0.23-1.pkg">ARM</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/macos/rockhopper-x86_64-0.0.24-1.pkg">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/macos/rockhopper-arm64-0.0.24-1.pkg">ARM</a></td>
     </tr>
     <tr>
       <td>NetBSD 10.1</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/netbsd-x86_64/rockhopper-0.0.23nb1.tgz">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/netbsd-x86_64/rockhopper-0.0.24nb1.tgz">Intel</a></td>
       <td></td>
     </tr>
     <tr>
       <td>Ubuntu 24.04 Noble+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/ubuntu/rockhopper_0.0.23-1_amd64.deb">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/ubuntu/rockhopper_0.0.23-1_arm64.deb">ARM</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_amd64.deb">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_arm64.deb">ARM</a></td>
     </tr>
     <tr>
       <td>Windows 11+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/windows/rockhopper-0.0.23.1-x64.msi">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.23/windows/rockhopper-0.0.23.1-arm64.msi">ARM</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/windows/rockhopper-0.0.24.1-x64.msi">Intel</a></td>
+      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/windows/rockhopper-0.0.24.1-arm64.msi">ARM</a></td>
     </tr>
   </tbody>
 </table>
