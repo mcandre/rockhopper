@@ -19,6 +19,7 @@ exclusion_targets = [
     "ios",
     "loongarch",
     "none-eabi",
+    "netbsd",
     "ohos",
     "pc-solaris",
     "powerpc64le-unknown-linux-musl",
@@ -28,4 +29,5 @@ exclusion_targets = [
     "uefi",
     "unknown-none",
     "wasm",
+    "windows",
 ]

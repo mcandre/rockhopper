@@ -76,14 +76,9 @@ rockhopper is programming language agnostic. For more programming language sampl
       <td></td>
     </tr>
     <tr>
-      <td>Ubuntu 24.04 Noble+</td>
+      <td>Ubuntu 24.04 Noble+ / WSL 2+</td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_amd64.deb">Intel</a></td>
       <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/ubuntu/rockhopper_0.0.24-1_arm64.deb">ARM</a></td>
-    </tr>
-    <tr>
-      <td>Windows 11+</td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/windows/rockhopper-0.0.24.1-x64.msi">Intel</a></td>
-      <td><a href="https://pub-07ac5f2bd61240e19fa59ab1c0327d7b.r2.dev/rockhopper-0.0.24/windows/rockhopper-0.0.24.1-arm64.msi">ARM</a></td>
     </tr>
   </tbody>
 </table>
@@ -91,10 +86,6 @@ rockhopper is programming language agnostic. For more programming language sampl
 ## Prerequisites
 
 * [Docker](https://www.docker.com/)
-
-## Postinstall (Windows)
-
-Register `C:\Program Files\rockhopper\bin` to `PATH` environment variable.
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 

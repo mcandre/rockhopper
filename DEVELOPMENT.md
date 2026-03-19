@@ -13,14 +13,12 @@ For advanced operations, such as linting, we further supplement with some softwa
 * [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/)
 * [jq](https://jqlang.org/)
-* POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
+* [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [Rust](https://www.rust-lang.org/en-US/)
-* [tree](https://en.wikipedia.org/wiki/Tree_(command))
 * Provision additional dev tools with `make -f install.mk`
 
 ## Recommended
 
-* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, in order to account for images commonly lacking `linux/arm64` buildx platforms
 * [asdf](https://asdf-vm.com/) 0.18
 
 ## Postinstall
