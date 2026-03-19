@@ -2,7 +2,7 @@
 
 In addition to OS packages, rockhopper also supports alternative installation methods.
 
-# INSTALL (CARGO)
+# INSTALL (CARGO REMOTE)
 
 rockhopper is packaged as a Rust crate.
 
@@ -18,84 +18,7 @@ cargo install rockhopper
 
 Register `~/.cargo/bin` to `PATH` environment variable.
 
-# INSTALL (CURL)
-
-curl based installs automatically download and extract precompiled binaries.
-
-```sh
-curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/install-rockhopper | sh
-```
-
-## Postinstall
-
-Register `~/.local/bin` to `PATH` environment variable.
-
-## Uninstall
-
-```sh
-curl -L https://raw.githubusercontent.com/mcandre/rockhopper/refs/heads/main/uninstall-rockhopper | sh
-```
-
-## System Requirements
-
-### Bitness
-
-64
-
-### Hosts
-
-* FreeBSD 13 (Intel)
-* Illumos (Intel)
-* Linux (ARM, Intel)
-* macOS 26 Tahoe+ (ARM, Intel)
-* NetBSD 10.1 (Intel)
-* WSL 2 (ARM, Intel)
-
-### Prerequisites
-
-* [bash](https://www.gnu.org/software/bash/) 4+
-* [curl](https://curl.se/)
-
-# INSTALL (PRECOMPILED BINARIES)
-
-Precompiled binaries may be installed manually.
-
-## Install
-
-1. Download a [tarball](https://github.com/mcandre/rockhopper/releases) corresponding to your environment's architecture and OS.
-2. Extract executables into a selected directory.
-
-   Examples:
-
-   * `~/.local/bin` (XDG compliant per-user)
-   * `/usr/local/bin` (XDG compliant global)
-   * `~/bin` (BSD)
-   * `~\AppData\Local` (native Windows)
-
-## Postinstall
-
-Register the selected directory to `PATH` environment variable.
-
-## Uninstall
-
-Remove the application executables from the selected directory.
-
-## System Requirements
-
-### Bitness
-
-64
-
-### Hosts
-
-* FreeBSD 13 (Intel)
-* Illumos (Intel)
-* Linux (ARM, Intel)
-* macOS 26 Tahoe+ (ARM, Intel)
-* NetBSD 10.1 (Intel)
-* Windows 11+ (ARM, Intel)
-
-# INSTALL (COMPILE FROM SOURCE)
+# INSTALL (CARGO LOCAL)
 
 rockhopper may be compiled from source.
 
