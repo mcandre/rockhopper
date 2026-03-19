@@ -88,19 +88,13 @@ rockhopper is programming language agnostic. For more programming language sampl
   </tbody>
 </table>
 
-## Postinstall (Windows)
-
-Register `C:\Program Files\rockhopper\bin` to `PATH` environment variable.
-
-# SYSTEM REQUIREMENTS
-
-## Bitness
-
-64
-
 ## Prerequisites
 
 * [Docker](https://www.docker.com/)
+
+## Postinstall (Windows)
+
+Register `C:\Program Files\rockhopper\bin` to `PATH` environment variable.
 
 For more host platforms and installation methods, see our [install guide](INSTALL.md).
 
@@ -131,16 +125,6 @@ Multiplatform images also available. Supported platforms may vary by distro. Ver
 Distro primaries exemplify entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
-
-# RUNTIME REQUIREMENTS
-
-* a [docker](https://www.docker.com/) CLI
-
-## Recommended
-
-* a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
-* Apple Silicon macOS users may want to apply `DOCKER_DEFAULT_PLATFORM=linux/amd64`, in order to account for images commonly lacking `linux/arm64` buildx platforms
-* [tree](https://en.wikipedia.org/wiki/Tree_(command))
 
 # CONFIGURATION
 
@@ -174,6 +158,7 @@ Prior art, personal plugs, and tools for developing portable applications (inclu
 * [mcandre/tuco](https://github.com/mcandre/tuco) - an automated Go multiplatform compiler
 * [n4jm4/raspberry-pi-os](https://hub.docker.com/r/n4jm4/raspberry-pi-os) - a Docker base image for Raspberry Pi OS
 * [msitools](https://gitlab.gnome.org/GNOME/msitools) - a Linux framework for generating Windows MSI packages
+* [tree](https://en.wikipedia.org/wiki/Tree_(command)) - recursive directory browser
 * [UTM](https://mac.getutm.app/) - a macOS emulator with support for NetBSD and other operating systems
 * [xgo](https://github.com/techknowlogick/xgo) - an automated cGo multiplatform compiler
 

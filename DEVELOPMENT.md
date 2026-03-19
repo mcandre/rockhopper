@@ -6,6 +6,8 @@ For advanced operations, such as linting, we further supplement with some softwa
 
 # BUILDTIME REQUIREMENTS
 
+## Prerequisites
+
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
 * [awscli](https://aws.amazon.com/cli/)
 * [bash](https://www.gnu.org/software/bash/) 4+
