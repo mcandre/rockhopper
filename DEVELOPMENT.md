@@ -10,11 +10,9 @@ For advanced operations, such as linting, we further supplement with some softwa
 * [awscli](https://aws.amazon.com/cli/)
 * [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/)
-* POSIX compliant [findutils](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/find.html)
 * [jq](https://jqlang.org/)
 * POSIX compliant [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [Rust](https://www.rust-lang.org/en-US/)
-* GNU [tar](https://www.gnu.org/software/tar/) as `gtar`
 * [tree](https://en.wikipedia.org/wiki/Tree_(command))
 * Provision additional dev tools with `make -f install.mk`
 
@@ -73,12 +71,6 @@ make push
 
 ```sh
 make crit
-```
-
-# ARCHIVE BINARIES
-
-```sh
-make port
 ```
 
 # PACKAGE BINARIES

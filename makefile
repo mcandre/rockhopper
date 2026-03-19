@@ -11,7 +11,6 @@
 	clean-examples \
 	clean-go \
 	clean-packages \
-	clean-ports \
 	clean-rust \
 	clean-shell \
 	clippy \
@@ -23,7 +22,6 @@
 	install \
 	lint \
 	package \
-	port \
 	publish \
 	rustfmt \
 	test \
@@ -37,8 +35,7 @@
 	clean-cargo \
 	clean-crit \
 	clean-example \
-	clean-packages \
-	clean-ports
+	clean-packages
 
 VERSION!=cargo metadata --format-version 1 --no-deps | jq -r ".packages[0].version"
 BANNER=rockhopper
@@ -51,7 +48,7 @@ build: lint
 cargo-check:
 	cargo check
 
-clean: clean-cargo clean-crit clean-examples clean-packages clean-ports
+clean: clean-cargo clean-crit clean-examples clean-packages
 
 clean-cargo:
 	cargo clean
@@ -66,9 +63,6 @@ clean-go:
 
 clean-packages:
 	rockhopper -c
-
-clean-ports:
-	rm -rf .crit/bin/rockhopper-ports
 
 clean-rust:
 	sh -c "cd examples/rust && rockhopper -c"
@@ -105,9 +99,6 @@ lint: \
 
 package:
 	rockhopper -r "version=$(VERSION)"
-
-port:
-	./port -C .crit/bin -a rockhopper $(BANNER)
 
 publish:
 	cargo publish
