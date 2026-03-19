@@ -1,15 +1,14 @@
 # DEVELOPMENT GUIDE
 
-rockhopper follows standard, cargo based operations for compiling and unit testing Rust code.
+We follow standard, `cargo` based operations for compiling and unit testing Rust code.
 
 For advanced operations, such as linting, we further supplement with some software industry tools.
 
-# BUILDTIME REQUIREMENTS
+# DEV ENVIRONMENT
 
 ## Prerequisites
 
 * a UNIX-like environment (e.g. [WSL](https://learn.microsoft.com/en-us/windows/wsl/))
-* [bash](https://www.gnu.org/software/bash/) 4+
 * [Docker](https://www.docker.com/)
 * [jq](https://jqlang.org/)
 * [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
@@ -24,49 +23,71 @@ For advanced operations, such as linting, we further supplement with some softwa
 
 Register `~/.cargo/bin` to `PATH` environment variable.
 
-# INSTALL APP
+# TASKS
+
+We automate engineering tasks.
+
+## Build
 
 ```sh
-make [install]
+make
 ```
 
-# UNINSTALL APP
+## Install
+
+```sh
+make install
+```
+
+## Uninstall
 
 ```sh
 make uninstall
 ```
 
-# BUILD IMAGES
+## Security Audit
+
+```sh
+make audit
+```
+
+## Build Images
 
 ```sh
 make docker-build
 ```
 
-# TEST
+## Lint
+
+```sh
+make lint
+```
+
+## Test
 
 ```sh
 make test
 ```
 
-# PUBLISH CRATE
+## Publish Crate
 
 ```sh
 make publish
 ```
 
-# TEST PUSH IMAGES
+## Test Push Images
 
 ```sh
 make docker-test
 ```
 
-# PUSH IMAGES
+## Push Images
 
 ```sh
 make push
 ```
 
-# CLEAN
+## Clean Workspace
 
 ```sh
 make clean

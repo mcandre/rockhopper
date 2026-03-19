@@ -24,8 +24,7 @@
 	test-go \
 	test-rust \
 	test-shell \
-	uninstall \
-	upload
+	uninstall
 .IGNORE: \
 	clean \
 	clean-cargo \
@@ -33,10 +32,14 @@
 
 VERSION!=cargo metadata --format-version 1 --no-deps | jq -r ".packages[0].version"
 
-all: install
+all: build
 
-build: lint
+audit:
+	cargo audit
+
+build:
 	cargo build --release
+	./install-dest
 
 cargo-check:
 	cargo check

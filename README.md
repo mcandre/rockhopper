@@ -36,8 +36,6 @@ BYOB (Bring Your Own Binaries).
 ...
 ```
 
-For more CLI options, run `rockhopper -h`.
-
 rockhopper is programming language agnostic. For more programming language samples, see [examples](examples).
 
 # DOWNLOAD
@@ -55,7 +53,7 @@ cargo install rockhopper
 
 Register `~/.cargo/bin` to `PATH` environment variable.
 
-For more installation methods, see our [install guide](INSTALL.md).
+For details on building from source, see our [development guide](DEVELOPMENT.md).
 
 # DOCKER IMAGES
 
