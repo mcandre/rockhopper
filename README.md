@@ -53,7 +53,9 @@ cargo install rockhopper
 
 Register `~/.cargo/bin` to `PATH` environment variable.
 
-For details on building from source, see our [development guide](DEVELOPMENT.md).
+For details on tuning rockhopper, see [CONFIGURATION](CONFIGURATION.md).
+
+For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 # DOCKER IMAGES
 
@@ -82,10 +84,6 @@ Multiplatform images also available. Supported platforms may vary by distro. Ver
 Distro primaries exemplify entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
-
-# CONFIGURATION
-
-For information on configuring rockhopper, see our [configuration guide](CONFIGURATION.md).
 
 # TIPS
 

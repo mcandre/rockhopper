@@ -7,8 +7,15 @@ authors = ["Andrew Pennebaker <n4jm4@pm.me>"]
 license = "0BSD"
 repository = "https://github.com/mcandre/rockhopper"
 exclude = [
+    "*.hcl",
+    "*.mk",
+    ".editorconfig",
+    ".github",
+    ".rubberstamp",
+    ".tool-versions",
     "docker",
     "examples",
+    "makefile",
 ]
 
 [dependencies]
