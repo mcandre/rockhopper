@@ -16,6 +16,7 @@
 	docker-build \
 	docker-push \
 	docker-test \
+	govulncheck \
 	install \
 	lint \
 	publish \
@@ -35,11 +36,13 @@ VERSION!=cargo metadata --format-version 1 --no-deps | jq -r ".packages[0].versi
 
 all: build
 
-audit:
-	cargo audit
+audit: cargo-audit govulncheck
 
 build:
 	cargo build --release
+
+cargo-audit:
+	cargo audit
 
 cargo-check:
 	cargo check
@@ -74,6 +77,9 @@ docker-push:
 
 docker-test:
 	docker buildx bake test --var "VERSION=$(VERSION)" --push
+
+govulncheck:
+	govulncheck -scan package ./...
 
 install:
 	cargo install --force --path .
