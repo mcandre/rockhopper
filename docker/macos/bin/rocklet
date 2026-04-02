@@ -106,8 +106,10 @@ mkdir -p "$source_media"
 
 cd "$source_media"
 
-export metrics_files="$(find . | wc -l)"
-export metrics_kb="$(BLOCKSIZE=1k du -s | awk '{ print $1 }')"
+metrics_files="$(find . | wc -l)"
+export metrics_files
+metrics_kb="$(BLOCKSIZE=1k du -s | awk '{ print $1 }')"
+export metrics_kb
 
 BASE_PKG="$rocklet_pkg_build/base.pkg"
 mkdir -p "$BASE_PKG"

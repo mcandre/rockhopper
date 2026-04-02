@@ -20,6 +20,7 @@
 	lint \
 	publish \
 	rustfmt \
+	shellcheck \
 	test \
 	test-go \
 	test-rust \
@@ -81,13 +82,18 @@ lint: \
 	cargo-check \
 	clippy \
 	doc \
-	rustfmt
+	rustfmt \
+	shellcheck
 
 publish:
 	cargo publish
 
 rustfmt:
 	cargo fmt
+
+shellcheck:
+	stank -print0 . | \
+		xargs -0 -n 1 shellcheck
 
 test: test-go test-rust test-shell
 

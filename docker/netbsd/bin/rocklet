@@ -126,7 +126,8 @@ cp -r "$source_media"/* "$rocklet_pkg_build"
 
 cd "$rocklet_pkg_build"
 
-export metrics_b="$(du -sb . | awk '{ print $1 }')"
+metrics_b="$(du -sb . | awk '{ print $1 }')"
+export metrics_b
 SIZE_PKG="$rocklet_pkg_build/+SIZE_PKG"
 rsubst --strict "$rocklet_templates/+SIZE_PKG.j2" >"$SIZE_PKG"
 
@@ -187,16 +188,16 @@ find . \
     -type f \
     -mindepth 1 \
     -exec \
-        sh -c "printf \"%s\n@comment MD5:%s\n\" \"\${0#./}\" \"\$(md5sum \"\$0\" | awk '{ print \$1 }')\"" "{}" >>"$CONTENTS" \
-    \;
+        sh -c "printf \"%s\n@comment MD5:%s\n\" \"\${0#./}\" \"\$(md5sum \"\$0\" | awk '{ print \$1 }')\"" "{}" \; \
+    >>"$CONTENTS"
 
 find . \
     -type f \
     -name '+*' \
     -mindepth 1 \
     -exec \
-        sh -c "printf \"@ignore\n%s\n\" \"\${0#./}\"" "{}" >>"$CONTENTS" \
-    \;
+        sh -c "printf \"@ignore\n%s\n\" \"\${0#./}\"" "{}" \; \
+    >>"$CONTENTS"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo '+CONTENTS':
@@ -206,19 +207,20 @@ fi
 cd "$rocklet_pkg_build"
 
 tar_paths='/tmp/tar_paths.txt'
-echo '+CONTENTS' >"$tar_paths"
-echo '+COMMENT' >>"$tar_paths"
-echo '+DESC' >>"$tar_paths"
-echo '+BUILD_INFO' >>"$tar_paths"
-echo '+SIZE_PKG' >>"$tar_paths"
-echo '+SIZE_ALL' >>"$tar_paths"
+tps='+CONTENTS
++COMMENT
++DESC
++BUILD_INFO
++SIZE_PKG
++SIZE_ALL'
+
+echo "$tps" >"$tar_paths"
 
 find . \
     -name '+*' -prune -o \
     -type f \
-    -exec \
-        echo "{}" >>"$tar_paths" \
-    \;
+    -print \
+    >>"$tar_paths"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo 'tar_paths.txt:'

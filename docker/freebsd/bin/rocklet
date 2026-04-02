@@ -141,7 +141,8 @@ if [ "$abi" = '*' ]; then
 fi
 
 export is_no_arch
-export metrics_b="$(du -sb "$source_media" | awk '{ print $1 }')"
+metrics_b="$(du -sb "$source_media" | awk '{ print $1 }')"
+export metrics_b
 
 directories=''
 checksums=''
@@ -192,18 +193,16 @@ find . \
     -type f \
     -name '+*' \
     -mindepth 1 \
-    -exec \
-        sh -c 'echo ${0#./}' "{}" >>"$tar_paths" \
-    \;
+    -exec sh -c 'echo ${0#./}' "{}" \; \
+    >"$tar_paths"
 
 find . \
     -name '+*' -prune -o \
     -type d \
     -mindepth 1 \
     -maxdepth 1 \
-    -exec \
-        echo "{}" >>"$tar_paths" \
-    \;
+    -print \
+    >>"$tar_paths"
 
 if [ "$rocklet_log_level" = 'debug' ]; then
     echo 'tar_paths.txt:'

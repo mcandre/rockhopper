@@ -84,7 +84,7 @@ printf "</Directory></Directory></Directory>"
 printf "<Feature Id=\"Complete\" Level=\"1\">"
 
 for ((i=0; i <COMPONENT_ID; i++)); do
-    printf "<ComponentRef Id=\"Component$i\" />"
+    printf "<ComponentRef Id=\"Component%d\" />" "$i"
 done
 
 printf "</Feature>\n"

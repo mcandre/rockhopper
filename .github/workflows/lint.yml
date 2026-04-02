@@ -12,6 +12,10 @@ jobs:
     - uses: "dtolnay/rust-toolchain@stable"
       with:
         toolchain: "1.92.0"
+    - name: "provision shells"
+      run: |
+        sudo apt update
+        sudo apt install -y shellcheck
     - name: "provision dev tools"
       run: "make -f install.mk"
     - run: "make lint"

@@ -13,6 +13,7 @@ For advanced operations, such as linting, we further supplement with some softwa
 * [jq](https://jqlang.org/)
 * [make](https://pubs.opengroup.org/onlinepubs/9799919799/utilities/make.html)
 * [Rust](https://www.rust-lang.org/en-US/)
+* [ShellCheck](https://www.shellcheck.net/) 0.11.0+
 * Provision additional dev tools with `make -f install.mk`
 
 ## Recommended
