@@ -27,8 +27,14 @@ jobs:
     - name: "provision dev tools"
       run: "make -f install.mk"
     - run: |
+        go get -u ./...
+        go mod download
+        go mod tidy
+        go mod vendor
+    - run: |
         cargo upgrade --verbose --incompatible
         cargo update
+        cargo vendor
     - run: |
         make install
         make test
