@@ -34,7 +34,7 @@ jobs:
     - run: |
         cargo upgrade --verbose --incompatible
         cargo update
-        cargo vendor
+        cargo vendor vendor-rust
     - run: |
         make install
         make test
