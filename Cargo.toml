@@ -14,8 +14,11 @@ exclude = [
     ".rubberstamp",
     ".tool-versions",
     "docker",
+    "go.mod",
+    "go.sum",
     "examples",
     "makefile",
+    "vendor",
 ]
 
 [dependencies]
