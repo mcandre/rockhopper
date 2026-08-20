@@ -8,17 +8,13 @@ jobs:
   Test-Futureproof-Language:
     runs-on: "ubuntu-24.04"
     steps:
-    - uses: "actions/checkout@v4"
+    - uses: "actions/checkout@v7"
     - name: "provision buildx"
       uses: "docker/setup-buildx-action@v4"
-    - uses: "actions/setup-go@v5"
+    - uses: "actions/setup-go@v7"
       with:
         go-version: "stable"
     - uses: "dtolnay/rust-toolchain@stable"
       with:
         toolchain: "stable"
-    - name: "provision dev tools"
-      run: "make -f install.mk"
-    - run: |
-        make install
-        make test
+    - run: "make test"

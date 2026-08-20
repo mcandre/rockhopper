@@ -90,7 +90,7 @@ impl fmt::Display for LogLevel {
 pub type Dest = BTreeMap<String, String>;
 
 /// Pkg generates install media.
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Pkg {
     /// image denotes a Docker image.
@@ -104,7 +104,7 @@ pub struct Pkg {
 }
 
 /// Rockhopper builds software packages.
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[derive(Clone, Debug, Default, Deserialize, PartialEq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct Rockhopper {
     /// log_level modulates log noise (optional).
@@ -138,6 +138,14 @@ pub struct Rockhopper {
     /// exclude_patterns caches glob patterns.
     #[serde(skip)]
     excludes_patterns: Vec<glob::Pattern>,
+}
+
+#[test]
+fn test_rockhopper_codec() {
+    let rockhopper : Rockhopper = Rockhopper::default();
+    let rockhopper_toml : String = toml::to_string(&rockhopper).unwrap();
+    let rockhopper2 : Rockhopper = toml::from_str(&rockhopper_toml).unwrap();
+    assert_eq!(rockhopper2, rockhopper);
 }
 
 impl Rockhopper {

@@ -18,14 +18,15 @@
 	docker-test \
 	govulncheck \
 	install \
+	itest \
+	itest-go \
+	itest-rust \
+	itest-shell \
 	lint \
 	publish \
 	rustfmt \
 	shellcheck \
 	test \
-	test-go \
-	test-rust \
-	test-shell \
 	uninstall
 .IGNORE: \
 	clean \
@@ -84,6 +85,17 @@ govulncheck:
 install:
 	cargo install --force --path .
 
+itest: itest-go itest-rust itest-shell
+
+itest-go:
+	sh -c "cd examples/go && rockhopper && tree .rockhopper/artifacts"
+
+itest-rust:
+	sh -c "cd examples/rust && rockhopper && tree .rockhopper/artifacts"
+
+itest-shell:
+	sh -c "cd examples/shell && rockhopper && tree .rockhopper/artifacts"
+
 lint: \
 	cargo-check \
 	clippy \
@@ -101,16 +113,8 @@ shellcheck:
 	stank -print0 . | \
 		xargs -0 -n 1 shellcheck
 
-test: test-go test-rust test-shell
-
-test-go:
-	sh -c "cd examples/go && rockhopper && tree .rockhopper/artifacts"
-
-test-rust:
-	sh -c "cd examples/rust && rockhopper && tree .rockhopper/artifacts"
-
-test-shell:
-	sh -c "cd examples/shell && rockhopper && tree .rockhopper/artifacts"
+test:
+	cargo test
 
 uninstall:
 	cargo uninstall rockhopper
