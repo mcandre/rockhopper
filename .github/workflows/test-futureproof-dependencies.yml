@@ -24,11 +24,14 @@ jobs:
     - uses: "dtolnay/rust-toolchain@stable"
       with:
         toolchain: "1.97.1"
+    - name: "provision dev tools"
+      run: "make -f install.mk"
     - run: |
         go get -u ./...
         go mod download
         go mod tidy
         go mod vendor
+        go install tool
     - run: |
         cargo upgrade --verbose --incompatible
         cargo update
