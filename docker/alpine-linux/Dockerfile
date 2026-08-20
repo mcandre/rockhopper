@@ -1,8 +1,8 @@
-FROM library/alpine:3.23 AS build
+FROM library/alpine:3.24 AS build
 RUN apk add -U cargo && \
     cargo install rsubst@0.2.1
 
-FROM library/alpine:3.23
+FROM library/alpine:3.24
 # Include a test keypair for signing packages
 ARG ROCKHOPPER_VERSION
 ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION

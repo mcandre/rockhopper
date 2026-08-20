@@ -58,9 +58,9 @@ target "alpine-linux" {
     platforms = PLATFORMS
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
-        "n4jm4/rockhopper:${VERSION}-alpine-linux-3.23",
+        "n4jm4/rockhopper:${VERSION}-alpine-linux-3.24",
         "n4jm4/rockhopper:${VERSION}-alpine-linux",
-        "n4jm4/rockhopper:alpine-linux-3.23",
+        "n4jm4/rockhopper:alpine-linux-3.24",
         "n4jm4/rockhopper:alpine-linux",
     ]
 }
