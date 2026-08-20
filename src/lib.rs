@@ -142,9 +142,9 @@ pub struct Rockhopper {
 
 #[test]
 fn test_rockhopper_codec() {
-    let rockhopper : Rockhopper = Rockhopper::default();
-    let rockhopper_toml : String = toml::to_string(&rockhopper).unwrap();
-    let rockhopper2 : Rockhopper = toml::from_str(&rockhopper_toml).unwrap();
+    let rockhopper: Rockhopper = Rockhopper::default();
+    let rockhopper_toml: String = toml::to_string(&rockhopper).unwrap();
+    let rockhopper2: Rockhopper = toml::from_str(&rockhopper_toml).unwrap();
     assert_eq!(rockhopper2, rockhopper);
 }
 
@@ -242,7 +242,7 @@ impl Rockhopper {
                             .parent()
                             .ok_or(RockhopperError::IOError(format!(
                                 "unable to retrieve parent directory for path: {:?}",
-                                &source_media_k
+                                source_media_k
                             )))?;
 
                     fs::create_dir_all(source_media_p)
