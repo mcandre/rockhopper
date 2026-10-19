@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 
 use std::collections::BTreeMap;
 use std::fmt;
+use std::env;
 use std::fs;
 use std::path;
 use std::process;
@@ -95,6 +96,9 @@ pub type Dest = BTreeMap<String, String>;
 pub struct Pkg {
     /// image denotes a Docker image.
     pub image: String,
+
+    /// docker_args supplies additional CLI arguments to `docker run`... commands (optional).
+    pub docker_args: Option<Vec<String>>,
 
     /// rocklet overrides global rocklet entries.
     pub rocklet: Option<BTreeMap<String, String>>,
@@ -272,11 +276,17 @@ impl Rockhopper {
             args.extend(docker_args);
         }
 
+        if let Some(pkg_docker_args) = pkg.docker_args.clone() {
+            args.extend(pkg_docker_args);
+        }
+
         let default_docker_mount_path = &DEFAULT_DOCKER_MOUNT_PATH.to_string();
         let mount_path = rocklet
             .get("mount_path")
             .unwrap_or(default_docker_mount_path);
         args.extend(["-v".to_string(), format!(".:{mount_path}")]);
+        let host_arch = env::consts::ARCH;
+        args.extend(["-e".to_string(), format!("rockhopper_host_arch={host_arch}")]);
         args.extend(["-e".to_string(), format!("rocklet_log_level={log_level}")]);
 
         for (k, v) in rocklet {

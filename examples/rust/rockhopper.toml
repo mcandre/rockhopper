@@ -44,6 +44,30 @@ rocklet.os_arch = "aarch64"
 dest."usr/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
 
 [[pkg]]
+image = "n4jm4/rockhopper:appimage"
+docker_args = [
+    "--device", "/dev/fuse",
+    "--cap-add", "SYS_ADMIN",
+]
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "x86_64"
+rocklet.appimage_executable = "raygun"
+dest."usr/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-linux-musl"
+dest."raygun.png" = "raygun.png"
+
+[[pkg]]
+image = "n4jm4/rockhopper:appimage"
+docker_args = [
+    "--device", "/dev/fuse",
+    "--cap-add", "SYS_ADMIN",
+]
+rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "aarch64"
+rocklet.appimage_executable = "raygun"
+dest."usr/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
+dest."raygun.png" = "raygun.png"
+
+[[pkg]]
 image = "n4jm4/rockhopper:fedora"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"

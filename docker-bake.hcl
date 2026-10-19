@@ -20,6 +20,7 @@ variable "PLATFORMS" {
 variable "PRODUCTION" {
     default = [
         "alpine-linux",
+        "appimage",
         "fedora",
         "freebsd",
         "macos",
@@ -32,6 +33,7 @@ variable "PRODUCTION" {
 variable "TEST" {
     default = [
         "test-alpine-linux",
+        "test-appimage",
         "test-fedora",
         "test-freebsd",
         "test-macos",
@@ -71,6 +73,27 @@ target "test-alpine-linux" {
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
         "n4jm4/rockhopper:test-alpine-linux",
+    ]
+}
+
+target "appimage" {
+    context = "docker/appimage"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:${VERSION}-appimage-continuous",
+        "n4jm4/rockhopper:${VERSION}-appimage",
+        "n4jm4/rockhopper:appimage-continuous",
+        "n4jm4/rockhopper:appimage",
+    ]
+}
+
+target "test-appimage" {
+    context = "docker/appimage"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:test-appimage",
     ]
 }
 

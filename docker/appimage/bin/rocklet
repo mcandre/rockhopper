@@ -1,0 +1,153 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_artifact="${rocklet_artifact:-"$rocklet_cache/artifacts/appimage"}"
+rocklet_appdir_build="${rocklet_appdir_build:-/tmp/AppDir}"
+rocklet_appimage_categories="${rocklet_appimage_categories:-Utility;}"
+rocklet_appimage_executable="${rocklet_appimage_executable:-}"
+rocklet_appimage_icon_basename="${rocklet_appimage_icon_basename:-"$rocklet_name"}"
+rocklet_os_arch="${rocklet_os_arch:-"$(uname -m)"}"
+
+# Forward rockhopper environment variables to Jinja
+for K in $(compgen -v | grep '^rocklet_'); do
+    export "$K"
+done
+
+usage() {
+    printf "Usage: %s [<OPTION>]\n" "$0"
+    printf "\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+banner() {
+    echo "$0 $ROCKHOPPER_VERSION"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--debug' | '-d')
+        shift
+        rocklet_log_level='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        rocklet_log_level='quiet'
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
+    set -x
+fi
+
+validate() {
+    required_env_vars=(
+        rocklet_appdir_build
+        rocklet_appimage_categories
+        rocklet_appimage_executable
+        rocklet_appimage_icon_basename
+        rocklet_artifact
+        rocklet_cache
+        rocklet_copyright
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_templates
+        rocklet_version
+    )
+
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
+
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}"
+            exit 1
+        fi
+    done
+}
+
+clean() {
+    rm -rf "$rocklet_appdir_build"
+}
+
+validate
+clean
+
+mkdir -p "${rocklet_appdir_build}/usr/share/doc/${rocklet_name}"
+COPYRIGHT="${rocklet_appdir_build}/usr/share/doc/${rocklet_name}/LICENSE"
+rsubst --strict "$rocklet_templates/copyright.j2" >"$COPYRIGHT"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'copyright:'
+    cat "$COPYRIGHT"
+fi
+
+DESKTOP="$rocklet_appdir_build/.desktop"
+rsubst --strict "$rocklet_templates/.desktop.j2" >"$DESKTOP"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo '.desktop:'
+    cat "$DESKTOP"
+fi
+
+APP_RUN="$rocklet_appdir_build/AppRun"
+rsubst --strict "$rocklet_templates/AppRun.j2" >"$APP_RUN"
+chmod +x "$APP_RUN"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'AppRun:'
+    cat "$APP_RUN"
+fi
+
+export source_media="$rocklet_cache/source-media"
+mkdir -p "$source_media"
+cp -r "$source_media/"* "$rocklet_appdir_build"
+mkdir -p "$rocklet_artifact"
+artifact="$rocklet_artifact/${rocklet_name}-${rocklet_version}"
+
+if [ -n "$rocklet_rev" ]; then
+    artifact="${artifact}-${rocklet_rev}"
+fi
+
+artifact="${artifact}-${rocklet_os_arch}.AppImage"
+
+appimagetool() {
+    if [ "$rocklet_log_level" = 'quiet' ]; then
+        command appimagetool "$@" 2>/dev/null 1>&2
+    else
+        command appimagetool "$@"
+    fi
+}
+
+ARCH="$rocklet_os_arch" appimagetool "$rocklet_appdir_build" "$artifact"
+clean

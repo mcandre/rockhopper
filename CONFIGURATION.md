@@ -357,6 +357,18 @@ Example:
 image = "n4jm4/rockhopper:ubuntu
 ```
 
+### `docker_args`
+
+Default: (empty)
+
+Supply additional CLI arguments to `docker run`... commands.
+
+Example:
+
+```toml
+docker_args = ["--privilieged"]
+```
+
 ### `rocklet`
 
 Default: (empty)
@@ -420,6 +432,8 @@ rocklet.os_arch = "amd64"
 | Alpine Linux  | 64-bit ARM            | `aarch64`                    |
 | Alpine Linux  | 64-bit Intel          | `x86_64`                     |
 | Alpine Linux  | (chipset independent) | `noarch`                     |
+| AppImage      | 64-bit ARM            | `aarch64`                    |
+| AppImage      | 64-bit Intel          | `x86_64`                     |
 | Fedora        | 64-bit ARM            | `aarch64`                    |
 | Fedora        | 64-bit Intel          | `x86_64`                     |
 | Fedora        | (chipset indepdendet) | `noarch`                     |
