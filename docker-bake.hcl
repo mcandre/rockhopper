@@ -25,6 +25,7 @@ variable "PRODUCTION" {
         "freebsd",
         "macos",
         "netbsd",
+        "tarball",
         "ubuntu",
         "windows",
     ]
@@ -38,6 +39,7 @@ variable "TEST" {
         "test-freebsd",
         "test-macos",
         "test-netbsd",
+        "test-tarball",
         "test-ubuntu",
         "test-windows",
     ]
@@ -172,6 +174,25 @@ target "test-netbsd" {
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
         "n4jm4/rockhopper:test-netbsd",
+    ]
+}
+
+target "tarball" {
+    context = "docker/tarball"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:${VERSION}-tarball",
+        "n4jm4/rockhopper:tarball",
+    ]
+}
+
+target "test-tarball" {
+    context = "docker/tarball"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:test-tarball",
     ]
 }
 

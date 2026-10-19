@@ -64,16 +64,17 @@ Where other package generators rely on host native tools, rockhopper abstracts p
 
 ## Stock Images
 
-| Package Manager | File Extension | Distro Primary  | Docker Tag     |
-| --------------- | -------------- | --------------- | -------------- |
-| apk             | `*.apk`        | Alpine Linux    | `alpine-linux` |
-| apt             | `*.deb`        | Ubuntu          | `ubuntu`       |
-| dnf             | `*.rpm`        | Fedora          | `fedora`       |
-| execve†         | `*.AppImage`   | Linux           | `appimage`     |
-| installer       | `*.pkg`        | macOS           | `macos`        |
-| msiexec         | `*.msi`        | Windows         | `windows`      |
-| pkg             | `*.pkg`        | FreeBSD         | `freebsd`      |
-| pkg_add         | `*.tgz`        | NetBSD          | `netbsd`       |
+| Package Manager | File Extension (`*.`) | Distro Primary  | Docker Tag     |
+| --------------- | --------------------- | --------------- | -------------- |
+| apk             | `apk`                 | Alpine Linux    | `alpine-linux` |
+| AppImage        | `AppImage`            | (generic Linux) | `appimage`     |
+| apt             | `deb`                 | Ubuntu          | `ubuntu`       |
+| dnf             | `rpm`                 | Fedora          | `fedora`       |
+| installer       | `pkg`                 | macOS           | `macos`        |
+| msiexec         | `msi`                 | Windows         | `windows`      |
+| pkg             | `pkg`                 | FreeBSD         | `freebsd`      |
+| pkg_add         | `tgz`                 | NetBSD          | `netbsd`       |
+| tar             | `tgz`                 | (generic UNIX ) | `tarball`      |
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
@@ -84,12 +85,6 @@ Multiplatform images also available. Supported platforms may vary by distro. Ver
 Distro primaries exemplify entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
-
-† Despite official documentation, AppImage executables often involve additional prerequisites:
-
-* Targeting host ISA's rather than container guest ISA's
-* OS Packages: appstream, appstream-util, ca-certificates, curl, file, fuse, gpg
-* Elevated security permissions in Docker run flags: `--device /dev/fuse --cap-add SYS_ADMIN`
 
 # TIPS
 

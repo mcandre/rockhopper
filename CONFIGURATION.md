@@ -427,31 +427,42 @@ rocklet.os_arch = "amd64"
 
 ##### Common OS Architectures
 
-| Distro Family | ISA                   | os_arch                      |
-| ------------- | --------------------- | ---------------------------- |
-| Alpine Linux  | 64-bit ARM            | `aarch64`                    |
-| Alpine Linux  | 64-bit Intel          | `x86_64`                     |
-| Alpine Linux  | (chipset independent) | `noarch`                     |
-| AppImage      | 64-bit ARM            | `aarch64`                    |
-| AppImage      | 64-bit Intel          | `x86_64`                     |
-| Fedora        | 64-bit ARM            | `aarch64`                    |
-| Fedora        | 64-bit Intel          | `x86_64`                     |
-| Fedora        | (chipset indepdendet) | `noarch`                     |
-| FreeBSD       | 64-bit ARM            | `freebsd:<os-version>:arm64` |
-| FreeBSD       | 64-bit Intel          | `freebsd:<os-version>:amd64` |
-| FreeBSD       | (chipset independent) | `freebsd:<os-version>:*`     |
-| macOS         | 64-bit ARM            | `arm64`                      |
-| macOS         | 64-bit Intel          | `x86_64`                     |
-| macOS         | (chipset independent) | `universal`                  |
-| NetBSD        | 64-bit ARM            | `aarch64`                    |
-| NetBSD        | 64-bit Intel          | `x86_64`                     |
-| Ubuntu        | 64-bit ARM            | `arm64`                      |
-| Ubuntu        | 64-bit Intel          | `amd64`                      |
-| Ubuntu        | (chipset independent) | `all`                        |
-| Windows (MSI) | 64-bit ARM            | `arm64`                      |
-| Windows (MSI) | 64-bit Intel          | `x64`                        |
+| Distro Family  | ISA                   | os_arch                            |
+| -------------- | --------------------- | ---------------------------------- |
+| Alpine Linux   | 64-bit ARM            | `aarch64`                          |
+| Alpine Linux   | 64-bit Intel          | `x86_64`                           |
+| Alpine Linux   | (chipset independent) | `noarch`                           |
+| AppImage       | 64-bit ARM            | `aarch64`                          |
+| AppImage       | 64-bit Intel          | `x86_64`                           |
+| Fedora         | 64-bit ARM            | `aarch64`                          |
+| Fedora         | 64-bit Intel          | `x86_64`                           |
+| Fedora         | (chipset indepdendet) | `noarch`                           |
+| FreeBSD        | 64-bit ARM            | `freebsd:<os-version>:arm64`       |
+| FreeBSD        | 64-bit Intel          | `freebsd:<os-version>:amd64`       |
+| FreeBSD        | (chipset independent) | `freebsd:<os-version>:*`           |
+| macOS          | 64-bit ARM            | `arm64`                            |
+| macOS          | 64-bit Intel          | `x86_64`                           |
+| macOS          | (chipset independent) | `universal`                        |
+| NetBSD         | 64-bit ARM            | `aarch64`                          |
+| NetBSD         | 64-bit Intel          | `x86_64`                           |
+| Tarball (UNIX) | 64-bit ARM            | `aarch64`, `arm64`, etc.           |
+| Tarball (UNIX) | 64-bit Intel          | `x86_64`, `amd64`, etc.            |
+| Tarball (UNIX) | (chipset independent) | `all`, `noarch`, `universal`, etc. |
+| Ubuntu         | 64-bit ARM            | `arm64`                            |
+| Ubuntu         | 64-bit Intel          | `amd64`                            |
+| Ubuntu         | (chipset independent) | `all`                              |
+| Windows (MSI)  | 64-bit ARM            | `arm64`                            |
+| Windows (MSI)  | 64-bit Intel          | `x64`                              |
 
 Note: Some platforms / package managers / package manager versions may lack support for noarch-style semantics.
+
+Unfortunately, there is no universal naming scheme for ISA's across Linux distros, nor BSD distros, nor programming languages, nor `uname -m` vs `dpkg-architecture -qDEB_HOST_ARCH`, let alone the wider *nix spectrum, let alone COMSPEC Windows. Let alone case sensitivity. Let alone 32-bit variants.
+
+Robust package managers and compilers validate architecture names against a distribution-relative list when generating packages. Consult relevant software documentation and community forums in order to confirm the exact enumeration of permitted strings.
+
+Freeform resources, such as tarballs, may follow a popular naming convention system, such as Debian or RHEL.
+
+Warning: ISA naming convention systems often change at different places within the software project, from build configuration tags, to crosscompilation toolchains, to containers, to package managers. Verify the relevant ISA naming convention at each separate place in your codebases.
 
 #### `dependencies`
 

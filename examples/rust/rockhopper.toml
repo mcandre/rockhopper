@@ -141,6 +141,18 @@ rocklet.pkg_size_all = "1000"
 dest."bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-netbsd"
 
 [[pkg]]
+image = "n4jm4/rockhopper:tarball"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "amd64"
+dest."opt/raygun/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-linux-musl"
+
+[[pkg]]
+image = "n4jm4/rockhopper:tarball"
+rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "arm64"
+dest."opt/raygun/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
+
+[[pkg]]
 image = "n4jm4/rockhopper:ubuntu"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "amd64"
