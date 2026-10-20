@@ -7,8 +7,8 @@ extern crate walkdir;
 use serde::{Deserialize, Serialize};
 
 use std::collections::BTreeMap;
-use std::fmt;
 use std::env;
+use std::fmt;
 use std::fs;
 use std::path;
 use std::process;
@@ -286,7 +286,10 @@ impl Rockhopper {
             .unwrap_or(default_docker_mount_path);
         args.extend(["-v".to_string(), format!(".:{mount_path}")]);
         let host_arch = env::consts::ARCH;
-        args.extend(["-e".to_string(), format!("rockhopper_host_arch={host_arch}")]);
+        args.extend([
+            "-e".to_string(),
+            format!("rockhopper_host_arch={host_arch}"),
+        ]);
         args.extend(["-e".to_string(), format!("rocklet_log_level={log_level}")]);
 
         for (k, v) in rocklet {
