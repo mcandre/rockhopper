@@ -1,2 +1,2 @@
-vendor/* linguist-vendored
-vendor-rust/* linguist-vendored
+vendor/** linguist-vendored
+vendor-rust/** linguist-vendored
