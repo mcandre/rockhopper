@@ -125,6 +125,6 @@ cd "$rocklet_build"
 find . |
     grep -v "^\\.$" |
     sort |
-    tar -czf "$artifact" --transform "s/^\\.\\///" --no-recursion -T -
+    tar --format=pax -czf "$artifact" --transform "s/^\\.\\///" --no-recursion -T -
 
 clean
