@@ -60,14 +60,14 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 [Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
 
-rockhopper models package generation in terms of dedicated Docker images. Our images contain all the tools needed to create your packages.
+rockhopper models package generation in terms of dedicated Docker images.
 
 ## Stock Images
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
-| Package Manager   | File Extension | Distro Primary  | Docker Tag     |
-| ----------------- | -------------- | --------------- | -------------- |
+| Package Manager | File Extension | Distro Primary | Docker Tag |
+| --------------- | -------------- | -------------- | -----------|
 | [apk](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper) | apk | Alpine Linux | `alpine-linux` |
 | [AppImage](https://appimage.org/) | AppImage | (generic Linux) | `appimage` |
 | [apt](https://ubuntu.com/server/docs/how-to/software/package-management/) | deb | Ubuntu | `ubuntu` |
@@ -81,11 +81,15 @@ Image Pattern: `n4jm4/rockhopper:<tag>`
 
 Distro primaries can target entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
 
+rockhopper images include the essentials for building binary style packages. For example, the `macos` image includes `bomutils`, `libarchive-tools`, and `xar`.
+
+All rockhopper images include the [rsubst](https://crates.io/crates/rsubst) templating language CLI utility, as a convenient relay between `rockhopper.toml` and individual package manager configuration files.
+
+For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
+
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
 `[<rockhopper-version>-]<distro>[-<release-nickname]`
-
-For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
 # TIPS
 
