@@ -60,9 +60,7 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 [Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
 
-Where other package generators rely on host native tools, rockhopper abstracts package generation as Docker images. This abstraction simplifies the setup process, and reduces the impact of vendor lock for each of the host and target platforms involved.
-
-## Package Managers
+rockhopper models package generation in terms of dedicated Docker images. The images contain all the tools needed to create your packages.
 
 | Package Manager | File Extension (`*.`) | Distro Primary  | Docker Tag     |
 | --------------- | --------------------- | --------------- | -------------- |
