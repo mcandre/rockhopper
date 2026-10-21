@@ -74,6 +74,7 @@ Where other package generators rely on host native tools, rockhopper abstracts p
 | msiexec         | `msi`                 | Windows         | `windows`      |
 | pkg             | `pkg`                 | FreeBSD         | `freebsd`      |
 | pkg_add         | `tgz`                 | NetBSD          | `netbsd`       |
+| pkg_add         | `tgz`                 | OpenBSD         | `openbsd`      |
 | tar             | `tgz`                 | (generic UNIX ) | `tarball`      |
 
 Image Pattern: `n4jm4/rockhopper:<tag>`

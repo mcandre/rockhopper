@@ -445,6 +445,9 @@ rocklet.os_arch = "amd64"
 | macOS          | (chipset independent) | `universal`                        |
 | NetBSD         | 64-bit ARM            | `aarch64`                          |
 | NetBSD         | 64-bit Intel          | `x86_64`                           |
+| OpenBSD        | 64-bit ARM            | `arm64`                            |
+| OpenBSD        | 64-bit Intel          | `amd64`                            |
+| OpenBSD        | (chipset independent) | `*`                                |
 | Tarball (UNIX) | 64-bit ARM            | `aarch64`, `arm64`, etc.           |
 | Tarball (UNIX) | 64-bit Intel          | `x86_64`, `amd64`, etc.            |
 | Tarball (UNIX) | (chipset independent) | `all`, `noarch`, `universal`, etc. |
