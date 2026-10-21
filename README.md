@@ -10,7 +10,7 @@
 
 # ABOUT
 
-rockhopper provides a unified framework for building binary based OS packages across many kinds of platforms.
+rockhopper builds packages for a wide variety of platforms.
 
 BYOB (Bring Your Own Binaries).
 
