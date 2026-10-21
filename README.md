@@ -62,6 +62,10 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 rockhopper models package generation in terms of dedicated Docker images.
 
+rockhopper images include the essentials for building binary style packages. For example, the `macos` image includes `bomutils`, `libarchive-tools`, and `xar`.
+
+All rockhopper images include the [rsubst](https://crates.io/crates/rsubst) templating language CLI utility, as a convenient relay between `rockhopper.toml` and individual package manager configuration files.
+
 ## Stock Images
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
@@ -79,17 +83,13 @@ Image Pattern: `n4jm4/rockhopper:<tag>`
 | [pkg_add (OpenBSD)](https://man.openbsd.org/pkg_add.1) | tgz | OpenBSD | `openbsd` |
 | [tar (PAX)](https://pubs.opengroup.org/onlinepubs/7908799/xcu/tar.html) | tgz | (generic UNIX ) | `tarball` |
 
-Distro primaries can target entire families of related platforms. For example, apt serves packages for Ubuntu, but also Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.
-
-rockhopper images include the essentials for building binary style packages. For example, the `macos` image includes `bomutils`, `libarchive-tools`, and `xar`.
-
-All rockhopper images include the [rsubst](https://crates.io/crates/rsubst) templating language CLI utility, as a convenient relay between `rockhopper.toml` and individual package manager configuration files.
-
-For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
-
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
 `[<rockhopper-version>-]<distro>[-<release-nickname]`
+
+*Distro Primary* refers to a predominant operating system (e.g. Ubuntu) for a package manager type (e.g. apt). Some packages may interoperate with similar operating systems (e.g. Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.) If necessary, create a custom image for your specific platform.
+
+For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
 # TIPS
 
