@@ -60,10 +60,6 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 [Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
 
-rockhopper models package generation in terms of dedicated Docker images, one image per package manager.
-
-## Stock Images
-
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
 | Package Manager | File Extension | Distro Primary | Docker Tag |
