@@ -216,7 +216,7 @@ bsdtar \
     -c \
     -P \
     -f "$artifact" \
-    -s "#^\\.##" \
+    -s "/^\\.//" \
     -T "$tar_paths"
 
 clean

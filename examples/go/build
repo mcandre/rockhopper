@@ -19,7 +19,7 @@ for platform in "${platforms[@]}"; do
             continue
             ;;
         # Skip fringe OS's
-        'aix' | 'dragonfly' | 'illumos' | 'js' | 'openbsd' | 'plan9' | 'solaris' | 'wasip1')
+        'aix' | 'dragonfly' | 'illumos' | 'js' | 'plan9' | 'solaris' | 'wasip1')
             continue
             ;;
         *)

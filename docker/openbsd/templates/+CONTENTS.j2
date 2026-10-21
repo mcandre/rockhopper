@@ -1,0 +1,9 @@
+@name {{ rocklet_name }}-{{ rocklet_version }}{% if rocklet_rev != '' %}p{{ rocklet_rev}}{% endif %}
+@version {{ rocklet_pkg_version }}
+@comment pkgpath={{ rocklet_pkgpath }} ftp=yes
+@arch {{ rocklet_os_arch }}
++DESC
+@sha {{ desc_sha256_base64 }}
+@size {{ desc_b }}
+{% if (rocklet_dependencies is defined) and (rocklet_dependencies != '')%}{% for dependency in rocklet_dependencies | split("\n") %}{% if dependency != '' %}@depend {{ dependency }}{% endif %}{% endfor %}{% endif %}
+@cwd {{ rocklet_pkg_prefix | default('/usr/local') }}

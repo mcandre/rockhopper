@@ -14,6 +14,7 @@ name = "raygun"
 identifier = "test.mars.raygun"
 version = "0.0.1"
 rev = "1"
+pkg_version = "2" # Monotonically increasing version number for OpenBSD packages
 maintainer = "Marvin the Martian <marvin@mars.test>"
 manufacturer = "Mars Corp"
 summary = "Space modulator"
@@ -119,6 +120,28 @@ rocklet.pkg_os_version = "10.1"
 # byte estimate, including dependencies
 rocklet.pkg_size_all = "1000"
 # rocklet.pkg_localbase = "/usr/pkg"
+dest."bin" = "bin"
+
+[[pkg]]
+image = "n4jm4/rockhopper:openbsd"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "amd64"
+rocklet.pkgpath = "misc/raygun"
+# rocklet.dependencies = """
+# shells/bash
+# """
+# rocklet.pkg_prefix = "/usr/local"
+dest."bin" = "bin"
+
+[[pkg]]
+image = "n4jm4/rockhopper:openbsd"
+rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "arm64"
+rocklet.pkgpath = "misc/raygun"
+# rocklet.dependencies = """
+# shells/bash
+# """
+# rocklet.pkg_prefix = "/usr/local"
 dest."bin" = "bin"
 
 [[pkg]]

@@ -14,7 +14,6 @@ rocklet_pkg_blddep="${rocklet_pkg_blddep:-}"
 rocklet_copyright="${rocklet_copyright:-}"
 rocklet_license="${rocklet_license:-}"
 rocklet_summary="${rocklet_summary:-}"
-rocklet_description="${rocklet_description:-}"
 rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
 rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
 rocklet_pkg_build="${rocklet_pkg_build:-/tmp/netbsd}"
@@ -76,7 +75,6 @@ validate() {
     required_env_vars=(
         rocklet_artifact
         rocklet_cache
-        rocklet_description
         rocklet_image
         rocklet_license
         rocklet_log_level
@@ -249,7 +247,7 @@ bsdtar \
     -c \
     -z \
     -f "$artifact" \
-    -s "#^\\.##" \
+    -s "/^\\.//" \
     -T "$tar_paths"
 
 clean

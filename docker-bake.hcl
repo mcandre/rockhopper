@@ -25,6 +25,7 @@ variable "PRODUCTION" {
         "freebsd",
         "macos",
         "netbsd",
+        "openbsd",
         "tarball",
         "ubuntu",
         "windows",
@@ -39,6 +40,7 @@ variable "TEST" {
         "test-freebsd",
         "test-macos",
         "test-netbsd",
+        "test-openbsd",
         "test-tarball",
         "test-ubuntu",
         "test-windows",
@@ -174,6 +176,25 @@ target "test-netbsd" {
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
         "n4jm4/rockhopper:test-netbsd",
+    ]
+}
+
+target "openbsd" {
+    context = "docker/openbsd"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:${VERSION}-openbsd",
+        "n4jm4/rockhopper:openbsd",
+    ]
+}
+
+target "test-openbsd" {
+    context = "docker/openbsd"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:test-openbsd",
     ]
 }
 
