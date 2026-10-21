@@ -62,9 +62,9 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 rockhopper models package generation in terms of dedicated Docker images.
 
-rockhopper images include the essentials for building binary style packages. For example, the `macos` image includes `bomutils`, `libarchive-tools`, and `xar`.
+Our images include the essentials for building binary style packages. For example, the `macos` image includes `bomutils`, `libarchive-tools`, and `xar`.
 
-All rockhopper images include the [rsubst](https://crates.io/crates/rsubst) templating language CLI utility, as a convenient relay between `rockhopper.toml` and individual package manager configuration files.
+All rockhopper images include the [rsubst](https://crates.io/crates/rsubst) templating language CLI utility, as a convenient relay between `rockhopper.toml` and individual package settings.
 
 ## Stock Images
 
