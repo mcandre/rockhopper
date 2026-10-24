@@ -64,8 +64,6 @@ rockhopper delegates package generation to a series of curated Docker images. Ea
 
 [Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
 
-Image Pattern: `n4jm4/rockhopper:<tag>`
-
 | Docker Tag   | Package  |
 | ------------ | -------- |
 | alpine-linux | apk      |
@@ -80,11 +78,13 @@ Image Pattern: `n4jm4/rockhopper:<tag>`
 | ubuntu       | deb      |
 | windows      | msi      |
 
+Image Pattern: `n4jm4/rockhopper:<tag>`
+
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
 `[<rockhopper-version>-]<distro>[-<release-nickname]`
 
-Here, *Distro* refers to a predominant operating system (e.g. Ubuntu) for a package manager type (e.g. apt). Some packages may interoperate with similar operating systems (e.g. Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.) If necessary, create a custom image for your specific platform.
+We target one predominant operating system (e.g. Ubuntu) for a package manager type (e.g. apt). Some packages may interoperate with similar operating systems (e.g. Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.) When in doubt, create a custom image for your specific platform.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
