@@ -58,29 +58,33 @@ For details on building from source, see [DEVELOPMENT](DEVELOPMENT.md).
 
 # DOCKER IMAGES
 
+rockhopper delegates package generation to a series of curated Docker images. Each image is provisioned with the essential tools needed to build your packages.
+
+## Stock Images
+
 [Docker Hub](https://hub.docker.com/r/n4jm4/rockhopper)
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
-| Package Manager | File Extension | Distro Primary | Docker Tag |
-| --------------- | -------------- | -------------- | -----------|
-| [apk](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper) | apk | Alpine Linux | `alpine-linux` |
-| [AppImage](https://appimage.org/) | AppImage | (generic Linux) | `appimage` |
-| [apt](https://ubuntu.com/server/docs/how-to/software/package-management/) | deb | Ubuntu | `ubuntu` |
-| [dnf](https://dnf5.readthedocs.io/en/latest/) | rpm | Fedora | `fedora` |
-| [emerge](https://wiki.gentoo.org/wiki/Emerge) | gpkg.tar | Gentoo | `gentoo` |
-| [installer](https://ss64.com/mac/installer.html) | pkg | macOS | `macos` |
-| [msiexec](https://learn.microsoft.com/en-us/windows/win32/msi/command-line-options) | msi | Windows | `windows` |
-| [pkg](https://docs.freebsd.org/en/books/handbook/ports/) | pkg | FreeBSD | `freebsd` |
-| [pkg_add (NetBSD)](https://man.netbsd.org/pkg_add.1) | tgz | NetBSD | `netbsd` |
-| [pkg_add (OpenBSD)](https://man.openbsd.org/pkg_add.1) | tgz | OpenBSD | `openbsd` |
-| [tar (PAX)](https://pubs.opengroup.org/onlinepubs/7908799/xcu/tar.html) | tgz | (generic UNIX ) | `tarball` |
+| Operating System | Docker Tag | File Extension (`*.`) | Package Manager |
+| ---------------- | ---------- | --------------------- | --------------- |
+| Alpine Linux | alpine-linux | apk | [apk](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper) |
+| Fedora | fedora | rpm | [dnf](https://dnf5.readthedocs.io/en/latest/) |
+| FreeBSD | freebsd | pkg | [pkg](https://docs.freebsd.org/en/books/handbook/ports/) |
+| Gentoo | gentoo | gpkg.tar | [emerge](https://wiki.gentoo.org/wiki/Emerge) |
+| NetBSD | netbsd | tgz | [pkg_add (NetBSD)](https://man.netbsd.org/pkg_add.1) |
+| OpenBSD | openbsd | tgz | [pkg_add (OpenBSD)](https://man.openbsd.org/pkg_add.1) |
+| Ubuntu | ubuntu | deb | [apt](https://ubuntu.com/server/docs/how-to/software/package-management/) |
+| Windows | windows | msi | [msiexec](https://learn.microsoft.com/en-us/windows/win32/msi/command-line-options) |
+| macOS | macos | pkg | [installer](https://ss64.com/mac/installer.html) |
+| (generic Linux) | appimage | AppImage | [AppImage](https://appimage.org/) |
+| (generic UNIX ) | tarball | tgz | [tar (PAX)](https://pubs.opengroup.org/onlinepubs/7908799/xcu/tar.html) |
 
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
 `[<rockhopper-version>-]<distro>[-<release-nickname]`
 
-*Distro Primary* refers to a predominant operating system (e.g. Ubuntu) for a package manager type (e.g. apt). Some packages may interoperate with similar operating systems (e.g. Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.) If necessary, create a custom image for your specific platform.
+Here, *Distro* refers to a predominant operating system (e.g. Ubuntu) for a package manager type (e.g. apt). Some packages may interoperate with similar operating systems (e.g. Debian, Linux Mint, Pop!_OS, Raspberry Pi OS, WSL, et. al.) If necessary, create a custom image for your specific platform.
 
 For information on developing custom rockhopper images, see the [rocklets interface](ROCKLETS.md).
 
