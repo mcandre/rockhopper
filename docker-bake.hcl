@@ -23,6 +23,7 @@ variable "PRODUCTION" {
         "appimage",
         "fedora",
         "freebsd",
+        "gentoo",
         "macos",
         "netbsd",
         "openbsd",
@@ -38,6 +39,7 @@ variable "TEST" {
         "test-appimage",
         "test-fedora",
         "test-freebsd",
+        "test-gentoo",
         "test-macos",
         "test-netbsd",
         "test-openbsd",
@@ -138,6 +140,25 @@ target "test-freebsd" {
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
         "n4jm4/rockhopper:test-freebsd",
+    ]
+}
+
+target "gentoo" {
+    context = "docker/gentoo"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:${VERSION}-gentoo",
+        "n4jm4/rockhopper:gentoo",
+    ]
+}
+
+target "test-gentoo" {
+    context = "docker/gentoo"
+    platforms = PLATFORMS
+    args = { ROCKHOPPER_VERSION = VERSION }
+    tags = [
+        "n4jm4/rockhopper:test-gentoo",
     ]
 }
 

@@ -440,6 +440,9 @@ rocklet.os_arch = "amd64"
 | FreeBSD        | 64-bit ARM            | `freebsd:<os-version>:arm64`       |
 | FreeBSD        | 64-bit Intel          | `freebsd:<os-version>:amd64`       |
 | FreeBSD        | (chipset independent) | `freebsd:<os-version>:*`           |
+| Gentoo         | 64-bit ARM            | `arm64`                            |
+| Gentoo         | 64-bit Intel          | `amd64`                            |
+| Gentoo         | (chipset independent) | `*`                                |
 | macOS          | 64-bit ARM            | `arm64`                            |
 | macOS          | 64-bit Intel          | `x86_64`                           |
 | macOS          | (chipset independent) | `universal`                        |

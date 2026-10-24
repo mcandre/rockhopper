@@ -15,6 +15,7 @@ identifier = "test.mars.raygun"
 version = "0.0.1"
 rev = "1"
 pkg_version = "2" # Monotonically increasing version number for OpenBSD packages
+# ebuild_category = "app-misc"
 maintainer = "Marvin the Martian <marvin@mars.test>"
 manufacturer = "Mars Corp"
 summary = "Space modulator"
@@ -78,6 +79,13 @@ rocklet.os_arch = "freebsd:*"
 # rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
 # rocklet.pkg_prefix = "/usr/local"
 dest."usr/local/bin" = "bin"
+
+[[pkg]]
+image = "n4jm4/rockhopper:gentoo"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "*"
+# rocklet.dependencies = "app-shells/bash"
+dest."usr/bin" = "bin"
 
 [[pkg]]
 image = "n4jm4/rockhopper:macos"

@@ -1,0 +1,17 @@
+EAPI=8
+DESCRIPTION="{{ rocklet_summary }}"
+HOMEPAGE="{{ rocklet_url }}"
+LICENSE="{{ rocklet_license }}"
+SLOT="{{ rocklet_ebuild_slot }}"
+KEYWORDS="{{ rocklet_os_arch }}"
+RDEPEND="{{ rocklet_dependencies | default('') }}"
+SRC_URI=""
+S="${WORKDIR}"
+
+src_install() {
+    default
+    insinto /
+    insopts -p
+    doins -r "${FILESDIR}/."
+    insopts
+}

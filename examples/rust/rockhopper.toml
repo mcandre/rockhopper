@@ -14,6 +14,7 @@ name = "raygun"
 identifier = "test.mars.raygun"
 version = "0.0.1"
 rev = "1"
+# ebuild_category = "app-misc"
 maintainer = "Marvin the Martian <marvin@mars.test>"
 manufacturer = "Mars Corp"
 summary = "Space modulator"
@@ -91,6 +92,20 @@ rocklet.os_arch = "freebsd:*:amd64"
 # rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
 # rocklet.pkg_prefix = "/usr/local"
 dest."usr/local/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-freebsd"
+
+[[pkg]]
+image = "n4jm4/rockhopper:gentoo"
+rocklet.oci_arch = "linux/amd64"
+rocklet.os_arch = "amd64"
+# rocklet.dependencies = "app-shells/bash"
+dest."usr/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-linux-musl"
+
+[[pkg]]
+image = "n4jm4/rockhopper:gentoo"
+rocklet.oci_arch = "linux/arm64"
+rocklet.os_arch = "arm64"
+# rocklet.dependencies = "app-shells/bash"
+dest."usr/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
 
 [[pkg]]
 image = "n4jm4/rockhopper:macos"

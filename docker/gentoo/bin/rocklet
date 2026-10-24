@@ -1,0 +1,173 @@
+#!/bin/bash
+unset IFS
+set -euo pipefail
+
+rocklet_log_level="${rocklet_log_level:-info}"
+rocklet_image="${rocklet_image:-unknown image}"
+rocklet_mount_path="${rocklet_mount_path:-/mnt/rockhopper}"
+rocklet_name="${rocklet_name:-}"
+rocklet_version="${rocklet_version:-}"
+rocklet_rev="${rocklet_rev:-}"
+rocklet_copyright="${rocklet_copyright:-}"
+rocklet_license="${rocklet_license:-}"
+rocklet_maintainer="${rocklet_maintainer:-}"
+rocklet_url="${rocklet_url:-}"
+rocklet_templates="${rocklet_templates:-"$HOME/templates"}"
+rocklet_cache="${rocklet_cache:-"$rocklet_mount_path/.rockhopper"}"
+rocklet_ebuild_slot="${rocklet_ebuild_slot:-0}"
+rocklet_ebuild_category="${rocklet_ebuild_category:-app-misc}"
+rocklet_portage_tree="${rocklet_portage_tree:-/tmp/gentoo}"
+rocklet_os_arch="${rocklet_os_arch:-"$(portageq envvar ARCH)"}"
+
+KEYWORD_ALIAS=''
+
+case "$rocklet_os_arch" in
+    '*')
+        KEYWORD_ALIAS='all'
+        ;;
+    *)
+        KEYWORD_ALIAS="$rocklet_os_arch"
+        ;;
+esac
+
+rocklet_artifact="${rocklet_artifact:-"${rocklet_cache}/artifacts/gentoo-${KEYWORD_ALIAS}/${rocklet_ebuild_category}/${rocklet_name}"}"
+
+# Forward rockhopper environment variables to Jinja
+for K in $(compgen -v | grep '^rocklet_'); do
+    export "$K"
+done
+
+usage() {
+    printf "Usage: %s [<OPTION>]\n" "$0"
+    printf "\n"
+    printf -- "--debug -d\tIncrease logging\n"
+    printf -- "--quiet -q\tReduce logging\n"
+    printf -- "--help -h\tShow usage menu\n"
+    printf -- "--version -V\tShow version banner\n"
+}
+
+banner() {
+    echo "$0 $ROCKHOPPER_VERSION"
+}
+
+while [ "$#" -ge 1 ]; do
+    case "$1" in
+    '--debug' | '-d')
+        shift
+        rocklet_log_level='debug'
+        ;;
+    '--quiet' | 'q')
+        shift
+        rocklet_log_level='quiet'
+        ;;
+    '--help' | '-h')
+        usage
+        exit
+        ;;
+    '--version' | '-V')
+        banner
+        exit
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    env | grep '^rocklet_' | sort
+    set -x
+fi
+
+validate() {
+    required_env_vars=(
+        rocklet_artifact
+        rocklet_cache
+        rocklet_copyright
+        rocklet_ebuild_category
+        rocklet_ebuild_slot
+        rocklet_image
+        rocklet_license
+        rocklet_log_level
+        rocklet_maintainer
+        rocklet_mount_path
+        rocklet_name
+        rocklet_os_arch
+        rocklet_portage_tree
+        rocklet_templates
+        rocklet_url
+        rocklet_version
+    )
+
+    for required_env_var in "${required_env_vars[@]}"; do
+        eval "required_env_val=\$$required_env_var"
+
+        if [ -z "$required_env_val" ]; then
+            echo "error: ${rocklet_image} blank/missing env var: ${required_env_var}"
+            exit 1
+        fi
+    done
+}
+
+clean() {
+    rm -rf "$rocklet_portage_tree"
+}
+
+validate
+clean
+
+mkdir -p "$rocklet_portage_tree"
+
+METADATA="${rocklet_portage_tree}/metadata"
+mkdir -p "$METADATA"
+printf "masters = gentoo\nthin-manifests = true\n" >"${METADATA}/layout.conf"
+
+PROFILES="${rocklet_portage_tree}/profiles"
+mkdir -p "$PROFILES"
+echo 'local' >"${PROFILES}/repo_name"
+
+REPO="${rocklet_portage_tree}/${rocklet_ebuild_category}/${rocklet_name}"
+mkdir -p "$REPO"
+FILES="${REPO}/files"
+cp -r "$rocklet_cache/source-media" "$FILES"
+EBUILD_BASENAME="${rocklet_name}-${rocklet_version}.ebuild"
+EBUILD="${REPO}/${EBUILD_BASENAME}"
+rsubst --strict "$rocklet_templates/.ebuild.j2" >"$EBUILD"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'ebuild:'
+    cat "$EBUILD"
+fi
+
+METADATA_XML="${REPO}/metadata.xml"
+rsubst --strict "$rocklet_templates/metadata.xml.j2" >"$METADATA_XML"
+
+if [ "$rocklet_log_level" = 'debug' ]; then
+    echo 'metadata.xml:'
+    cat "$METADATA_XML"
+fi
+
+artifact="${rocklet_name}-${rocklet_version}"
+
+if [ -n "$rocklet_rev" ]; then
+    artifact="${artifact}-${rocklet_rev}"
+fi
+
+artifact="${artifact}.gpkg.tar"
+
+cd "$REPO"
+
+ebuild() {
+    if [ "$rocklet_log_level" = 'quiet' ]; then
+        command ebuild "$@" >/dev/null
+    else
+        command ebuild "$@"
+    fi
+}
+
+BINPKG_FORMAT="gpkg" ebuild "$EBUILD_BASENAME" package
+mkdir -p "${rocklet_artifact}"
+cp "/var/cache/binpkgs/${rocklet_ebuild_category}/${rocklet_name}/${artifact}" "$rocklet_artifact"
+
+clean

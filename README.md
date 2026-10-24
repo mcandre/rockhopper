@@ -68,6 +68,7 @@ Image Pattern: `n4jm4/rockhopper:<tag>`
 | [AppImage](https://appimage.org/) | AppImage | (generic Linux) | `appimage` |
 | [apt](https://ubuntu.com/server/docs/how-to/software/package-management/) | deb | Ubuntu | `ubuntu` |
 | [dnf](https://dnf5.readthedocs.io/en/latest/) | rpm | Fedora | `fedora` |
+| [emerge](https://wiki.gentoo.org/wiki/Emerge) | gpkg.tar | Gentoo | `gentoo` |
 | [installer](https://ss64.com/mac/installer.html) | pkg | macOS | `macos` |
 | [msiexec](https://learn.microsoft.com/en-us/windows/win32/msi/command-line-options) | msi | Windows | `windows` |
 | [pkg](https://docs.freebsd.org/en/books/handbook/ports/) | pkg | FreeBSD | `freebsd` |
