@@ -66,19 +66,19 @@ rockhopper delegates package generation to a series of curated Docker images. Ea
 
 Image Pattern: `n4jm4/rockhopper:<tag>`
 
-| Operating System | Docker Tag | File Extension (`*.`) | Package Manager |
-| ---------------- | ---------- | --------------------- | --------------- |
-| Alpine Linux | alpine-linux | apk | [apk](https://wiki.alpinelinux.org/wiki/Alpine_Package_Keeper) |
-| Fedora | fedora | rpm | [dnf](https://dnf5.readthedocs.io/en/latest/) |
-| FreeBSD | freebsd | pkg | [pkg](https://docs.freebsd.org/en/books/handbook/ports/) |
-| Gentoo | gentoo | gpkg.tar | [emerge](https://wiki.gentoo.org/wiki/Emerge) |
-| NetBSD | netbsd | tgz | [pkg_add (NetBSD)](https://man.netbsd.org/pkg_add.1) |
-| OpenBSD | openbsd | tgz | [pkg_add (OpenBSD)](https://man.openbsd.org/pkg_add.1) |
-| Ubuntu | ubuntu | deb | [apt](https://ubuntu.com/server/docs/how-to/software/package-management/) |
-| Windows | windows | msi | [msiexec](https://learn.microsoft.com/en-us/windows/win32/msi/command-line-options) |
-| macOS | macos | pkg | [installer](https://ss64.com/mac/installer.html) |
-| (generic Linux) | appimage | AppImage | [AppImage](https://appimage.org/) |
-| (generic UNIX ) | tarball | tgz | [tar (PAX)](https://pubs.opengroup.org/onlinepubs/7908799/xcu/tar.html) |
+| Docker Tag   | Package  |
+| ------------ | -------- |
+| alpine-linux | apk      |
+| appimage     | appimage |
+| fedora       | rpm      |
+| freebsd      | pkg      |
+| gentoo       | gpkg.tar |
+| macos        | pkg      |
+| netbsd       | tgz      |
+| openbsd      | tgz      |
+| tarball      | tgz      |
+| ubuntu       | deb      |
+| windows      | msi      |
 
 Multiplatform images also available. Supported platforms may vary by distro. Version pin tag aliases are also available, of the form:
 
