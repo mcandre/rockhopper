@@ -244,10 +244,10 @@ target "ubuntu" {
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
         "n4jm4/rockhopper:${VERSION}-ubuntu-noble",
-        "n4jm4/rockhopper:${VERSION}-ubuntu-26.04",
+        "n4jm4/rockhopper:${VERSION}-ubuntu-24.04",
         "n4jm4/rockhopper:${VERSION}-ubuntu",
         "n4jm4/rockhopper:ubuntu-noble",
-        "n4jm4/rockhopper:ubuntu-26.04",
+        "n4jm4/rockhopper:ubuntu-24.04",
         "n4jm4/rockhopper:ubuntu",
     ]
 }
