@@ -108,9 +108,9 @@ target "fedora" {
     platforms = PLATFORMS
     args = { ROCKHOPPER_VERSION = VERSION }
     tags = [
-        "n4jm4/rockhopper:${VERSION}-fedora-44",
+        "n4jm4/rockhopper:${VERSION}-fedora-43",
         "n4jm4/rockhopper:${VERSION}-fedora",
-        "n4jm4/rockhopper:fedora-44",
+        "n4jm4/rockhopper:fedora-43",
         "n4jm4/rockhopper:fedora",
     ]
 }

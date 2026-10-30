@@ -48,18 +48,6 @@ cargo install rockhopper
 * [cargo](https://doc.rust-lang.org/cargo/)
 * [Docker](https://www.docker.com/)
 
-## macOS Hosts
-
-You may see errors like:
-
-> mkdir: Function not implemented
-
-> stat: Function not implemented
-
-This is due to faulty Linux syscall support in Rosetta.
-
-Workaround: Disable Rosetta integration in Docker in favor of qemu/libvirt.
-
 ## Postinstall
 
 Register `~/.cargo/bin` to `PATH` environment variable.

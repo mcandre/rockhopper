@@ -1,7 +1,7 @@
 FROM library/ubuntu:26.04 AS build
 ENV PATH=$PATH:/root/.cargo/bin
-RUN apt update && \
-    apt install --no-install-recommends -y \
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
         build-essential \
         ca-certificates \
         curl && \
@@ -12,8 +12,8 @@ RUN apt update && \
 FROM library/ubuntu:26.04
 ARG ROCKHOPPER_VERSION
 ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
-RUN apt update && \
-    apt install --no-install-recommends -y libarchive-tools && \
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y libarchive-tools && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=build /root/.cargo/bin/rsubst /usr/local/bin
 COPY templates /root/templates
