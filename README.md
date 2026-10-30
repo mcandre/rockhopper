@@ -109,6 +109,7 @@ Prior art, personal plugs, and tools for developing portable applications (inclu
 * [alien](https://joeyh.name/code/alien/) - an OS package converter
 * [apple-platform-rs](https://github.com/indygreg/apple-platform-rs), [bomutils](https://github.com/hogliux/bomutils), [stuckliste](https://github.com/igankevich/stuckliste) - Apple Bom format research
 * [cargo](https://doc.rust-lang.org/cargo/) - a crossplatform package manager for Rust projects
+* [Docker](https://www.docker.com/) - a package manager for containers
 * [fpm](https://github.com/jordansissel/fpm) - an older, host native package generator
 * [go mod](https://go.dev/doc/modules/gomod-ref) - a crossplatform package manager for Go applications
 * [goreleaser](https://goreleaser.com/) - a crossplatform binary & package generator
