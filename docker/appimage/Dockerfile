@@ -1,4 +1,4 @@
-FROM library/ubuntu:24.04 AS build
+FROM library/ubuntu:26.04 AS build
 ENV PATH=$PATH:/root/.cargo/bin
 RUN apt update && \
     apt install --no-install-recommends -y \
@@ -12,7 +12,7 @@ RUN apt update && \
     curl -Lo /usr/local/bin/appimagetool-x86_64.AppImage "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage" && \
     chmod +x /usr/local/bin/appimagetool-*.AppImage
 
-FROM library/ubuntu:24.04
+FROM library/ubuntu:26.04
 ARG ROCKHOPPER_VERSION
 ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN apt update && \

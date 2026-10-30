@@ -1,4 +1,4 @@
-FROM library/ubuntu:25.04 AS build
+FROM library/ubuntu:26.04 AS build
 ENV PATH=$PATH:/root/.cargo/bin
 RUN apt update && \
     apt install --no-install-recommends -y \

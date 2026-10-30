@@ -19,6 +19,18 @@ For advanced operations, such as linting, we further supplement with some softwa
 
 * [asdf](https://asdf-vm.com/)
 
+## macOS Hosts
+
+You may see errors like:
+
+> mkdir: Function not implemented
+
+> stat: Function not implemented
+
+This is due to faulty Linux syscall support in Rosetta.
+
+Workaround: Disable Rosetta integration in Docker in favor of qemu/libvirt.
+
 ## Postinstall
 
 Register output of `go env GOBIN` to `PATH` environment variable.

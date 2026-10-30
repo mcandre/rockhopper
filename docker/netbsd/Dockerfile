@@ -1,4 +1,4 @@
-FROM library/ubuntu:24.04 AS build
+FROM library/ubuntu:26.04 AS build
 ENV PATH=$PATH:/root/.cargo/bin
 RUN apt update && \
     apt install --no-install-recommends -y \
@@ -9,7 +9,7 @@ RUN apt update && \
         sh -s -- --no-modify-path -y && \
     cargo install rsubst@0.2.1
 
-FROM library/ubuntu:24.04
+FROM library/ubuntu:26.04
 ARG ROCKHOPPER_VERSION
 ENV ROCKHOPPER_VERSION=$ROCKHOPPER_VERSION
 RUN apt update && \
