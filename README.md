@@ -8,6 +8,12 @@
  ^^
 ```
 
+# WARNING
+
+Fragility in the Docker ecosystem has resulted in many basic Linux commands failing. Consequently, this breaks rockhopper package builds.
+
+Recommend switching to [chiri](https://github.com/mcandre/chiri), a pure Rust package builder.
+
 # ABOUT
 
 rockhopper builds packages for a wide variety of platforms.
