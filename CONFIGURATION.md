@@ -354,7 +354,7 @@ Docker image tag.
 Example:
 
 ```toml
-image = "n4jm4/rockhopper:ubuntu
+image = "n4jm4/rockhopper:ubuntu"
 ```
 
 ### `docker_args`
