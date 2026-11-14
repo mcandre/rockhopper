@@ -67,7 +67,6 @@ image = "n4jm4/rockhopper:fedora"
 # rocklet.os_arch = "x86_64"
 rocklet.os_arch = "noarch"
 # rocklet.dependencies = "bash"
-# rocklet.pkg_licenselogic = "single"
 dest."usr/bin" = "bin"
 
 [[pkg]]
@@ -77,6 +76,7 @@ rocklet.origin = "local/raygun"
 # rocklet.os_arch = "freebsd:*:amd64"
 rocklet.os_arch = "freebsd:*"
 # rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
+# rocklet.pkg_licenselogic = "single"
 # rocklet.pkg_prefix = "/usr/local"
 dest."usr/local/bin" = "bin"
 

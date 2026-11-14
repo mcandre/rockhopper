@@ -73,7 +73,6 @@ image = "n4jm4/rockhopper:fedora"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "x86_64"
 # rocklet.dependencies = "bash"
-# rocklet.pkg_licenselogic = "single"
 dest."usr/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-linux-musl"
 
 [[pkg]]
@@ -81,7 +80,6 @@ image = "n4jm4/rockhopper:fedora"
 rocklet.oci_arch = "linux/arm64"
 rocklet.os_arch = "aarch64"
 # rocklet.dependencies = "bash"
-# rocklet.pkg_licenselogic = "single"
 dest."usr/bin" = ".crit/bin/raygun-0.0.1/aarch64-unknown-linux-musl"
 
 [[pkg]]
@@ -90,6 +88,7 @@ rocklet.origin = "local/raygun"
 rocklet.oci_arch = "linux/amd64"
 rocklet.os_arch = "freebsd:*:amd64"
 # rocklet.dependencies = "bash: { origin: \"shells/bash\" }"
+# rocklet.pkg_licenselogic = "single"
 # rocklet.pkg_prefix = "/usr/local"
 dest."usr/local/bin" = ".crit/bin/raygun-0.0.1/x86_64-unknown-freebsd"
 
