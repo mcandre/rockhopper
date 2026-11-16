@@ -1,6 +1,6 @@
 # rockhopper: metapackage generator
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/n4jm4/rockhopper)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/rockhopper?label=crate%20downloads)](https://crates.io/crates/rockhopper) [![docs.rs](https://img.shields.io/docsrs/rockhopper)](https://docs.rs/rockhopper/latest/rockhopper/) [![license](https://img.shields.io/badge/license-BSD-0)](LICENSE.md) [![Donate](https://img.shields.io/badge/%E2%99%A5-Sponsor-BF3988)](https://github.com/sponsors/mcandre)
+[![Docker Pulls](https://badgen.net/docker/pulls/n4jm4/rockhopper?icon=docker)](https://hub.docker.com/r/n4jm4/rockhopper) [![Crate Downloads](https://badgen.net/crates/d/rockhopper?label=crate+downloads&icon=rust)](https://crates.io/crates/rockhopper) [![API Docs](https://badgen.net/static/docs/API/3eca2a?icon=docs.rs)](https://docs.rs/rockhopper/latest/rockhopper/) [![CI/CD](https://badgen.net/github/checks/mcandre/rockhopper?icon=github)](https://github.com/mcandre/rockhopper/actions) [![License](https://badgen.net/static/license/BSD/ab2b29?icon=freebsd)](LICENSE.md)
 
 ```text
   o<  gak! gak!
