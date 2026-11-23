@@ -1,2 +1,6 @@
+*.mk linguist-vendored
+makefile linguist-vendored
+docker-bake.hcl linguist-vendored
+go.* linguist-vendored
 vendor/** linguist-vendored
 vendor-rust/** linguist-vendored
