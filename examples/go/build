@@ -43,6 +43,12 @@ for platform in "${platforms[@]}"; do
     mkdir -p "$artifact_dir"
 
     for app in "${apps[@]}"; do
-        env GOOS="$os" GOARCH="$arch" go build -o "$artifact_dir/$app" "cmd/$app/main.go"
+        extension=''
+
+        if [ "$os" = 'windows' ]; then
+            extension='.exe'
+        fi
+
+        env GOOS="$os" GOARCH="$arch" go build -o "${artifact_dir}/${app}${extension}" "cmd/$app/main.go"
     done
 done
